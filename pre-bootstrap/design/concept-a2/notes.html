@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>Concept A2, Gold &amp; Green · Design notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Petrona:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .n-head { padding: 96px 0 88px; }
+  .n-head h1 { font-size: 92px; line-height: 1; letter-spacing: -.015em; }
+  .n-head p { margin-top: 28px; font-size: 21px; max-width: 36em; color: rgba(246, 239, 221, .9); }
+  .n-head a { text-underline-offset: 6px; text-decoration-color: var(--gold); }
+  .n-sec { padding: 104px 0 96px; }
+  .n-sec h2 { font-size: 52px; margin-bottom: 48px; }
+  .why-lines { grid-column: 1 / span 9; display: grid; gap: 0; }
+  .why-lines li { padding: 22px 0 24px; border-top: 1px solid var(--hair); font-size: 21px; line-height: 1.5; }
+  .why-lines li:last-child { border-bottom: 1px solid var(--hair); }
+  .why-lines strong { font: italic 500 25px/1 var(--serif); color: var(--em); margin-right: 6px; }
+  .swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; row-gap: 40px; }
+  .sw i { display: block; height: 168px; border: 1px solid rgba(18, 51, 42, .16); }
+  .sw b { display: block; margin-top: 14px; font: 500 24px/1.2 var(--serif); }
+  .sw code { display: block; margin-top: 2px; font: 600 16px/1.4 var(--sans); letter-spacing: .04em; }
+  .sw span { display: block; margin-top: 4px; font-size: 16px; line-height: 1.4; color: var(--green-muted); }
+  .type-row { display: grid; grid-template-columns: 260px 1fr; column-gap: 24px; align-items: baseline; padding: 28px 0; border-top: 1px solid var(--hair); }
+  .type-row:last-child { border-bottom: 1px solid var(--hair); }
+  .type-row dt { font-size: 16px; line-height: 1.5; }
+  .type-row dt b { display: block; font-weight: 600; font-size: 17px; }
+  .type-row dd { margin: 0; }
+  .t-h1 { font: 500 116px/.98 var(--serif); letter-spacing: -.015em; }
+  .t-h2 { font: 500 68px/1.04 var(--serif); letter-spacing: -.015em; }
+  .t-h3 { font: 500 32px/1.15 var(--serif); }
+  .t-lead { font-size: 21px; line-height: 1.5; max-width: 34em; }
+  .t-body { max-width: 38em; }
+  .t-label { font-size: 14px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+  .t-h1 em, .t-h2 em { font-style: italic; color: var(--em); }
+  .btn-board { display: grid; grid-template-columns: 1fr 1fr; }
+  .btn-board > div { padding: 56px 56px 60px; }
+  .btn-board h3 { font-size: 26px; margin-bottom: 28px; }
+  .btn-list { display: grid; gap: 22px; }
+  .btn-list li { display: grid; grid-template-columns: 290px 1fr; align-items: center; column-gap: 24px; font-size: 16px; line-height: 1.45; }
+  .btn-list li > :first-child { justify-self: start; }
+  .n-foot { padding: 40px 0; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<header class="n-head on-dark">
+  <div class="wrap">
+    <h1>Concept A2, <em>Gold &amp; Green</em></h1>
+    <p>Premium colours, playful type. Palette, type and buttons for the homepage design in <a href="index.html">index.html</a>. Desktop, 1440px.</p>
+  </div>
+</header>
+
+<section class="n-sec on-cream">
+  <div class="wrap">
+    <h2>How it is <em>fun and festive</em>, and <em>premium</em></h2>
+    <div class="grid">
+      <ul class="why-lines">
+        <li><strong>One day at the Cove.</strong> The page runs from dusk on the lake to a clear morning for the facts, evening for the events, night for where you sleep, and dawn for the first-visit offer.</li>
+        <li><strong>Premium is the colour.</strong> Two inks only: cypress greens and gold, with cream as daylight. Flat fields, hard edges, and photographs at full scale.</li>
+        <li><strong>Fun and festive is the type and the details.</strong> Petrona's italic on a word or two per heading, a string of lights over the events, and a sun that sets as you scroll.</li>
+        <li><strong>Gold is only ever light.</strong> It marks the sun, the lights and the one action on screen, so Book Now is always the brightest thing in view.</li>
+        <li><strong>Easy on older eyes.</strong> 18px Figtree for reading, sturdy serif headings from 32px up, and AA contrast on every ground.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="n-sec on-paper">
+  <div class="wrap">
+    <h2>Palette</h2>
+    <ul class="swatches">
+      <li class="sw"><i style="background:#0A1F19"></i><b>Night</b><code>#0A1F19</code><span>Ways to stay</span></li>
+      <li class="sw"><i style="background:#0C241D"></i><b>Dusk</b><code>#0C241D</code><span>Hero, footer, menu bar</span></li>
+      <li class="sw"><i style="background:#12332A"></i><b>Cypress</b><code>#12332A</code><span>The evening section, text, buttons on light grounds, the Cove column</span></li>
+      <li class="sw"><i style="background:#1E4A3B"></i><b>Mid green</b><code>#1E4A3B</code><span>Button hover</span></li>
+      <li class="sw"><i style="background:#4B6157"></i><b>Muted green</b><code>#4B6157</code><span>Secondary text on cream</span></li>
+      <li class="sw"><i style="background:#E4E9D6"></i><b>Pale sage</b><code>#E4E9D6</code><span>Afternoon shade: reviews, questions</span></li>
+      <li class="sw"><i style="background:#F6EFDD"></i><b>Cream</b><code>#F6EFDD</code><span>Daylight: the main ground, text on green</span></li>
+      <li class="sw"><i style="background:#FBF7EC"></i><b>Paper</b><code>#FBF7EC</code><span>Couples and families</span></li>
+      <li class="sw"><i style="background:#E3B55B"></i><b>Gold</b><code>#E3B55B</code><span>Light and the main action, on green; the dawn band</span></li>
+      <li class="sw"><i style="background:#8C6414"></i><b>Deep gold</b><code>#8C6414</code><span>Italic emphasis on cream (<code style="display:inline;font-size:inherit">#7A5710</code> on sage)</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="n-sec on-cream">
+  <div class="wrap">
+    <h2>Type</h2>
+    <dl>
+      <div class="type-row"><dt><b>Heading 1</b>Petrona Medium, 116px / 0.98</dt><dd class="t-h1">A top family resort. <em>For Nudists.</em></dd></div>
+      <div class="type-row"><dt><b>Heading 2</b>Petrona Medium, 68px / 1.04. Italic on one or two words.</dt><dd class="t-h2">Your first visit, <em>step by step</em></dd></div>
+      <div class="type-row"><dt><b>Heading 3</b>Petrona Medium, 32px / 1.15 (36 to 38px in the large panels)</dt><dd class="t-h3">Rooms, pools and restaurants</dd></div>
+      <div class="type-row"><dt><b>Lead</b>Figtree Regular, 21px / 1.5</dt><dd class="t-lead">Most nudist resorts are built to be nudist and little else: a pool, a clubhouse, and quiet by nine.</dd></div>
+      <div class="type-row"><dt><b>Body</b>Figtree Regular, 18px / 1.6 (19px in the table and the answers)</dt><dd class="t-body">Villa rooms, two heated pools, hot tubs, and three places to eat and drink on the grounds, including Cheeks Bar and Grill.</dd></div>
+      <div class="type-row"><dt><b>Label</b>Figtree SemiBold, 13 to 15px, capitals, wide spacing</dt><dd class="t-label">Kissimmee, Florida</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="on-cream" style="padding-bottom:112px">
+  <div class="wrap">
+    <h2 style="font-size:52px;margin-bottom:48px">Buttons</h2>
+    <div class="btn-board">
+      <div class="on-dark">
+        <h3>On green</h3>
+        <ul class="btn-list">
+          <li><a class="btn btn-gold" href="#">Book Now</a><span>Primary. Gold, 60px tall, Figtree SemiBold 19px.</span></li>
+          <li><a class="btn btn-line-light" href="#">Plan your first visit</a><span>Secondary. Cream outline; fills cream on hover.</span></li>
+          <li><a class="link link-arrow" href="#">View itinerary<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></a><span>Text link. Gold underline.</span></li>
+        </ul>
+      </div>
+      <div class="on-sage">
+        <h3>On cream and sage</h3>
+        <ul class="btn-list">
+          <li><a class="btn btn-green" href="#">Request a tour</a><span>Primary. Cypress green, cream text.</span></li>
+          <li><a class="btn btn-line-dark" href="#">See the full gallery</a><span>Secondary. Green outline; fills green on hover.</span></li>
+          <li><a class="link link-arrow" href="#">Read the First-Timer's Guide<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></a><span>Text link. Deep gold underline.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="n-foot on-dark">
+  <div class="wrap">Cypress Cove Resort website, 2026 redesign · Concept A2, Gold &amp; Green · Photos are placeholders.</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" data-theme="a">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concept A: Gold &amp; Green | Cypress Cove design notes</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/theme-a.css">
+  <style>
+    .notes { padding-block: var(--space-6) var(--space-7); }
+    .notes-top { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-7); align-items: end; padding-bottom: var(--space-6); border-bottom: 1px solid var(--a-gold-line); }
+    .notes-top h1 { margin: 0; }
+    .notes-top ul { display: grid; gap: var(--space-2); }
+    .notes-top li { padding-left: 1.5rem; position: relative; color: var(--color-muted); }
+    .notes-top li::before { content: ""; position: absolute; left: 0; top: 0.8em; width: 0.8rem; height: 1px; background: var(--a-gold-line); }
+    .notes-block { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: var(--space-5); padding-block: var(--space-6); border-bottom: 1px solid var(--color-border); }
+    .notes-block > h2 { font-size: 1.6rem; margin: 0; }
+    .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4) var(--space-3); }
+    .swatch-chip { height: 6.5rem; border-radius: var(--radius); border: 1px solid rgb(21 59 44 / 0.14); }
+    .swatch p { margin: 0; }
+    .swatch .name { margin-top: var(--space-2); font-weight: 600; color: var(--color-primary); }
+    .swatch .hex { font-variant-numeric: tabular-nums; }
+    .swatch .use { font-size: 0.95rem; color: var(--color-muted); }
+    .type-row { display: grid; grid-template-columns: minmax(0, 1fr) 17rem; gap: var(--space-5); align-items: baseline; padding-block: var(--space-4); border-top: 1px solid var(--color-border); }
+    .type-row:first-child { border-top: 0; padding-top: 0; }
+    .type-row > * { margin: 0; }
+    .type-row .spec { font-size: 0.95rem; color: var(--color-muted); }
+    .type-row .spec strong { display: block; color: var(--color-primary); font-weight: 600; }
+    .t-h1 { font-family: var(--font-heading); font-size: 4.5rem; line-height: 1.06; letter-spacing: -0.015em; color: var(--color-primary); }
+    .t-h2 { font-family: var(--font-heading); font-size: 3rem; line-height: 1.12; letter-spacing: -0.01em; color: var(--color-primary); }
+    .t-h3 { font-family: var(--font-heading); font-size: 1.5rem; line-height: 1.22; color: var(--color-primary); }
+    .t-h1 em, .t-h2 em { color: var(--a-gold-ink); }
+    .t-cap { font-family: var(--font-heading); font-style: italic; font-size: 1.1rem; color: var(--color-accent); }
+    .t-lead { font-size: 1.15rem; }
+    .button-rows { display: grid; gap: var(--space-4); }
+    .button-panel { padding: var(--space-5); border-radius: var(--radius); background: var(--color-surface); }
+    .button-panel.section-hero { padding: var(--space-5); background: var(--color-primary); overflow: visible; z-index: auto; }
+    .button-panel p { margin: var(--space-4) 0 0; font-size: 0.95rem; color: var(--color-muted); }
+    .button-panel.section-hero p { color: var(--a-on-green-soft); }
+    .button-panel.section-hero .button-text { color: var(--color-on-primary); }
+    .button-panel.section-hero .button-text::after { background: var(--a-gold); }
+    .icons { display: flex; gap: var(--space-5); align-items: center; }
+    .icons .icon { width: 2.5rem; height: 2.5rem; }
+    .notes-foot { padding-top: var(--space-5); }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="index.html"><span class="visually-hidden">Cypress Cove Nudist Resort</span></a>
+    <nav class="main-nav" aria-label="Notes"><ul><li><a href="index.html">Open the homepage</a></li></ul></nav>
+  </div>
+</header>
+
+<main class="container notes">
+  <div class="notes-top">
+    <h1>Concept A: <em>Gold &amp; Green</em></h1>
+    <ul>
+      <li>Premium comes from the colour: cypress green, cream and pale sage, with one brass gold. No pastels.</li>
+      <li>Fun and festive comes from the type: Libre Caslon Text, with a word or two per heading in a gold, dancing italic.</li>
+      <li>Big photos do the rest: a hero photo that runs off the page edge, a gold keyline inside the large pictures, one warm grade across all of them.</li>
+      <li>Kept warm, not corporate: cream paper instead of white, italic captions and signatures, gold on every main action on green.</li>
+    </ul>
+  </div>
+
+  <section class="notes-block" aria-labelledby="n-colour">
+    <h2 id="n-colour">Colour</h2>
+    <ul class="swatches">
+      <li class="swatch"><div class="swatch-chip" style="background:#153b2c"></div><p class="name">Cypress green</p><p class="hex">#153B2C</p><p class="use">Header, hero, green bands, headings, main button on cream</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#0e2a20"></div><p class="name">Deep cypress</p><p class="hex">#0E2A20</p><p class="use">Footer, text on gold buttons</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#2c6a4a"></div><p class="name">Palm green</p><p class="hex">#2C6A4A</p><p class="use">Hover and link states</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#e4e8d5"></div><p class="name">Pale sage</p><p class="hex">#E4E8D5</p><p class="use">Tone-on-tone bands</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#f4efe1"></div><p class="name">Cream</p><p class="hex">#F4EFE1</p><p class="use">Page background</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#fbf8ee"></div><p class="name">Card cream</p><p class="hex">#FBF8EE</p><p class="use">Cards on sage</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#d9b45f"></div><p class="name">Brass gold</p><p class="hex">#D9B45F</p><p class="use">On green: italics, main button, ticks</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#8a671b"></div><p class="name">Gold ink</p><p class="hex">#8A671B</p><p class="use">On cream: heading italics, numerals. Small gold text uses #7F5F1A, hairlines #B58B2C.</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#1c2b23"></div><p class="name">Green-black</p><p class="hex">#1C2B23</p><p class="use">Body text</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#4b5a50"></div><p class="name">Moss grey</p><p class="hex">#4B5A50</p><p class="use">Secondary text</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#d3d9c6"></div><p class="name">Soft sage</p><p class="hex">#D3D9C6</p><p class="use">Body text on green</p></li>
+      <li class="swatch"><div class="swatch-chip" style="background:#dad3bc"></div><p class="name">Sand line</p><p class="hex">#DAD3BC</p><p class="use">Hairlines on cream</p></li>
+    </ul>
+  </section>
+
+  <section class="notes-block" aria-labelledby="n-type">
+    <h2 id="n-type">Type</h2>
+    <div>
+      <div class="type-row"><p class="t-h1">A top family <em>resort.</em></p><p class="spec"><strong>Heading 1</strong>Libre Caslon Text 400, 81px, line 1.06. Emphasis in italic.</p></div>
+      <div class="type-row"><p class="t-h2">Take a <em>look around</em></p><p class="spec"><strong>Heading 2</strong>Libre Caslon Text 400, 54px, line 1.12</p></div>
+      <div class="type-row"><p class="t-h3">Rooms, pools and restaurants</p><p class="spec"><strong>Heading 3</strong>Libre Caslon Text 400, 27px (cards 29 to 36px)</p></div>
+      <div class="type-row"><p class="t-cap">Themed weekend · From $207 a night</p><p class="spec"><strong>Captions, prices, signatures</strong>Libre Caslon Text italic, 20 to 24px</p></div>
+      <div class="type-row"><p class="t-lead">The freedom you came for, without giving up the holiday.</p><p class="spec"><strong>Lead</strong>Jost 400, 21px, line 1.6</p></div>
+      <div class="type-row"><p>Villa rooms, three places to eat, two heated pools, a 50-acre lake and 300 acres to wander, 30 minutes from Disney.</p><p class="spec"><strong>Body</strong>Jost 400, 19px, line 1.6. Navigation Jost 500, 18px.</p></div>
+    </div>
+  </section>
+
+  <section class="notes-block" aria-labelledby="n-buttons">
+    <h2 id="n-buttons">Buttons</h2>
+    <div class="button-rows">
+      <div class="button-panel">
+        <div class="actions"><a class="button button-primary" href="#">Book Now</a><a class="button button-secondary" href="#">See the villas</a><a class="button button-text" href="#">View itinerary</a></div>
+        <p>On cream: primary, secondary, text link. Jost 600, 18px, 52px tall, square corners.</p>
+      </div>
+      <div class="button-panel section-hero">
+        <div class="actions"><a class="button button-primary" href="#">Book Now</a><a class="button button-secondary" href="#">Plan your first visit</a><a class="button button-text" href="#">View itinerary</a></div>
+        <p>On green: the main action turns gold, the second is a cream outline.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes-block" aria-labelledby="n-details">
+    <h2 id="n-details">Details</h2>
+    <div>
+      <ul class="icons" aria-label="Icon samples"><li><span class="icon" style="--a-ico:var(--a-ico-bed)"></span></li><li><span class="icon" style="--a-ico:var(--a-ico-palm)"></span></li><li><span class="icon" style="--a-ico:var(--a-ico-sun)"></span></li><li><span class="icon" style="--a-ico:var(--a-ico-shield)"></span></li><li><span class="icon" style="--a-ico:var(--a-ico-check)"></span></li></ul>
+      <p style="margin-top:var(--space-4);max-width:44rem;color:var(--color-muted)">Line icons in one weight, always beside a text label. Square corners, 1px gold hairlines, straight cards on a straight grid. Photos are graded slightly warm and muted in the browser, so the raw files stay untouched.</p>
+    </div>
+  </section>
+
+  <p class="notes-foot"><a class="button button-primary" href="index.html">Open the homepage</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>Concept B · House Colours · design notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600&family=Ovo&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .notes { padding-block: 96px 120px; }
+  .notes-top {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: var(--gutter);
+    align-items: end;
+    margin-bottom: 72px;
+  }
+  .notes-top h1 { grid-column: 1 / span 7; font-size: 84px; line-height: 1.03; letter-spacing: -0.02em; }
+  .notes-top p { grid-column: 9 / span 4; font-size: 19px; padding-bottom: 12px; }
+  .notes h2 { font-size: 44px; margin-bottom: 28px; }
+  .block { padding-top: 56px; margin-top: 72px; border-top: 1px solid var(--line-strong); }
+
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .swatch { min-height: 250px; padding: 30px 32px 34px; display: flex; flex-direction: column; }
+  .swatch:first-child { padding-left: 40px; }
+  .swatch h3 { font-size: 29px; margin-bottom: 6px; }
+  .swatch code { font: 600 16px/1.4 var(--text); letter-spacing: 0.04em; }
+  .swatch p { margin-top: auto; font-size: 16px; line-height: 1.5; }
+  .base { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 0; }
+  .base .swatch { min-height: 190px; }
+  .sw-green { background: var(--green); color: var(--cream); }
+  .sw-cream { background: var(--cream); border: 1px solid var(--line-strong); border-top: 0; }
+  .sw-white { background: var(--white); border: 1px solid var(--line-strong); border-top: 0; border-left: 0; }
+
+  .type-rows { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: var(--gutter); row-gap: 40px; align-items: baseline; }
+  .type-rows dt { grid-column: 1 / span 3; font-size: 16px; line-height: 1.5; }
+  .type-rows dt strong { display: block; font-weight: 600; font-size: 18px; }
+  .type-rows dd { grid-column: 4 / span 9; }
+  .t-h1 { font: 400 94px/1.03 var(--display); letter-spacing: -0.02em; }
+  .t-h2 { font: 400 64px/1.06 var(--display); letter-spacing: -0.015em; }
+  .t-h3 { font: 400 30px/1.16 var(--display); }
+  .t-lead { font-size: 19px; max-width: 60ch; }
+  .t-body { font-size: 18px; max-width: 66ch; }
+  .t-small { font-size: 15px; font-weight: 500; }
+
+  .button-rows { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gutter); }
+  .button-cell { padding: 32px 32px 36px; background: var(--white); }
+  .button-cell.on-green { background: var(--green); color: var(--cream); }
+  .button-cell h3 { font-size: 26px; margin-bottom: 8px; }
+  .button-cell p { font-size: 16px; line-height: 1.5; margin-bottom: 24px; min-height: 120px; }
+  .button-cell .actions { flex-direction: column; align-items: flex-start; }
+
+  .why-list { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: var(--gutter); }
+  .why-list ol { grid-column: 4 / span 8; display: grid; row-gap: 18px; font-size: 20px; line-height: 1.55; list-style: none; padding: 0; }
+  .why-list h2 { grid-column: 1 / span 3; margin: 0; }
+  .why-list strong { font-weight: 600; }
+</style>
+</head>
+<body>
+<main class="notes wrap">
+
+  <div class="notes-top">
+    <h1>Concept B. House Colours.</h1>
+    <p>Island Colours: fun colours, premium type. Each building colour gets one job on the page, as each building has one colour on the grounds. Green is the path between them.</p>
+  </div>
+
+  <section aria-labelledby="n-palette">
+    <h2 id="n-palette">Palette</h2>
+    <div class="swatches">
+      <div class="swatch field-stay">
+        <h3>Villa yellow</h3>
+        <code>#F3DE95</code>
+        <p>Staying: rooms, villas, the campground. Menu: Stay.</p>
+      </div>
+      <div class="swatch field-play">
+        <h3>Lake blue</h3>
+        <code>#BCD9E1</code>
+        <p>Water and daytime: the lake, the pools, the grounds. Menu: Play.</p>
+      </div>
+      <div class="swatch field-events">
+        <h3>Clubhouse pink</h3>
+        <code>#F2C4BA</code>
+        <p>Evenings and events: live music, themed weekends. Menu: Events.</p>
+      </div>
+      <div class="swatch field-gate">
+        <h3>Gate sage</h3>
+        <code>#CFE2C8</code>
+        <p>The gate and the first visit: the rules, the steps, the questions. Menu: First Visit.</p>
+      </div>
+    </div>
+    <div class="base">
+      <div class="swatch sw-green">
+        <h3>Cypress green</h3>
+        <code>#1B4636</code>
+        <p>The base: all text, every button, the offer band and the footer. Hover #12332A.</p>
+      </div>
+      <div class="swatch sw-cream">
+        <h3>Cream</h3>
+        <code>#FBF7EE</code>
+        <p>The page.</p>
+      </div>
+      <div class="swatch sw-white">
+        <h3>White</h3>
+        <code>#FFFFFF</code>
+        <p>Cards on cream and on colour: reviews, questions.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="n-type">
+    <h2 id="n-type">Type</h2>
+    <dl class="type-rows">
+      <dt><strong>Heading 1</strong>Ovo Regular, 94px, line 1.03</dt>
+      <dd class="t-h1">A top family resort.</dd>
+      <dt><strong>Heading 2</strong>Ovo Regular, 64px, line 1.06 (the opening statement runs at 72px)</dt>
+      <dd class="t-h2">Ways to stay</dd>
+      <dt><strong>Heading 3</strong>Ovo Regular, 29 to 38px, line 1.16</dt>
+      <dd class="t-h3">Villas and rooms</dd>
+      <dt><strong>Lead</strong>Kumbh Sans Regular, 19px, line 1.6</dt>
+      <dd class="t-lead">Two ways to sleep on the resort. Published 2026 rates, before tax; full details on each page.</dd>
+      <dt><strong>Body</strong>Kumbh Sans Regular, 18px, line 1.6. Semibold 600 for rates and links.</dt>
+      <dd class="t-body">Palm walks, free boats on the lake, golf, pickleball, tennis and a spa. Enough space that it never feels crowded.</dd>
+      <dt><strong>Small</strong>Kumbh Sans Medium, 15px. Labels: Semibold 13px, capitals.</dt>
+      <dd class="t-small">4.7 on Tripadvisor, from 797 reviews &nbsp; <span class="tag">Themed weekend</span></dd>
+    </dl>
+  </section>
+
+  <section class="block" aria-labelledby="n-buttons">
+    <h2 id="n-buttons">Buttons</h2>
+    <div class="button-rows">
+      <div class="button-cell">
+        <h3>Primary</h3>
+        <p>Solid cypress green, cream text, square, 58px tall. Book Now and the one main action per screen.</p>
+        <a class="btn btn-solid" href="#">Book Now</a>
+      </div>
+      <div class="button-cell">
+        <h3>Secondary</h3>
+        <p>Green outline 1.5px, fills green on hover. The second choice beside a primary.</p>
+        <a class="btn btn-outline" href="#">Plan your first visit</a>
+      </div>
+      <div class="button-cell">
+        <h3>Text link</h3>
+        <p>Semibold, underlined; the underline thickens on hover. An arrow where the link leads to a detail page.</p>
+        <a class="link link-arrow" href="#">View itinerary<svg aria-hidden="true" viewBox="0 0 20 12"><path d="M0 6h18M13 1l5 5-5 5"/></svg></a>
+      </div>
+      <div class="button-cell on-green">
+        <h3>On green</h3>
+        <p>Cream solid as the primary, cream outline as the secondary. Used on the offer band, the last question card and the footer.</p>
+        <div class="actions">
+          <a class="btn btn-cream" href="#">See how it works</a>
+          <a class="btn btn-outline-cream" href="#">Call (888) 683-3140</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block why-list" aria-labelledby="n-why">
+    <h2 id="n-why">Why it works</h2>
+    <ol>
+      <li><strong>Fun and festive comes from colour.</strong> The four soft building colours arrive as a row on the first screen, then each owns one part of the page: yellow for staying, blue for the lake and the pools, pink for the evenings, sage for the first visit.</li>
+      <li><strong>Premium comes from type and space.</strong> Ovo, a calm classical serif, set large and upright with no playful emphasis; wide margins, square edges, big photographs, one idea per screen.</li>
+      <li><strong>It stays clear of "summer camp".</strong> The colours are soft and blended, and a colour never appears as decoration. After the opening row, colour arrives one field at a time; only the couples and families pair sets two side by side.</li>
+      <li><strong>It is a Key West resort.</strong> The colours are the ones the resort painted on its buildings in 2026, so the site and the grounds match the day a guest arrives.</li>
+    </ol>
+  </section>
+
+</main>
+</body>
+</html>

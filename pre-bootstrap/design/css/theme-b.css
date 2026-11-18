@@ -1,0 +1,20 @@
+/* Concept B: "Island Colours".
+   Fun colours, premium type. Stub only: no values yet.
+   Tokens to override: --color-bg, --color-surface, --color-text, --color-muted,
+   --color-primary, --color-on-primary, --color-accent, --color-border, --color-logo,
+   --font-heading, --font-body, --space-1 ... --space-7, --radius, --container. */
+
+[data-theme="b"] {
+  /* --color-bg: ; */
+  /* --color-surface: ; */
+  /* --color-text: ; */
+  /* --color-muted: ; */
+  /* --color-primary: ; */
+  /* --color-on-primary: ; */
+  /* --color-accent: ; */
+  /* --color-border: ; */
+  /* --color-logo: ; */
+  /* --font-heading: ; */
+  /* --font-body: ; */
+  /* --radius: ; */
+}
