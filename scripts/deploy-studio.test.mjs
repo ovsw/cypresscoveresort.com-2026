@@ -116,8 +116,10 @@ test("deployment cannot skip the build with extra CLI arguments", (t) => {
 
 test("the first deployment runs without an app ID only when asked for", (t) => {
   const production = "SANITY_STUDIO_PREVIEW_URL=https://example.com\n";
+  const local = "SANITY_AUTH_TOKEN=test-token\nSANITY_STUDIO_HOSTNAME=new-site\n";
   const first = deploy(t, {
     production,
+    local,
     args: ["--first"],
     inherited: { SANITY_STUDIO_APP_ID: "inherited-app" },
   });
@@ -125,8 +127,17 @@ test("the first deployment runs without an app ID only when asked for", (t) => {
   const lines = first.stdout.trim().split("\n");
   const run = JSON.parse(lines.find((line) => line.startsWith("{")));
   assert.equal(run.appId, undefined);
+  assert.deepEqual(run.args, ["exec", "sanity", "deploy", "--schema-required", "--url", "new-site"]);
   assert.equal(run.preview, "https://example.com");
   assert.match(first.stdout, /SANITY_STUDIO_APP_ID in studio\/\.env\.production/);
+
+  const noHostname = deploy(t, {
+    production,
+    local: "SANITY_AUTH_TOKEN=test-token\n",
+    args: ["--first"],
+  });
+  assert.equal(noHostname.status, 1);
+  assert.match(noHostname.stderr, /SANITY_STUDIO_HOSTNAME/);
 
   const missing = deploy(t, { production });
   assert.equal(missing.status, 1);

@@ -12,9 +12,16 @@ This version has breaking changes — APIs, conventions, and file structure may 
 Resort (cypresscoveresort.com), bootstrapped from the OVS Next.js + Sanity
 Starter on 2026-11-18.
 
-- Website: Next.js in `frontend/`. Studio: Sanity Studio in `studio/`.
-- Sanity project `<projectId>` ("cypresscoveresort.com-2026"), dataset
-  `production`. Studio hostname `cypresscoveresort`.
+- Website: Next.js in `frontend/`. Vercel project `cypresscoveresort-com-2026`
+  (team Studio ROVST), live at https://cypresscoveresort-com-2026.vercel.app
+  until launch. `NEXT_PUBLIC_SITE_ENV` is `staging` there, so search engines
+  stay out; set it to `production` at launch.
+- Studio: Sanity Studio in `studio/`, deployed at
+  `cypresscoveresort.sanity.studio`.
+- Sanity project `nti19jbz` ("cypresscoveresort.com-2026", organization
+  "Cypress Cove Resort"), dataset `production`. Default branch `main`.
+- The dataset holds the Starter sample content (`pnpm seed`). Remove it with
+  `pnpm unseed` before adding real content.
 - The styles, logo files and photos are placeholders from the Starter. Do not
   restyle them; the chosen design concept replaces them.
 - `pre-bootstrap/` holds the design round from before the code bootstrap (the

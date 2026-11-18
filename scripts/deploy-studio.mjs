@@ -68,7 +68,14 @@ try {
     NODE_ENV: "production",
   };
   if (first) delete env.SANITY_STUDIO_APP_ID;
-  const result = spawnSync("pnpm", ["exec", "sanity", "deploy", "--schema-required"], {
+  // A new Studio has no hostname yet; setup saved it as SANITY_STUDIO_HOSTNAME.
+  const studioHostname = first ? local.SANITY_STUDIO_HOSTNAME?.trim() : undefined;
+  if (first && !studioHostname) {
+    throw new Error("Set SANITY_STUDIO_HOSTNAME in studio/.env.local before the first deployment.");
+  }
+  const deployArgs = ["exec", "sanity", "deploy", "--schema-required"];
+  if (studioHostname) deployArgs.push("--url", studioHostname);
+  const result = spawnSync("pnpm", deployArgs, {
     cwd: studioDirectory,
     stdio: "inherit",
     env,
