@@ -126,6 +126,11 @@ describe("RichTextContent", () => {
     expect(screen.getByText("Keep this in mind.")).toBeInTheDocument();
   });
 
+  it("keeps the callout title out of the page's heading outline", () => {
+    render(<RichTextContent value={callout("Important", "Keep this in mind.")} />);
+    expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+  });
+
   it("renders title-only and body-only callouts", () => {
     const { rerender } = render(
       <RichTextContent value={callout("Important", null)} />,
