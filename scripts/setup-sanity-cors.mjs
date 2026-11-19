@@ -72,7 +72,13 @@ export async function setupSanityCors(env, fetcher = fetch, log = console.log) {
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  setupSanityCors(process.env).catch((error) => {
+  const run =
+    process.argv.length > 2
+      ? Promise.reject(
+          new Error("Usage: node scripts/setup-sanity-cors.mjs (takes no arguments)"),
+        )
+      : setupSanityCors(process.env);
+  run.catch((error) => {
     console.error(`CORS setup failed: ${error.message}`);
     process.exitCode = 1;
   });
