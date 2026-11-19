@@ -12,7 +12,8 @@
 import { createClient } from "@sanity/client";
 import { fileURLToPath } from "node:url";
 
-const EXPECTED_DATASET = "development";
+import { findUnrenderedSections } from "./unrendered-sections.mjs";
+
 const POSTS_PER_PAGE = 12;
 
 // process.loadEnvFile requires Node 20.12+ / 21.7+; fail with a clear message
@@ -24,18 +25,17 @@ if (typeof process.loadEnvFile !== "function") {
 process.loadEnvFile(fileURLToPath(new URL("../.env.local", import.meta.url)));
 const baseUrl = new URL(process.env.VERIFY_BASE_URL || "http://127.0.0.1:3000");
 
-if (process.env.NEXT_PUBLIC_SANITY_DATASET !== EXPECTED_DATASET) {
-  throw new Error(
-    `Refusing to query Sanity: NEXT_PUBLIC_SANITY_DATASET must equal ${EXPECTED_DATASET}.`,
-  );
-}
+// The check only reads published content, from the dataset the tested
+// server uses.
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
+if (!dataset) throw new Error("Missing NEXT_PUBLIC_SANITY_DATASET.");
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 if (!projectId) throw new Error("Missing NEXT_PUBLIC_SANITY_PROJECT_ID.");
 
 const client = createClient({
   apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-10-31",
-  dataset: "development",
+  dataset,
   perspective: "published",
   projectId,
   stega: false,
@@ -44,7 +44,10 @@ const client = createClient({
 });
 
 // These mirror the complete published queries used by generateStaticParams.
-const PAGES_SLUGS_QUERY = `*[_type == "page" && defined(slug)]{slug}`;
+const SECTIONS_PROJECTION = `"sections": coalesce(blocks[]{_key, _type}, [])`;
+const PAGES_SLUGS_QUERY = `*[_type == "page" && defined(slug)]{slug, ${SECTIONS_PROJECTION}}`;
+const HOME_SECTIONS_QUERY = `*[_id == "homePage" && _type == "homePage"][0]{${SECTIONS_PROJECTION}}`;
+const BLOG_SECTIONS_QUERY = `*[_id == "blogIndex"][0]{${SECTIONS_PROJECTION}}`;
 const POSTS_SLUGS_QUERY = `*[_type == "post" && defined(slug)]{slug}`;
 const PUBLISHED_POST_FILTER =
   `_type == "post" && defined(slug.current) && defined(publishedAt)`;
@@ -102,8 +105,10 @@ function findForbiddenMarkers(body) {
     .map(([label]) => label);
 }
 
-const [pages, posts, eligiblePostCount, rawCategories] = await Promise.all([
+const [pages, home, blogIndex, posts, eligiblePostCount, rawCategories] = await Promise.all([
   client.fetch(PAGES_SLUGS_QUERY),
+  client.fetch(HOME_SECTIONS_QUERY),
+  client.fetch(BLOG_SECTIONS_QUERY),
   client.fetch(POSTS_SLUGS_QUERY),
   client.fetch(ELIGIBLE_BLOG_POSTS_COUNT_QUERY),
   client.fetch(CATEGORY_STATIC_PARAMS_QUERY),
@@ -123,6 +128,16 @@ const postSlugs = new Set(
 );
 const categories = rawCategories.filter(categoryHasValidSlug);
 const knownRoutes = new Map([["/", "home"]]);
+
+// The Page Builder sections each route must draw, by route.
+const routeSections = new Map([
+  ["/", home?.sections ?? []],
+  ["/blog", blogIndex?.sections ?? []],
+]);
+for (const { slug, sections } of pages) {
+  const normalized = normalizeSlug(slug?.current);
+  if (normalized) routeSections.set(routeFromSlug(normalized), sections);
+}
 
 for (const slug of pageSlugs) knownRoutes.set(routeFromSlug(slug), "page");
 for (const slug of postSlugs) knownRoutes.set(`/blog${routeFromSlug(slug)}`, "post");
@@ -210,6 +225,13 @@ async function verifyRoute(path, family, expectedStatus) {
   }
 
   if (expectedStatus === 200) {
+    // A redirected route shows another page, with that page's sections.
+    const unrendered = response.redirected
+      ? []
+      : findUnrenderedSections(body, routeSections.get(path) ?? []);
+    if (unrendered.length) {
+      problems.push(`sections not shown: ${unrendered.join(", ")}`);
+    }
     if (!/<header\b[^>]*\bdata-visible="true"/i.test(body)) {
       problems.push("missing ready site header");
     }
@@ -235,7 +257,7 @@ if (failures.length) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exitCode = 1;
 } else {
-  console.log(`PASS: ${knownRoutes.size} known routes returned 200 with real header/footer HTML, no Scaffold sections, and no route/layout fallback markers.`);
+  console.log(`PASS: ${knownRoutes.size} known routes returned 200 with real header/footer HTML, no Scaffold sections, no section that draws nothing, and no route/layout fallback markers.`);
   console.log(`PASS: ${unknownRoutes.size} unknown routes returned 404 with no route/layout fallback markers.`);
   console.log(
     `Route inventory: ${[...familyCounts].map(([family, count]) => `${family}=${count}`).join(", ")}.`,

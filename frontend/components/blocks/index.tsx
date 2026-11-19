@@ -117,7 +117,13 @@ export default function Blocks({
     const boundary = resolvedBoundaries.find(({ key }) => key === block._key);
 
     return (
-      <div data-sanity={dataSanity} key={block._key}>
+      // scripts/verify-no-skeleton.mjs reads `data-section-key` to find a
+      // published section that drew nothing.
+      <div
+        data-sanity={dataSanity}
+        data-section-key={block._key}
+        key={block._key}
+      >
         <Component {...block} {...editingProps} {...boundary} />
       </div>
     );
