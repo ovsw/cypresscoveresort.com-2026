@@ -131,8 +131,8 @@ uses one.
 ## Before the first production deploy
 
 - Run `pnpm verify`.
-- Run `pnpm setup:sanity-cors`, then add every printed origin to the Sanity
-  project's CORS settings with credentials enabled.
+- Run `pnpm setup:sanity-cors` to add the Website and Studio origins to the
+  Sanity project's CORS settings.
 - Confirm the Vercel root directory is `frontend`.
 - Confirm the GitHub `Release gate` check is required on `main`.
 - Confirm the Studio hostname belongs to this copy of the Starter.

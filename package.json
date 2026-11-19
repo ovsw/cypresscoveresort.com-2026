@@ -9,7 +9,7 @@
     "setup:worktree": "node scripts/setup-worktree.mjs",
     "dev:worktree": "node scripts/dev-worktree.mjs",
     "dev:stop": "node scripts/dev-stop.mjs",
-    "setup:sanity-cors": "node --env-file=studio/.env.production scripts/setup-sanity-cors.mjs",
+    "setup:sanity-cors": "node --env-file-if-exists=studio/.env.local --env-file=studio/.env.production scripts/setup-sanity-cors.mjs",
     "page-builder:new": "node scripts/create-page-builder-block.mjs",
     "seed": "pnpm --dir studio seed",
     "unseed": "pnpm --dir studio unseed",
