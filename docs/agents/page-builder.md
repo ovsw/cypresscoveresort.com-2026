@@ -76,11 +76,35 @@ fields, and preview image (`--preview` below). The shared `theme` field is
 colour, not a design.
 See `docs/adr/0001-one-section-one-design.md`.
 
-Never add a `layout`, `variant`, `style`, `design`, `look`, or `appearance`
-field to a section, and never add a `hidden` rule keyed on a design. An
-exception needs Ovi's express approval before the work starts.
+The only setting that may change how a section looks is `theme`. Never add a
+`layout`, `variant`, `style`, `design`, `look`, or `appearance` field to a
+section, nor a switch for image position, alignment, column count, reversed
+order, orientation or size, whatever its name. Never add a `hidden` rule keyed
+on a design. An exception needs Ovi's express approval before the work starts.
 `studio/schemas/blocks/one-section-one-design.test.mjs` fails when a section
-has such a field; an approved exception goes in its allow-list.
+has a field named like one of these; an approved exception goes in its
+allow-list.
+
+An optional field must not change the layout when it is left empty, such as
+an optional image that turns a two-column section into a text-only one. Make
+that field required, or build the text-only design as its own section.
+
+Two reasons stand behind the rule. Content editors are not designers: they
+choose content and the order of sections, and the code owns the design. And
+the catalogue thumbnail must show an editor what the section will look like
+on the page; a thumbnail shows one layout, so it cannot stand for several.
+
+## Keep the section library list current
+
+`docs/content-model.md`, "Section library", is the text list of every section
+an editor can insert: its `_type`, what it is for, and when to use it. Agents
+that edit content for a client get this list and never read the code, so it
+must match the code. Whenever you add, remove, rename, or change a section
+(its fields, its purpose, or where it may be used), update its entry in the
+same change. `studio/schemas/blocks/section-library.test.mjs` fails when the
+list and the scope lists in `studio/schemas/blocks/page-builder.ts` name
+different sections. It cannot check that an entry's text is still true; that
+is on you.
 
 ## One ask at a time
 
@@ -108,6 +132,8 @@ files and serializes generator runs with `.page-builder-generator.lock`.
 Remove that empty lock directory only after confirming its process has stopped.
 
 Replace the generated fields with the real content model, then run TypeGen.
+Add the section to the "Section library" list in `docs/content-model.md`; the
+generator does not.
 Keep the `page-builder-generator:*` markers at their registration points.
 
 A generated section already follows the section theme and boundary contract
@@ -128,6 +154,7 @@ For a manual addition, preserve the mirrored folder structure:
 7. Create its React renderer in `frontend/components/blocks/` and register it in the `componentMap` in `frontend/components/blocks/index.tsx`.
 8. Add its field-editing type and its empty-content rule to `isRenderableBlock` in the same file. Follow the section theme and boundary contract below.
 9. Run TypeGen. Do not edit `studio/schema.json` or `frontend/sanity.types.ts` by hand.
+10. Add the section to the "Section library" list in `docs/content-model.md`.
 
 ## Section themes and boundaries
 
@@ -246,7 +273,7 @@ Trace the whole vertical slice before editing:
 - Generated types: `frontend/sanity.types.ts`
 - React rendering: `frontend/components/blocks/`
 
-When a field is added, renamed, or removed, update the schema and projection together, regenerate types, and consider whether existing Sanity documents need compatibility handling or a migration.
+When a field is added, renamed, or removed, update the section's entry in the "Section library" list in `docs/content-model.md` if it no longer describes the section. Update the schema and projection together, regenerate types, and consider whether existing Sanity documents need compatibility handling or a migration.
 
 For visual changes, treat the existing design system as the default:
 
@@ -265,6 +292,7 @@ For visual changes, treat the existing design system as the default:
 - Studio validates the same condition the renderer tests before it draws (see [A Section never hides silently](#a-section-never-hides-silently)).
 - The section uses only job tokens for colour (see [Colour](#colour)).
 - The section has its own preview image in the Studio catalogue.
+- The "Section library" list in `docs/content-model.md` has a current entry for the section.
 - The Studio preview and frontend renderer work with realistic content.
 - Generated files are current and are not manually edited.
 - Browser-free repository verification passes:
