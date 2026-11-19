@@ -118,10 +118,12 @@ pnpm unseed
 
 Unseed removes only marked Starter sample documents and the bundled Starter sample assets. Replacement images uploaded by editors are preserved. It refuses partial or unmarked targets instead of emptying a dataset generally.
 
-The section library is minimal on purpose: a Rich Text section and a Scaffold
-placeholder. Each project copy adds its own sections with
+The Starter shipped a minimal section library: a Rich Text section and a
+Scaffold placeholder. This project adds its own sections with
 `pnpm page-builder:new <name>`; see `docs/agents/page-builder.md` for
-generation, previews, registration, and the Scaffold workflow.
+generation, previews, registration, and the Scaffold workflow. The current
+list of sections, with what each one is for, is in `docs/content-model.md`
+under "Section library".
 
 Pages accept nested slugs such as `about/our-team`. Blog routes stay reserved.
 SEO sharing always uses a generated branded card. The selected sharing photo

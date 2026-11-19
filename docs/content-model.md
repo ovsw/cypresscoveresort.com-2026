@@ -22,16 +22,27 @@ The Website reads structured content from one Sanity project and dataset.
 
 ## Section library
 
-The Starter ships two sections and presumes no design:
+This is the text list of every section an editor can insert on a page. Agents
+that edit content get this list, so keep it current: update it in the same
+change that adds, removes, renames, or changes a section.
+`studio/schemas/blocks/section-library.test.mjs` fails when it names different
+sections than `studio/schemas/blocks/page-builder.ts`.
 
-- `richTextBlock` is a finished long-form section and a valid final match for a
-  Scaffold.
-- `scaffold` is a placeholder with `name`, `richText`, and
+Each entry starts with the section's `_type`. Every section has one design;
+the only look setting is `theme` (Light or Dark background) where a section
+has one.
+
+- `richTextBlock` (Rich Text). Long-form editorial content with an optional
+  label, heading and introduction. Use it for running text, and as a valid
+  final match for a Scaffold. Available on every page.
+- `scaffold` (Scaffold). A placeholder with `name`, `richText`, and
   `proposedSectionShape`. It renders its rich text with a visible internal
-  marker so nobody mistakes it for a finished section.
+  marker so nobody mistakes it for a finished section, and a published page
+  must not contain one. Use it only while drafting a page. Available on every
+  page.
 
-Every other section belongs to its own project copy. Generate one with
-`pnpm page-builder:new`.
+The Starter shipped these two and presumes no design. Every other section
+belongs to this project. Generate one with `pnpm page-builder:new`.
 
 ## Page Builder path
 

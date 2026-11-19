@@ -2,7 +2,9 @@
 // Builder section never changes its design through a field. This test walks
 // every section type in the extracted schema (studio/schema.json, which
 // `pnpm verify:typegen` keeps current) and fails on any field, at any depth,
-// whose name says layout, variant, style, design, look, or appearance.
+// whose name says layout, variant, style, design, look, or appearance, or names
+// a layout switch (position, alignment, columns, reverse, orientation). A
+// content field caught by mistake (a job "position") gets a clearer name.
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -20,6 +22,13 @@ const designWords = new Set([
   "design",
   "look",
   "appearance",
+  "position",
+  "align",
+  "alignment",
+  "column",
+  "reverse",
+  "reversed",
+  "orientation",
 ]);
 
 // Fields Ovi has approved in writing, as "<section>.<field path>". Keep empty

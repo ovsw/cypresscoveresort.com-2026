@@ -2,7 +2,7 @@
 
 These parts of the Website adapt Shadcnblocks layouts to Sanity content and Next.js links and images. They retain safe link checks, accessible controls, and Sanity field editing. They are adaptations, not unmodified registry files.
 
-The Page Builder section library is not listed here. The Starter ships only Rich Text and Scaffold, and each project copy adds its own sections.
+The Page Builder section library is not listed here. See "Section library" in `docs/content-model.md`.
 
 | Website part                   | Shadcnblocks source                                       |
 | ------------------------------ | --------------------------------------------------------- |

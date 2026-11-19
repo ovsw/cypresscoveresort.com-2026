@@ -91,6 +91,34 @@ This repository uses a single-context domain-doc layout. See `docs/agents/domain
 
 Before adding or changing a Page Builder section, read `docs/agents/page-builder.md`.
 
+**One section, one design.** A section has exactly one layout. The only
+setting that may change how it looks is the shared `theme` field (its
+background colour: Light or Dark). Never add any other field that changes a
+section's look: no `layout`, `variant`, `style`, `design` or `appearance`
+field, and no image-position, alignment, column-count, "reverse" or size
+switch either, whatever its name. Never add a `hidden` rule keyed on a design.
+A second design is a second section with its own `_type`, fields and preview
+thumbnail.
+
+Why:
+
+- Content editors are not designers. They choose content and the order of
+  sections; the code owns the design.
+- The catalogue thumbnail must tell an editor exactly what the section will
+  look like on the page. A thumbnail shows one layout, so a section with
+  several layouts makes its thumbnail a lie.
+
+An exception needs Ovi's express approval before the work starts. See
+`docs/adr/0001-one-section-one-design.md`;
+`studio/schemas/blocks/one-section-one-design.test.mjs` enforces the field
+names.
+
+**Keep the section library list current.** `docs/content-model.md`, "Section
+library", is the text list of sections that content-editing agents are given.
+Whenever you add, remove, rename, or change a section, update its entry in the
+same change. `studio/schemas/blocks/section-library.test.mjs` fails when the
+list and the code name different sections.
+
 ### Development workflow
 
 Before changing workspace dependencies, Sanity schemas, GROQ queries, or development scripts, consult the relevant section of `README.md`.
