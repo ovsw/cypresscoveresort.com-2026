@@ -230,9 +230,14 @@ async function verifyRoute(path, family, expectedStatus) {
 
   if (expectedStatus === 200) {
     // A redirected route shows another page, with that page's sections.
-    const unrendered = response.redirected
-      ? []
-      : findUnrenderedSections(body, routeSections.get(path) ?? []);
+    // Only the home, blog and page handlers draw Page Builder sections. A
+    // page whose slug collides with a post or category route is not served
+    // there, so its sections are not expected.
+    const drawsSections = ["home", "blog", "page"].includes(family);
+    const unrendered =
+      response.redirected || !drawsSections
+        ? []
+        : findUnrenderedSections(body, routeSections.get(path) ?? []);
     if (unrendered.length) {
       problems.push(`sections not shown: ${unrendered.join(", ")}`);
     }
