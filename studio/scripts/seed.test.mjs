@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
+  RETIRED_STARTER_DOCUMENT_IDS,
   STARTER_ASSETS,
   STARTER_DOCUMENT_TYPES,
   STARTER_IMAGE_ASSET_ID,
@@ -97,6 +98,8 @@ test("unseed deletes marked starter IDs and preserves unrelated documents", asyn
   });
   assert.deepEqual(deletedIds, [
     ...STARTER_DOCUMENT_TYPES.keys(),
+    // Sample documents of removed types, left behind by an older seed.
+    ...RETIRED_STARTER_DOCUMENT_IDS,
     ...STARTER_ASSETS.map((asset) => asset.id),
   ]);
   assert.equal(deletedIds.includes("unrelated-document"), false);
