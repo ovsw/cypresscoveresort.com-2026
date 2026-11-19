@@ -118,9 +118,12 @@ export const STARTER_DOCUMENT_TYPES = new Map([
 // Sample documents of types this project removed. An older seed may have
 // left them in the dataset, so unseed deletes the ones it finds, after
 // checking they carry the seed's marker.
+const RETIRED_STARTER_DOCUMENT_TYPES = new Map([
+  ["starter-author-editor", "author"],
+  ["starter-team-member-editor", "teamMember"],
+]);
 export const RETIRED_STARTER_DOCUMENT_IDS = [
-  "starter-author-editor",
-  "starter-team-member-editor",
+  ...RETIRED_STARTER_DOCUMENT_TYPES.keys(),
 ];
 
 const marker = {
@@ -511,12 +514,9 @@ function hasStarterMarker(document) {
 }
 
 function assertOwnedDocument(document) {
-  // A retired document's type is gone from the schema, so only its marker
-  // can say the seed created it.
-  if (RETIRED_STARTER_DOCUMENT_IDS.includes(document?._id)) {
-    return hasStarterMarker(document);
-  }
-  const expectedType = STARTER_DOCUMENT_TYPES.get(document?._id);
+  const expectedType =
+    STARTER_DOCUMENT_TYPES.get(document?._id) ??
+    RETIRED_STARTER_DOCUMENT_TYPES.get(document?._id);
   if (!expectedType || document._type !== expectedType) return false;
   return hasStarterMarker(document);
 }

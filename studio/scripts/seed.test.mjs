@@ -178,9 +178,9 @@ test("homepage seed demonstrates a seam and a straight edge", () => {
   assert.ok(joins.some((join) => !join.match));
 });
 
-const retiredDocument = (marker) => ({
+const retiredDocument = (marker, _type = "author") => ({
   _id: RETIRED_STARTER_DOCUMENT_IDS[0],
-  _type: "author",
+  _type,
   _starterSeed: marker,
 });
 
@@ -206,5 +206,15 @@ test("unseed refuses when a removed type's document is not marked as seed conten
     unseed(client),
     new RegExp(`not marked as Starter seed content: ${RETIRED_STARTER_DOCUMENT_IDS[0]}`),
   );
+  assert.equal(client.calls.commits.length, 0);
+});
+
+test("unseed refuses when a removed type's ID holds a document of another type", async () => {
+  const marker = starterDocuments[0]._starterSeed;
+  const client = createFakeClient({
+    documents: [...starterDocuments, retiredDocument(marker, "page")],
+  });
+
+  await assert.rejects(unseed(client), /not marked as Starter seed content/);
   assert.equal(client.calls.commits.length, 0);
 });

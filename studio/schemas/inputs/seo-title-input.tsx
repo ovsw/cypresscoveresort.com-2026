@@ -7,7 +7,10 @@ import {
 import { studioSiteName } from "../../site-name";
 
 export function SeoTitleInput(props: StringInputProps) {
-  const documentTitle = useFormValue(["title"]);
+  // Events, products and venues are named with `name`, not `title`.
+  const title = useFormValue(["title"]);
+  const name = useFormValue(["name"]);
+  const documentTitle = title ?? name;
   const fallbackTitle =
     typeof documentTitle === "string" ? documentTitle : undefined;
   const overrideTitle =
