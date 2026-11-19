@@ -67,6 +67,12 @@ blocks publishing.
 - The only exception is data that the editor does not control, such as no
   posts yet or a reference to a hidden page.
 
+Studio validation does not run on content written through the API. The launch
+check covers that: `frontend/scripts/verify-no-skeleton.mjs` fails when a
+published page holds a section that drew nothing or has no renderer. It finds
+each section by the `data-section-key` attribute the Page Builder puts on the
+section's wrapper.
+
 ## One section, one design
 
 A section is one entry in the Page Builder catalogue: one `_type`, one
