@@ -101,7 +101,7 @@ export function HeaderNavigation({
 export function Header({ model }: { model: HeaderModel }) {
   const [open, setOpen] = useState(false);
   return (
-    <header className="border-b py-4">
+    <header className="border-b py-4" data-header-state="ready">
       <div className="container">
         <div className="hidden items-center justify-between gap-6 lg:flex">
           <Link
