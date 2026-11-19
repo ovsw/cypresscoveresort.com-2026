@@ -72,12 +72,31 @@ export function uniqueSlug(label: string) {
  */
 export const slugIsUnique = () => true;
 
+/**
+ * A date that exists on the calendar. A value written through the API can
+ * hold "2030-02-30", which JavaScript would silently roll into March.
+ */
+export function isRealDate(value: string) {
+  const date = new Date(`${value}T00:00:00Z`);
+  return (
+    /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+    !Number.isNaN(date.getTime()) &&
+    date.toISOString().slice(0, 10) === value
+  );
+}
+
+export function realDate(value: string | undefined) {
+  return !value || isRealDate(value) ? true : "Use a date that exists on the calendar";
+}
+
 /** An end date that is not before the document's `startDate`. */
 export function notBeforeStartDate(
   value: string | undefined,
   context: ValidationContext,
 ) {
   const start = context.document?.startDate;
-  if (!value || typeof start !== "string") return true;
+  if (!value) return true;
+  if (!isRealDate(value)) return "Use a date that exists on the calendar";
+  if (typeof start !== "string") return true;
   return value < start ? "The end date cannot be before the start date" : true;
 }

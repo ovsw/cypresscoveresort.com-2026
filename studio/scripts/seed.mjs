@@ -116,7 +116,8 @@ export const STARTER_DOCUMENT_TYPES = new Map([
 ]);
 
 // Sample documents of types this project removed. An older seed may have
-// left them in the dataset, so unseed still deletes them.
+// left them in the dataset, so unseed deletes the ones it finds, after
+// checking they carry the seed's marker.
 export const RETIRED_STARTER_DOCUMENT_IDS = [
   "starter-author-editor",
   "starter-team-member-editor",
@@ -502,18 +503,27 @@ async function assertDatasetIsEmpty(client) {
   }
 }
 
-function assertOwnedDocument(document) {
-  const expectedType = STARTER_DOCUMENT_TYPES.get(document?._id);
-  if (!expectedType || document._type !== expectedType) return false;
+function hasStarterMarker(document) {
   return (
     document._starterSeed?.name === STARTER_SEED.name &&
     document._starterSeed?.version === STARTER_SEED.version
   );
 }
 
+function assertOwnedDocument(document) {
+  // A retired document's type is gone from the schema, so only its marker
+  // can say the seed created it.
+  if (RETIRED_STARTER_DOCUMENT_IDS.includes(document?._id)) {
+    return hasStarterMarker(document);
+  }
+  const expectedType = STARTER_DOCUMENT_TYPES.get(document?._id);
+  if (!expectedType || document._type !== expectedType) return false;
+  return hasStarterMarker(document);
+}
+
 async function getStarterDocuments(client) {
   return client.fetch("*[_id in $ids]{_id,_type,_starterSeed}", {
-    ids: [...STARTER_DOCUMENT_TYPES.keys()],
+    ids: [...STARTER_DOCUMENT_TYPES.keys(), ...RETIRED_STARTER_DOCUMENT_IDS],
   });
 }
 
@@ -534,6 +544,8 @@ async function assertOwnedSeedSet(client) {
       `Unseed refused: these IDs are not marked as Starter seed content: ${unsafe.map((document) => document._id).join(", ")}.`,
     );
   }
+  // The retired documents an older seed left behind, each checked above.
+  return RETIRED_STARTER_DOCUMENT_IDS.filter((id) => foundIds.has(id));
 }
 
 export async function seed(client) {
@@ -558,13 +570,13 @@ export async function seed(client) {
 }
 
 export async function unseed(client) {
-  await assertOwnedSeedSet(client);
+  const retiredIds = await assertOwnedSeedSet(client);
   // Never delete replacement images uploaded by an editor.
   const assetIds = STARTER_ASSETS.map((asset) => asset.id);
   let transaction = client.transaction();
   for (const id of [
     ...STARTER_DOCUMENT_TYPES.keys(),
-    ...RETIRED_STARTER_DOCUMENT_IDS,
+    ...retiredIds,
     ...assetIds,
   ]) {
     transaction = transaction.delete(id);

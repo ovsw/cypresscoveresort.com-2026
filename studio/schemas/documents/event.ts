@@ -3,7 +3,12 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 import meta from "../blocks/shared/meta";
 import { photoField } from "../objects/shared-fields";
 import { requiredText } from "../validation/required-text";
-import { notBeforeStartDate, slugIsUnique, uniqueSlug } from "../validation/unique-value";
+import {
+  notBeforeStartDate,
+  realDate,
+  slugIsUnique,
+  uniqueSlug,
+} from "../validation/unique-value";
 
 export const EVENT_KINDS = [
   { title: "Themed weekend", value: "themedWeekend" },
@@ -128,7 +133,7 @@ const event = defineType({
       type: "date",
       group: "basics",
       description: "The first day of the event.",
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required().custom(realDate),
     }),
     defineField({
       name: "endDate",

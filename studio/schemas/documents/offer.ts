@@ -1,7 +1,7 @@
 import { BadgePercent } from "lucide-react";
 import { defineField, defineType } from "sanity";
 import { requiredText } from "../validation/required-text";
-import { notBeforeStartDate } from "../validation/unique-value";
+import { notBeforeStartDate, realDate } from "../validation/unique-value";
 
 export default defineType({
   name: "offer",
@@ -39,6 +39,7 @@ export default defineType({
       title: "Start date",
       type: "date",
       description: "Optional. The first day the offer is valid.",
+      validation: (rule) => rule.custom(realDate),
     }),
     defineField({
       name: "endDate",

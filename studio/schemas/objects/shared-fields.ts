@@ -8,6 +8,9 @@ const altField = defineField({
     "Describe the photo for screen readers. Leave empty if it is decorative or repeats nearby text.",
 });
 
+const hasAsset = (value: unknown) =>
+  Boolean((value as { asset?: { _ref?: string } } | undefined)?.asset?._ref);
+
 type FieldOptions = {
   name: string;
   title: string;
@@ -22,7 +25,14 @@ export function photoField({ required, ...field }: FieldOptions & { required?: b
     type: "image",
     options: { hotspot: true },
     fields: [altField],
-    validation: (rule) => (required ? rule.required() : rule),
+    // An image value can exist with alt text and no uploaded file, so
+    // "required" alone does not prove there is a photo.
+    validation: (rule) =>
+      required
+        ? rule.custom((value) =>
+            hasAsset(value) ? true : "Upload the photo.",
+          )
+        : rule,
   });
 }
 
@@ -36,6 +46,12 @@ export function photosField({ min = 0, ...field }: FieldOptions & { min?: number
         type: "image",
         options: { hotspot: true },
         fields: [altField],
+        validation: (rule) =>
+          rule.custom((value) =>
+            hasAsset(value)
+              ? true
+              : "Upload a photo, or remove this empty entry.",
+          ),
       }),
     ],
     options: { layout: "grid" },

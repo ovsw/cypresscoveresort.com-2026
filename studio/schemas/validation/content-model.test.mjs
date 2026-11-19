@@ -51,6 +51,36 @@ test("an event cannot end before it starts", async () => {
   );
 });
 
+test("dates must exist on the calendar", async () => {
+  assert.deepEqual(await errorPaths({ ...event, startDate: "2030-02-30" }), [
+    "startDate",
+  ]);
+  assert.deepEqual(
+    await errorPaths({ ...event, startDate: "2030-02-28", endDate: "2030-02-30" }),
+    ["endDate"],
+  );
+  assert.match(
+    (await errors({ _type: "specialsWeek", weekOf: "2030-02-30" })).weekOf,
+    /exists on the calendar/,
+  );
+});
+
+test("a photo entry without an uploaded file does not count as a photo", async () => {
+  const empty = { _type: "image", alt: "A room" };
+  assert.deepEqual(await errorPaths({ _type: "resortMap", image: empty }), [
+    "image",
+  ]);
+  assert.deepEqual(
+    await errorPaths({
+      _type: "accommodation",
+      kind: "villa",
+      name: "Example Room",
+      photos: [{ ...empty, _key: "photo" }],
+    }),
+    ["photos.[photo]"],
+  );
+});
+
 test("a single-day event needs no end date and may carry a time", async () => {
   assert.deepEqual(
     await errors({ ...event, kind: "liveMusic", time: "7 PM" }),

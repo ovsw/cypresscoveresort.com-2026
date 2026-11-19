@@ -1,6 +1,7 @@
 import { Mail } from "lucide-react";
 import { defineField, defineType } from "sanity";
 import { requiredText } from "../validation/required-text";
+import { realDate } from "../validation/unique-value";
 
 export default defineType({
   name: "newsletterIssue",
@@ -22,7 +23,7 @@ export default defineType({
       title: "Date",
       type: "date",
       description: "The day the issue went out.",
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required().custom(realDate),
     }),
     defineField({
       name: "url",

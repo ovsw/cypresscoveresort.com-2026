@@ -98,8 +98,6 @@ test("unseed deletes marked starter IDs and preserves unrelated documents", asyn
   });
   assert.deepEqual(deletedIds, [
     ...STARTER_DOCUMENT_TYPES.keys(),
-    // Sample documents of removed types, left behind by an older seed.
-    ...RETIRED_STARTER_DOCUMENT_IDS,
     ...STARTER_ASSETS.map((asset) => asset.id),
   ]);
   assert.equal(deletedIds.includes("unrelated-document"), false);
@@ -178,4 +176,35 @@ test("homepage seed demonstrates a seam and a straight edge", () => {
   }));
   assert.ok(joins.some((join) => join.match));
   assert.ok(joins.some((join) => !join.match));
+});
+
+const retiredDocument = (marker) => ({
+  _id: RETIRED_STARTER_DOCUMENT_IDS[0],
+  _type: "author",
+  _starterSeed: marker,
+});
+
+test("unseed also deletes a marked sample document of a removed type", async () => {
+  const marker = starterDocuments[0]._starterSeed;
+  const client = createFakeClient({
+    documents: [...starterDocuments, retiredDocument(marker)],
+  });
+  await unseed(client);
+  const deletedIds = client.calls.commits[0].map((operation) => operation.id);
+
+  assert.ok(deletedIds.includes(RETIRED_STARTER_DOCUMENT_IDS[0]));
+  // The other retired document is not in the dataset, so it is not touched.
+  assert.equal(deletedIds.includes(RETIRED_STARTER_DOCUMENT_IDS[1]), false);
+});
+
+test("unseed refuses when a removed type's document is not marked as seed content", async () => {
+  const client = createFakeClient({
+    documents: [...starterDocuments, retiredDocument(undefined)],
+  });
+
+  await assert.rejects(
+    unseed(client),
+    new RegExp(`not marked as Starter seed content: ${RETIRED_STARTER_DOCUMENT_IDS[0]}`),
+  );
+  assert.equal(client.calls.commits.length, 0);
 });

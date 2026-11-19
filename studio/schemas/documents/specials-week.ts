@@ -1,6 +1,6 @@
 import { Soup } from "lucide-react";
 import { defineField, defineType, type ValidationContext } from "sanity";
-import { uniqueValue } from "../validation/unique-value";
+import { isRealDate, uniqueValue } from "../validation/unique-value";
 import { WEEKDAYS } from "./weekly-schedule";
 
 const uniqueWeek = uniqueValue("weekOf", "specials week");
@@ -8,6 +8,7 @@ const uniqueWeek = uniqueValue("weekOf", "specials week");
 /** The week-of date is the Monday, so every week has exactly one record. */
 async function mondayOnce(value: string | undefined, context: ValidationContext) {
   if (!value) return true;
+  if (!isRealDate(value)) return "Use a date that exists on the calendar";
   if (new Date(`${value}T00:00:00Z`).getUTCDay() !== 1) {
     return "Pick the Monday that starts the week";
   }
