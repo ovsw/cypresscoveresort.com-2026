@@ -18,10 +18,11 @@ export default defineField({
       validation: (rule) =>
         rule
           .custom((value, context) => {
+            // Events, products and venues are named with `name`, not `title`.
+            const documentTitle =
+              context.document?.title ?? context.document?.name;
             const fallbackTitle =
-              typeof context.document?.title === "string"
-                ? context.document.title
-                : undefined;
+              typeof documentTitle === "string" ? documentTitle : undefined;
             const warnings = getSeoTitleWarnings({
               fallbackTitle,
               overrideTitle: value,

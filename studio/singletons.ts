@@ -4,6 +4,10 @@ export const singletonDocumentTypes = new Set([
   "blogIndex",
   "blogPostSettings",
   "homePage",
+  "weeklySchedule",
+  "todayStatus",
+  "resortMap",
+  "storeIndex",
 ]);
 
 export const singletonDocumentActions = new Set([

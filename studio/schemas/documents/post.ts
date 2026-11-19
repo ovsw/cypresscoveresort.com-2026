@@ -66,13 +66,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: "author",
-      title: "Author",
-      type: "reference",
-      group: "settings",
-      to: { type: "author" },
-    }),
-    defineField({
       name: "publishedAt",
       title: "Published At",
       type: "datetime",
