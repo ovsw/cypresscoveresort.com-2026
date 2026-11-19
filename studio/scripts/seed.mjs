@@ -109,13 +109,18 @@ export const STARTER_DOCUMENT_TYPES = new Map([
   ["blogIndex", "blogIndex"],
   ["blogPostSettings", "blogPostSettings"],
   ["starter-page-about", "page"],
-  ["starter-author-editor", "author"],
   ["starter-category-notes", "category"],
   ["starter-post-field-guide", "post"],
   ["starter-faq-getting-started", "faq"],
-  ["starter-team-member-editor", "teamMember"],
   ["starter-testimonial-reader", "testimonial"],
 ]);
+
+// Sample documents of types this project removed. An older seed may have
+// left them in the dataset, so unseed still deletes them.
+export const RETIRED_STARTER_DOCUMENT_IDS = [
+  "starter-author-editor",
+  "starter-team-member-editor",
+];
 
 const marker = {
   _starterSeed: STARTER_SEED,
@@ -143,14 +148,6 @@ export const starterDocuments = [
     ],
   },
   {
-    _id: "starter-author-editor",
-    _type: "author",
-    ...marker,
-    name: "Example Editor",
-    slug: slug("example-editor"),
-    image: placeholder("avatar"),
-  },
-  {
     _id: "starter-category-notes",
     _type: "category",
     ...marker,
@@ -172,21 +169,6 @@ export const starterDocuments = [
       "starter-faq-body",
       "It proves that reusable FAQ entries can be selected and rendered.",
     ),
-  },
-  {
-    _id: "starter-team-member-editor",
-    _type: "teamMember",
-    ...marker,
-    name: "Morgan Example",
-    role: "Content Editor",
-    email: "morgan@example.com",
-    phone: "+1 555 0101",
-    image: placeholder("avatar"),
-    bio: simpleText(
-      "starter-team-bio",
-      "Morgan is a neutral profile used to test team sections.",
-    ),
-    sortOrder: 1,
   },
   {
     _id: "starter-testimonial-reader",
@@ -274,14 +256,13 @@ export const starterDocuments = [
       "starter-post-excerpt",
       "A short neutral post that tests article lists, sidebars, and structured data.",
     ),
-    author: ref("starter-author-editor"),
     publishedAt: "2026-01-15T12:00:00.000Z",
     image: { ...imageRef, caption: "Neutral placeholder image." },
     category: ref("starter-category-notes"),
     body: [
       block(
         "starter-post-intro",
-        "This article proves blog post rendering, author metadata, category links, and the sidebar.",
+        "This article proves blog post rendering, category links, and the sidebar.",
       ),
       block("starter-post-heading", "What it covers", "h2"),
       block(
@@ -581,7 +562,11 @@ export async function unseed(client) {
   // Never delete replacement images uploaded by an editor.
   const assetIds = STARTER_ASSETS.map((asset) => asset.id);
   let transaction = client.transaction();
-  for (const id of [...STARTER_DOCUMENT_TYPES.keys(), ...assetIds]) {
+  for (const id of [
+    ...STARTER_DOCUMENT_TYPES.keys(),
+    ...RETIRED_STARTER_DOCUMENT_IDS,
+    ...assetIds,
+  ]) {
     transaction = transaction.delete(id);
   }
   await transaction.commit();

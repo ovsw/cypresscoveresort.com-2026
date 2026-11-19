@@ -110,7 +110,7 @@ The seed is manual. It never runs during install, setup, development, build, or 
 
 Seeding needs a Sanity write token in `SANITY_AUTH_TOKEN`, either in the shell or in `studio/.env.local`.
 
-The sample content creates global settings, navigation, footer, the homepage, a normal `/about/` page, Blog settings, authors, categories, a Blog Post, FAQ, Team Member, Testimonial, relevant SEO values, and every retained Page Builder section. The homepage shows one live Scaffold and the About page archives one, so a seeded dataset fails the launch check on purpose. Use it to confirm Website rendering and Studio editing, then remove it before adding real project content:
+The sample content creates global settings, navigation, footer, the homepage, a normal `/about/` page, Blog settings, categories, a Blog Post, FAQ, Testimonial, relevant SEO values, and every retained Page Builder section. The homepage shows one live Scaffold and the About page archives one, so a seeded dataset fails the launch check on purpose. Use it to confirm Website rendering and Studio editing, then remove it before adding real project content:
 
 ```bash
 pnpm unseed

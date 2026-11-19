@@ -31,6 +31,13 @@ export default defineType({
       description: "Optional role, company, or context shown with the quote.",
     }),
     defineField({
+      name: "source",
+      title: "Source",
+      type: "string",
+      description: "Optional. Where the quote was published or came from.",
+      placeholder: "e.g. Tripadvisor",
+    }),
+    defineField({
       name: "image",
       title: "Image",
       type: "image",

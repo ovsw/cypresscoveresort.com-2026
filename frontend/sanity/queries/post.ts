@@ -20,27 +20,6 @@ const POST_PROJECTION = groq`{
     body[]{
       ${richTextContentQuery}
     },
-    author->{
-      _id,
-      _type,
-      name,
-      image {
-        ...,
-        asset->{
-          _id,
-          url,
-          mimeType,
-          metadata {
-            lqip,
-            dimensions {
-              width,
-              height
-            }
-          }
-        },
-        alt
-      }
-    },
     category->{
       _id,
       _type,

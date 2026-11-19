@@ -1,4 +1,4 @@
-// Shadcnblocks blogpost1: centered post header, author row, and cover image.
+// Shadcnblocks blogpost1: centered post header and cover image.
 import { documentDataAttribute, PublicationDate } from "@/components/blog-card";
 import { urlFor } from "@/sanity/lib/image";
 import type { POST_QUERY_RESULT } from "@/sanity.types";
@@ -13,20 +13,8 @@ type PostHeroProps = {
   stega: boolean;
 };
 
-function getInitials(value: string | null | undefined) {
-  const name = stegaClean(value)?.trim();
-  if (!name) return "A";
-
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
-}
-
 export default function PostHero({ post, readTime, stega }: PostHeroProps) {
-  const { author, category, excerpt, image, publishedAt, title } = post;
+  const { category, excerpt, image, publishedAt, title } = post;
   const categorySlug = stegaClean(category?.slug?.current)?.replace(
     /^\/+|\/+$/g,
     "",
@@ -37,9 +25,6 @@ export default function PostHero({ post, readTime, stega }: PostHeroProps) {
     stega,
     type: "post",
   });
-  const authorDataAttribute = author
-    ? documentDataAttribute({ id: author._id, stega, type: "author" })
-    : undefined;
   const categoryDataAttribute = category
     ? documentDataAttribute({ id: category._id, stega, type: "category" })
     : undefined;
@@ -73,44 +58,6 @@ export default function PostHero({ post, readTime, stega }: PostHeroProps) {
             </p>
           ) : null}
           <div className="flex flex-col items-center gap-2 text-sm md:flex-row md:gap-4">
-            {author ? (
-              <p className="flex items-center gap-2">
-                {author.image?.asset?._id ? (
-                  <span data-sanity={authorDataAttribute?.("image")}>
-                    <Image
-                      alt={stegaClean(author.image.alt) || ""}
-                      blurDataURL={
-                        author.image.asset.metadata?.lqip || undefined
-                      }
-                      className="rounded-full border object-cover"
-                      height={40}
-                      placeholder={
-                        author.image.asset.metadata?.lqip ? "blur" : undefined
-                      }
-                      sizes="40px"
-                      src={urlFor(author.image)
-                        .width(80)
-                        .height(80)
-                        .quality(100)
-                        .url()}
-                      width={40}
-                    />
-                  </span>
-                ) : (
-                  <span
-                    aria-hidden="true"
-                    data-sanity={authorDataAttribute?.("image")}
-                  >
-                    {getInitials(author.name)}
-                  </span>
-                )}
-                {author.name ? (
-                  <span data-sanity={authorDataAttribute?.("name")}>
-                    {author.name}
-                  </span>
-                ) : null}
-              </p>
-            ) : null}
             <p className="flex items-center gap-2">
               <PublicationDate
                 dataAttribute={postDataAttribute}
