@@ -136,7 +136,11 @@ const routeSections = new Map([
 ]);
 for (const { slug, sections } of pages) {
   const normalized = normalizeSlug(slug?.current);
-  if (normalized) routeSections.set(routeFromSlug(normalized), sections);
+  if (!normalized) continue;
+  // The home and blog routes keep their own sections even if a page was
+  // given a slug that collides with them.
+  const route = routeFromSlug(normalized);
+  if (!routeSections.has(route)) routeSections.set(route, sections);
 }
 
 for (const slug of pageSlugs) knownRoutes.set(routeFromSlug(slug), "page");

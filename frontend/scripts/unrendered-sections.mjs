@@ -21,9 +21,11 @@ export function findUnrenderedSections(body, sections) {
     if (!wrapper.test(body)) {
       return [`${_type} (${_key}) has no renderer`];
     }
-    // React may leave comment markers inside an otherwise empty wrapper.
+    // React may leave comment markers inside an otherwise empty wrapper. A
+    // comment match must stop at its first "-->", or two markers around real
+    // content would read as one long comment.
     const emptyWrapper = new RegExp(
-      `<div\\b[^>]*\\sdata-section-key="${key}"[^>]*>(?:\\s|<!--[\\s\\S]*?-->)*</div>`,
+      `<div\\b[^>]*\\sdata-section-key="${key}"[^>]*>(?:\\s|<!--(?:(?!-->)[\\s\\S])*-->)*</div>`,
     );
     return emptyWrapper.test(body) ? [`${_type} (${_key}) drew nothing`] : [];
   });

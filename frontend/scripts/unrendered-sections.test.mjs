@@ -40,3 +40,9 @@ test("a key is matched whole, not as a prefix", () => {
     "richTextBlock (a1) has no renderer",
   ]);
 });
+
+test("content between two comment markers is content", () => {
+  const body =
+    '<div data-section-key="a1"><!--$--><section>One</section><!--/$--></div>';
+  assert.deepEqual(findUnrenderedSections(body, [sections[0]]), []);
+});
