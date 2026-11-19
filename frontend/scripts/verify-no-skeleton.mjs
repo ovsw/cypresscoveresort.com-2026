@@ -241,7 +241,10 @@ async function verifyRoute(path, family, expectedStatus) {
     if (unrendered.length) {
       problems.push(`sections not shown: ${unrendered.join(", ")}`);
     }
-    if (!/<header\b[^>]*\bdata-visible="true"/i.test(body)) {
+    // The real header and footer mark themselves "ready"; their fallbacks
+    // (components/header/index.tsx, components/footer/index.tsx) say
+    // "unavailable".
+    if (!/<header\b[^>]*\bdata-header-state="ready"/i.test(body)) {
       problems.push("missing ready site header");
     }
     if (!/aria-label="Main navigation"/i.test(body)) {
@@ -249,9 +252,6 @@ async function verifyRoute(path, family, expectedStatus) {
     }
     if (!/<footer\b[^>]*\bdata-footer-state="ready"/i.test(body)) {
       problems.push("missing ready site footer");
-    }
-    if (!/id="site-footer-heading"/i.test(body)) {
-      problems.push("missing real site footer content");
     }
   }
 
