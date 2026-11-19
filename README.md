@@ -47,7 +47,7 @@ pnpm dev
 - Website: `http://localhost:3000`
 - Studio: `http://localhost:3333`
 
-Before using Presentation, add the Website and Studio origins to your own Sanity project's CORS settings.
+Before using Presentation, run `pnpm setup:sanity-cors` to add the Website and Studio origins to your Sanity project's CORS settings.
 
 ### Parallel worktrees
 
@@ -89,9 +89,10 @@ servers with `pnpm dev:stop --here`.
 pnpm dev:worktree --detach
 ```
 
-Run `pnpm setup:sanity-cors` to print the allowed local origins and the
-production Website origin. Add them with credentials enabled in your project's
-Sanity CORS settings. This command does not change hosted settings.
+Run `pnpm setup:sanity-cors` to add the local origins and the production
+Website origin to your Sanity project's CORS settings, with credentials
+enabled. It uses `SANITY_AUTH_TOKEN` from `studio/.env.local`, adds only the
+missing origins, and leaves existing ones unchanged.
 
 On Linux, `pnpm dev:stop` lists this repository's development servers. Use
 `pnpm dev:stop --here` to stop the current worktree's servers, `--port 3001`
