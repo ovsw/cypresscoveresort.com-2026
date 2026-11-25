@@ -432,6 +432,29 @@ export function relumeSampleBlocks({ button, image }) {
         answer,
       })),
     },
+    {
+      _key: "relume-header83",
+      _type: "relumeHeader83",
+      theme: "light",
+      heading: "Header 83: Work worth a closer look",
+      description:
+        "Scroll to step back from a single photo and take in the whole collection, one project at a time.",
+      buttons: [
+        button("relume-header83-buttons-1", "See our work"),
+        button("relume-header83-buttons-2", "Get in touch"),
+      ],
+      images: [
+        { _key: "relume-header83-images-1", ...image("numbered-1") },
+        { _key: "relume-header83-images-2", ...image("numbered-2") },
+        { _key: "relume-header83-images-3", ...image("numbered-3") },
+        { _key: "relume-header83-images-4", ...image("numbered-4") },
+        { _key: "relume-header83-images-5", ...image("numbered-1") },
+        { _key: "relume-header83-images-6", ...image("numbered-2") },
+        { _key: "relume-header83-images-7", ...image("numbered-3") },
+        { _key: "relume-header83-images-8", ...image("numbered-4") },
+        { _key: "relume-header83-images-9", ...image("numbered-1") },
+      ],
+    },
     // relume-seed:blocks
   ];
 }

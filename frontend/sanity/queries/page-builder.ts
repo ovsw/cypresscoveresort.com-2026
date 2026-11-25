@@ -11,6 +11,7 @@ import { relumeLayout422Query } from "./relume/layout422";
 import { relumeLayout351Query } from "./relume/layout351";
 import { relumeLayout487Query } from "./relume/layout487";
 import { relumeFaq6Query } from "./relume/faq6";
+import { relumeHeader83Query } from "./relume/header83";
 // page-builder-generator:query-imports
 
 export const pageBuilderQuery = `
@@ -30,6 +31,7 @@ export const pageBuilderQuery = `
     ${relumeLayout351Query},
     ${relumeLayout487Query},
     ${relumeFaq6Query},
+    ${relumeHeader83Query},
     ${"" /* page-builder-generator:query-spreads */}
   }
 `;
