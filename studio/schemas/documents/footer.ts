@@ -55,11 +55,56 @@ const footer = defineType({
   icon: PanelBottom,
   fields: [
     defineField({
-      name: "intro",
-      title: "Introduction",
-      type: "text",
-      rows: 3,
-      description: "A short closing statement shown beside the site identity.",
+      name: "newsletter",
+      title: "Newsletter signup",
+      type: "object",
+      description:
+        "The signup row at the top of the footer. Leave the heading empty to hide the row.",
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({
+          name: "heading",
+          type: "string",
+          description: "The newsletter's name or a short invitation.",
+          placeholder: "e.g. The weekly bulletin",
+        }),
+        defineField({
+          name: "text",
+          type: "text",
+          rows: 2,
+          description: "One or two sentences on what subscribers get and how often.",
+          placeholder: "e.g. What's on this week, straight from the resort.",
+        }),
+        defineField({
+          name: "inputPlaceholder",
+          title: "Email field placeholder",
+          type: "string",
+          description: "Faint text inside the empty email field.",
+          placeholder: "e.g. Your email address",
+        }),
+        defineField({
+          name: "buttonLabel",
+          title: "Button label",
+          type: "string",
+          description: "The word on the submit button. Subscribe when empty.",
+          placeholder: "e.g. Subscribe",
+        }),
+        defineField({
+          name: "successMessage",
+          title: "Success message",
+          type: "string",
+          description: "Shown in place of the form after someone subscribes.",
+          placeholder: "e.g. You are on the list.",
+        }),
+        defineField({
+          name: "errorMessage",
+          title: "Error message",
+          type: "string",
+          description:
+            "Shown under the form when the signup could not be sent. Offer another way to subscribe.",
+          placeholder: "e.g. That did not send. Try again.",
+        }),
+      ],
     }),
     defineField({
       name: "columns",

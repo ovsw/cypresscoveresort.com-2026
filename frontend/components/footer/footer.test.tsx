@@ -1,7 +1,11 @@
 import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { SiteFooter } from "./site-footer";
 import type { FooterModel } from "./model";
+
+vi.mock("@/app/actions/subscribe-to-newsletter", () => ({
+  subscribeToNewsletter: vi.fn(async () => ({ status: "idle" })),
+}));
 
 const link = (
   key: string,
@@ -12,7 +16,14 @@ const link = (
 
 const model: FooterModel = {
   brand: { label: "Northline", image: null },
-  intro: "Clear thinking for complicated work.",
+  newsletter: {
+    heading: "The weekly bulletin",
+    text: "One email a week.",
+    inputPlaceholder: "Your email address",
+    buttonLabel: "Subscribe",
+    successMessage: "You are on the list.",
+    errorMessage: "That did not send.",
+  },
   columns: [
     {
       key: "company",
@@ -43,6 +54,28 @@ const model: FooterModel = {
 };
 
 describe("SiteFooter", () => {
+  it("renders on the Dark scene with the newsletter signup", () => {
+    render(<SiteFooter model={model} />);
+    const footer = screen.getByRole("contentinfo");
+
+    expect(footer).toHaveClass("block-scene-dark");
+    expect(
+      within(footer).getByRole("heading", { name: "The weekly bulletin" }),
+    ).toBeInTheDocument();
+    expect(within(footer).getByLabelText("Email address")).toHaveAttribute(
+      "placeholder",
+      "Your email address",
+    );
+    expect(
+      within(footer).getByRole("button", { name: "Subscribe" }),
+    ).toBeInTheDocument();
+  });
+
+  it("hides the newsletter row without a heading", () => {
+    render(<SiteFooter model={{ ...model, newsletter: null }} />);
+    expect(screen.queryByRole("button", { name: "Subscribe" })).toBeNull();
+  });
+
   it("renders authored identity, navigation, contact, and social links", () => {
     render(<SiteFooter model={model} />);
     const footer = screen.getByRole("contentinfo");
@@ -69,8 +102,8 @@ describe("SiteFooter", () => {
     render(<SiteFooter dataAttribute={dataAttribute} model={model} />);
 
     expect(
-      document.querySelector('[data-sanity="field:intro"]'),
-    ).toHaveTextContent("Clear thinking");
+      document.querySelector('[data-sanity="field:newsletter.heading"]'),
+    ).toHaveTextContent("The weekly bulletin");
     expect(
       document.querySelector(
         '[data-sanity="field:copyrightStartYear"]',

@@ -503,7 +503,14 @@ export const starterDocuments = [
     _id: "footer",
     _type: "footer",
     ...marker,
-    intro: "Neutral footer copy for the optional Starter seed.",
+    newsletter: {
+      heading: "Join the newsletter",
+      text: "Neutral newsletter copy for the optional Starter seed.",
+      inputPlaceholder: "Your email address",
+      buttonLabel: "Subscribe",
+      successMessage: "Thanks for subscribing.",
+      errorMessage: "That did not send. Please try again.",
+    },
     columns: [
       {
         _key: "starter-footer-main",

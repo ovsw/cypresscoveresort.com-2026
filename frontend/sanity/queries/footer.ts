@@ -23,7 +23,14 @@ const linkProjection = `{
 export const FOOTER_QUERY = defineQuery(`
   *[_type == "footer" && _id == "footer"][0]{
     _id,
-    intro,
+    newsletter{
+      heading,
+      text,
+      inputPlaceholder,
+      buttonLabel,
+      successMessage,
+      errorMessage
+    },
     columns[]{
       _key,
       heading,
