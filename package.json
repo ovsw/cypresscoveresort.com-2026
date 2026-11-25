@@ -11,6 +11,13 @@
     "dev:stop": "node scripts/dev-stop.mjs",
     "setup:sanity-cors": "node --env-file-if-exists=studio/.env.local --env-file=studio/.env.production scripts/setup-sanity-cors.mjs",
     "page-builder:new": "node scripts/create-page-builder-block.mjs",
+    "relume:split-pull": "node scripts/relume/split-pull.mjs",
+    "relume:convert": "node scripts/relume/convert.mjs",
+    "relume:inventory": "node scripts/relume/inventory.mjs",
+    "relume:catalogue-fields": "node scripts/relume/catalogue-fields.mjs",
+    "relume:shelf": "node scripts/relume/shelf.mjs write",
+    "relume:add": "node scripts/relume/shelf.mjs add",
+    "relume:remove": "node scripts/relume/shelf.mjs remove",
     "seed": "pnpm --dir studio seed",
     "unseed": "pnpm --dir studio unseed",
     "dev": "pnpm --parallel -r run dev",
@@ -43,5 +50,8 @@
     "pnpm": "11.10.0"
   },
   "packageManager": "pnpm@11.10.0+sha512.0b7f8b98060031904c017e3a41eb187a16d40eeb829b95c4f8cb03681761fc4ab53dd219115b9b447f4dce1a05a214764461e7d3703392a9f32f9511ce8c86c8",
-  "homepage": "https://github.com/ovsw/next-sanity-starter"
+  "homepage": "https://github.com/ovsw/next-sanity-starter",
+  "devDependencies": {
+    "prettier": "^3.10.1"
+  }
 }

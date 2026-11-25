@@ -1,4 +1,4 @@
-// Turn a page's sections into plain text so copy can be read as a reader
+// Turn a page's blocks into plain text so copy can be read as a reader
 // would, without Studio.
 
 const TEXT_FIELDS = new Set([
@@ -60,10 +60,10 @@ function walk(value, out) {
   }
 }
 
-/** Plain-text rendering of one section, one line per text field. */
-export function sectionText(section) {
+/** Plain-text rendering of one block, one line per text field. */
+export function blockText(block) {
   const lines = [];
-  walk(section, lines);
+  walk(block, lines);
   return lines.join("\n");
 }
 

@@ -79,4 +79,16 @@ describe("Site Header", () => {
     expect(action).toHaveAttribute("target", "_blank");
     expect(document.querySelector('a[href="#"]')).not.toBeInTheDocument();
   });
+
+  // Full-screen heroes subtract --site-header-height, so the header must take
+  // its height from that token and nothing else, or heroes overflow the fold.
+  it("takes its height from the --site-header-height token", () => {
+    render(<Header model={model} />);
+
+    const classes = screen.getByRole("banner").className.split(/\s+/);
+    expect(classes).toContain("h-(--site-header-height)");
+    expect(
+      classes.filter((name) => /^(?:[a-z]+:)*(?:p[ytb]?|min-h|max-h|h)-/.test(name)),
+    ).toEqual(["h-(--site-header-height)"]);
+  });
 });

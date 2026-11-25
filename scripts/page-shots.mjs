@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-// Screenshot every Page Builder section of one page draft, at desktop and
+// Screenshot every Page Builder block of one page draft, at desktop and
 // phone widths, through the frontend's draft mode.
 //
 //   pnpm page:shots <slug> [--out <dir>] [--only desktop|phone]
 //
 // Reads SANITY_AUTH_TOKEN from the environment or studio/.env.local, the dev ports from .worktree-ports.json, and writes
-// <out>/<viewport>/<nn>-<sectionKey>.png. Prints one JSON line per viewport
-// with the page height and every section's height. It stops when the rendered
-// sections do not match the draft's blocks, so a published-only render is never
+// <out>/<viewport>/<nn>-<blockKey>.png. Prints one JSON line per viewport
+// with the page height and every block's height. It stops when the rendered
+// blocks do not match the draft's blocks, so a published-only render is never
 // mistaken for the draft.
 
 import { createRequire } from "node:module";
@@ -38,19 +38,19 @@ export function parseArgs(args) {
   return options;
 }
 
-/** This tool's own section images: `<nn>-<sectionKey>.png`. */
-export const SECTION_SHOT_PATTERN = /^\d{2,}-.+\.png$/;
+/** This tool's own block images: `<nn>-<blockKey>.png`. */
+export const BLOCK_SHOT_PATTERN = /^\d{2,}-.+\.png$/;
 
-/** Removes earlier section images so a shorter page leaves no stale shots. */
-export function removeSectionShots(directory) {
+/** Removes earlier block images so a shorter page leaves no stale shots. */
+export function removeBlockShots(directory) {
   for (const file of readdirSync(directory)) {
-    if (SECTION_SHOT_PATTERN.test(file)) rmSync(path.join(directory, file));
+    if (BLOCK_SHOT_PATTERN.test(file)) rmSync(path.join(directory, file));
   }
 }
 
-export function assertDraftSections(expected, rendered, draftActive, documentId) {
+export function assertDraftBlocks(expected, rendered, draftActive, documentId) {
   if (!draftActive || !rendered.length || JSON.stringify(rendered) !== JSON.stringify(expected)) {
-    throw new Error(`Rendered sections do not match draft ${documentId}, or draft mode is off. Refusing screenshots. Expected: ${expected.join(", ")}; rendered: ${rendered.join(", ")}.`);
+    throw new Error(`Rendered blocks do not match draft ${documentId}, or draft mode is off. Refusing screenshots. Expected: ${expected.join(", ")}; rendered: ${rendered.join(", ")}.`);
   }
 }
 
@@ -78,7 +78,7 @@ async function main() {
   const playwright = await import(pathToFileURL(playwrightRequire.resolve("playwright")));
   const chromium = playwright.chromium ?? playwright.default.chromium;
 
-  // The draft's own section keys are the proof that the browser shows the draft:
+  // The draft's own block keys are the proof that the browser shows the draft:
   // the rendered wrappers must carry exactly these keys, in this order.
   const pageDoc = await client
     .withConfig({ perspective: "raw" })
@@ -92,7 +92,7 @@ async function main() {
   }
   const expectedKeys = pageDoc.keys ?? [];
   if (expectedKeys.length === 0) {
-    console.error(`${pageDoc._id} has no Page Builder sections to screenshot.`);
+    console.error(`${pageDoc._id} has no Page Builder blocks to screenshot.`);
     process.exit(1);
   }
 
@@ -118,7 +118,7 @@ async function main() {
       });
       const draftActive = (await page.context().cookies()).some((cookie) => cookie.name === "__prerender_bypass");
       // Reveal animations use animation-timeline: view(); pausing them leaves
-      // sections at opacity 0, so remove them instead.
+      // blocks at opacity 0, so remove them instead.
       await page.addStyleTag({
         content:
           "*{animation:none!important;transition:none!important;opacity:1!important}" +
@@ -145,7 +145,7 @@ async function main() {
         await Promise.race([Promise.all(pending), new Promise((done) => setTimeout(done, 8000))]);
       });
 
-      const sections = await page.evaluate(() => {
+      const blocks = await page.evaluate(() => {
         const rows = [];
         for (const el of document.querySelectorAll("[data-sanity]")) {
           const match = el.getAttribute("data-sanity")?.match(/path=blocks:([^.;]+);/);
@@ -155,18 +155,18 @@ async function main() {
         }
         return rows;
       });
-      const renderedKeys = sections.map((s) => s.key);
-      assertDraftSections(expectedKeys, renderedKeys, draftActive, pageDoc._id);
+      const renderedKeys = blocks.map((block) => block.key);
+      assertDraftBlocks(expectedKeys, renderedKeys, draftActive, pageDoc._id);
       mkdirSync(out, { recursive: true });
-      removeSectionShots(out);
+      removeBlockShots(out);
       const pageHeight = await page.evaluate(() => document.documentElement.scrollHeight);
       let index = 0;
-      for (const section of sections) {
+      for (const block of blocks) {
         index += 1;
-        const file = path.join(out, `${String(index).padStart(2, "0")}-${encodeURIComponent(section.key)}.png`);
+        const file = path.join(out, `${String(index).padStart(2, "0")}-${encodeURIComponent(block.key)}.png`);
         await (await page.$(`[data-page-shot="${index - 1}"]`)).screenshot({ path: file });
       }
-      console.log(JSON.stringify({ viewport: name, dir: out, pageHeight, sections }));
+      console.log(JSON.stringify({ viewport: name, dir: out, pageHeight, blocks }));
     } finally {
       await browser.close();
     }

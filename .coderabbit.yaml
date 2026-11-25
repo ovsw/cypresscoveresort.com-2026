@@ -1,3 +1,9 @@
 reviews:
   auto_review:
     enabled: false
+  # The untouched Relume originals and the catalogue are reference data, not
+  # code to review. Without this, a pull request that files them passes
+  # CodeRabbit's file limit and gets no review at all.
+  path_filters:
+    - "!relume/source/**"
+    - "!relume/catalogue.json"

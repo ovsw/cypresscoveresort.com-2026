@@ -28,6 +28,8 @@ pnpm run setup
 
 Setup asks for the site name, public URL, Sanity project ID, dataset, Sanity API read token, Sanity auth token, and Studio hostname. It writes ignored `frontend/.env.local` and `studio/.env.local` files and a commit-ready `studio/.env.production` file. It does not create or change Sanity projects, datasets, CORS origins, tokens, Vercel projects, GitHub repositories, or other hosted resources.
 
+A new site starts with no Relume blocks: on a site fresh from this template, setup removes them all, then runs the type check. It does this only once: a later run keeps every block. Add the ones the site needs with `pnpm relume:add <slug>`, and browse them at `/block-library` on the local dev server. See [Importing Relume components](docs/agents/relume-import.md), "Shelf".
+
 If a local environment file already exists, setup stops instead of replacing it. Use `pnpm run setup --force` only when you intend to replace both local files. An existing `studio/.env.production` never stops setup and is never replaced, so a fresh checkout of a site that committed it keeps its saved `SANITY_STUDIO_APP_ID`; edit that file by hand.
 
 The read token powers Sanity Presentation draft previews. The auth token powers Studio-side CLI jobs and repository-scoped Sanity MCP access in Codex. Add optional integration credentials to the local env files only when the matching feature needs them. The committed environment example files list the supported names. For the Raster image description sync, set `RASTER_LIBRARY_ID` in `studio/.env.local` to this Website's own Raster library, next to `RASTER_API_KEY` and `RASTER_ORG_ID`; see [Raster image descriptions](docs/agents/raster-descriptions.md).
@@ -36,7 +38,9 @@ The Studio uses `studio/.env.local` to preview the local Website. A production
 Studio build uses the deployed Website URL in `studio/.env.production`. Before
 deploying again, add SANITY_STUDIO_APP_ID to that production file and commit
 it so every checkout updates the same hosted Studio. The first deployment of a
-new project creates the ID: run `pnpm deploy:studio --first` once.
+new project creates the ID: run `pnpm deploy:studio --first` once. It
+deploys to the Studio hostname setup saved as `SANITY_STUDIO_HOSTNAME` in
+`studio/.env.local`.
 
 Start both apps:
 
@@ -111,26 +115,27 @@ The seed is manual. It never runs during install, setup, development, build, or 
 
 Seeding needs a Sanity write token in `SANITY_AUTH_TOKEN`, either in the shell or in `studio/.env.local`.
 
-The sample content creates global settings, navigation, footer, the homepage, a normal `/about/` page, Blog settings, categories, a Blog Post, FAQ, Testimonial, relevant SEO values, and every retained Page Builder section. The homepage shows one live Scaffold and the About page archives one, so a seeded dataset fails the launch check on purpose. Use it to confirm Website rendering and Studio editing, then remove it before adding real project content:
+The sample content creates global settings, navigation, footer, the homepage, a normal `/about/` page, Blog settings, categories, a Blog Post, FAQ, Testimonial, relevant SEO values, and every retained Page Builder block. The Relume blocks are on the Block library: an index at `/block-library/` with a card per block and a Category filter (`/block-library/?category=heroes`), and a page per block that shows that block alone, on Light (`/block-library/heroes/header-1/`) or on Dark (`/block-library/heroes/header-1/dark/`), with a small bar at the top that names the block, links back to the index filtered to its category and switches between Light and Dark. The block pages follow `relume/shelf.json`, so a new block gets its two pages and its card on the index. The homepage shows one live Scaffold and the About page archives one, so a seeded dataset fails the launch check on purpose. Use it to confirm Website rendering and Studio editing, then remove it before adding real project content:
 
 ```bash
 pnpm unseed
 ```
 
-Unseed removes only marked Starter sample documents and the bundled Starter sample assets. Replacement images uploaded by editors are preserved. It refuses partial or unmarked targets instead of emptying a dataset generally.
+Unseed removes only marked Starter sample documents and the bundled Starter sample assets. Replacement images uploaded by editors are preserved. It refuses partial or unmarked targets instead of emptying a dataset generally. To refresh the Block library in a dataset that is already seeded, run `pnpm page:seed studio/scripts/block-library-page.seed.mjs --apply`: it writes every block page as a draft, and deletes the index and category pages an earlier seed wrote (the index is now a Website route). Then publish the block pages.
 
-The Starter shipped a minimal section library: a Rich Text section and a
-Scaffold placeholder. This project adds its own sections with
+The Starter's own blocks are Rich Text and a Scaffold placeholder. Its
+Relume blocks are the shelf: this site takes only the ones it needs (see
+"Relume commands" below). This project adds its own blocks with
 `pnpm page-builder:new <name>`; see `docs/agents/page-builder.md` for
 generation, previews, registration, and the Scaffold workflow. The current
-list of sections, with what each one is for, is in `docs/content-model.md`
-under "Section library".
+list of blocks, with what each one is for, is in `docs/content-model.md`
+under "Block library".
 
 Pages accept nested slugs such as `about/our-team`. Blog routes stay reserved.
 SEO sharing always uses a generated branded card. The selected sharing photo
 appears inside the card. Posts fall back to their main image. Pages use a hero
-photo when a site adds `homeHero` or `innerHero` sections; this Starter has no
-hero sections. Without a photo, the card uses the logo and brand colour.
+photo when a site adds `homeHero` or `innerHero` blocks; this Starter has no
+blocks of those types. Without a photo, the card uses the logo and brand colour.
 
 ## Workspace commands
 
@@ -178,7 +183,25 @@ The workspace patches this version to restore its tag icon, so the version is
 pinned. When upgrading the plugin, check that fix before removing or replacing
 the patch.
 
-## Deploy your copy
+### Relume commands
+
+The first five commands fill the shelf in the Starter. The last two copy
+blocks off it into a site, or take them out again. Convert new Relume
+components in the Starter, then add them to each site with `pnpm relume:add`.
+A block converted inside a site stays in that site. See
+[docs/agents/relume-import.md](docs/agents/relume-import.md).
+
+| Command | Where | What it does | Who runs it |
+| --- | --- | --- | --- |
+| `pnpm relume:split-pull` | Starter | Files the raw code fetched from Relume into `relume/source/`, one file per component | An agent, after fetching code from Relume |
+| `pnpm relume:catalogue-fields` | Starter | Saves Relume's Uncommon and Off-grid flags into `relume/catalogue.json` | An agent, rarely |
+| `pnpm relume:convert` | Starter | Turns pulled code into a Page Builder block, registers it and updates `relume/shelf.json` | An agent, for each new block |
+| `pnpm relume:inventory` | Starter | Records, for every Relume component, whether it is pulled, convertible, blocked or converted, in `relume/inventory.json`; the `/dev/relume` pages read it | Anyone, to refresh those pages |
+| `pnpm relume:shelf` | Starter | Rebuilds `relume/shelf.json` from the registered blocks, for example after a merge conflict in it | Rarely: the shelf test says when |
+| `pnpm relume:add <slug>...` | Site | Copies blocks from the shelf into the site | You or an agent |
+| `pnpm relume:remove <slug>...` | Site | Removes blocks, unless a page uses one | You or an agent |
+
+## Deploy your site
 
 The Website and Studio deploy separately.
 
@@ -207,21 +230,20 @@ See `docs/deployment.md` for the production gate and complete deployment checkli
 - `shared/`: code shared by both workspaces
 - `docs/agents/`: repository workflow guidance
 
-Read `docs/content-model.md` for the model map and `docs/agents/page-builder.md` before changing Page Builder sections.
+Read `docs/content-model.md` for the model map and `docs/agents/page-builder.md` before changing Page Builder blocks.
 
 Before publishing a Starter revision, complete `docs/fresh-clone-proof.md` against a disposable Sanity dataset.
 
 ## License
 
-The repository is available under the MIT License. Keep the copyright and permission notice in `LICENSE` when copying substantial portions of the software.
+This repository is private and proprietary to OVS Websites. It is not open source. Do not publish it or share it outside the team.
 
 ## Button styles
 
 Code sets button styles. Button, Button Link, and Link have no style control
-in Studio. Rich Text button links use the primary style. The Starter has no
-Page Builder sections with fixed button links or button lists. When adding a
-section with multiple buttons, use a bounded button list and set each style
-by its position in the renderer.
+in Studio. Rich Text button links use the primary style. A Page Builder block with
+several buttons uses a bounded button list, and the renderer sets each style
+by its position.
 
 To remove old stored styles, first follow the backup procedure in
 `docs/agents/sanity-cli.md`. Then run from the Studio workspace:
@@ -233,7 +255,7 @@ node --env-file=.env.local scripts/migrate-button-lists.mjs --apply
 ```
 
 The first command only reports the target, document IDs, and fields to remove.
-The second command removes those fields. It includes archived sections and
+The second command removes those fields. It includes archived blocks and
 rich text marks in all content documents. Each document keeps its exact ID,
 so drafts, published documents, and release versions stay separate. Revision
 checks stop the transaction if an editor changes a document after it is read.
@@ -303,7 +325,7 @@ default; `--apply` writes page and supporting drafts without publishing.
 See [the Sanity CLI guide](docs/agents/sanity-cli.md#page-tools) for seed format,
 credentials, replacement rules, and the required backup before a write.
 
-### Page section screenshots
+### Block screenshots
 
 Start the worktree servers with `pnpm dev:worktree`, then run:
 
@@ -312,7 +334,10 @@ pnpm page:shots getting-started
 pnpm page:shots getting-started --out /tmp/page-review --only phone
 ```
 
-The command requires a saved page draft with Page Builder sections. It reads
+The command requires a saved page draft with Page Builder blocks. To shoot
+one Relume block, give its Block library page, which holds only that block:
+`pnpm page:shots block-library/heroes/header-1` (add `/dark` for the Dark
+page). It reads
 `.worktree-ports.json`, or uses ports 3000 and 3333 when that file is absent.
 It loads Studio credentials from `studio/.env.local`. The token must read drafts
 and create a temporary Sanity preview secret. Follow the backup rules in the
@@ -321,15 +346,15 @@ preview read token. Install Chrome with
 `pnpm --dir frontend exec playwright install chrome` if needed.
 
 Images go to the system temporary folder under
-`page-shots/<slug>/<viewport>/<nn>-<sectionKey>.png` by default. `--out` changes
-the output folder. Earlier section images (`<nn>-<sectionKey>.png`) are
+`page-shots/<slug>/<viewport>/<nn>-<blockKey>.png` by default. `--out` changes
+the output folder. Earlier block images (`<nn>-<blockKey>.png`) are
 removed; other files are kept.
 Desktop is 1440 × 1000; phone is 390 × 844. `--only` selects one viewport.
 Each viewport prints a JSON line with the output folder, page height, and
-section keys and heights. The command stops before writing that viewport's
-images if draft mode is off or the rendered section keys differ from the draft
+block keys and heights. The command stops before writing that viewport's
+images if draft mode is off or the rendered block keys differ from the draft
 in number or order. It hides the header and editing controls for the images.
-Section keys do not prove that every text field or referenced document is
+Block keys do not prove that every text field or referenced document is
 current. Inspect known draft-only content when you review the images.
 
 ### Merge parallel Page Builder work

@@ -4,7 +4,7 @@ import { defineArrayMember, defineType } from "sanity";
  * Deliberately minimal rich text: paragraphs with bold, italic, and inline
  * links, nothing else. Use it where copy needs multiple paragraphs but must
  * not introduce headings, lists, or embedded media that would break the
- * section's design.
+ * block's design.
  */
 export default defineType({
   name: "simpleRichText",

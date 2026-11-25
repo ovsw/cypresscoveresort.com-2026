@@ -12,7 +12,7 @@
 import { createClient } from "@sanity/client";
 import { fileURLToPath } from "node:url";
 
-import { findUnrenderedSections } from "./unrendered-sections.mjs";
+import { findUnrenderedBlocks } from "./unrendered-blocks.mjs";
 
 const POSTS_PER_PAGE = 12;
 
@@ -44,10 +44,10 @@ const client = createClient({
 });
 
 // These mirror the complete published queries used by generateStaticParams.
-const SECTIONS_PROJECTION = `"sections": coalesce(blocks[]{_key, _type}, [])`;
-const PAGES_SLUGS_QUERY = `*[_type == "page" && defined(slug)]{slug, ${SECTIONS_PROJECTION}}`;
-const HOME_SECTIONS_QUERY = `*[_id == "homePage" && _type == "homePage"][0]{${SECTIONS_PROJECTION}}`;
-const BLOG_SECTIONS_QUERY = `*[_id == "blogIndex"][0]{${SECTIONS_PROJECTION}}`;
+const BLOCKS_PROJECTION = `"blocks": coalesce(blocks[]{_key, _type}, [])`;
+const PAGES_SLUGS_QUERY = `*[_type == "page" && defined(slug)]{slug, ${BLOCKS_PROJECTION}}`;
+const HOME_BLOCKS_QUERY = `*[_id == "homePage" && _type == "homePage"][0]{${BLOCKS_PROJECTION}}`;
+const BLOG_BLOCKS_QUERY = `*[_id == "blogIndex"][0]{${BLOCKS_PROJECTION}}`;
 const POSTS_SLUGS_QUERY = `*[_type == "post" && defined(slug)]{slug}`;
 const PUBLISHED_POST_FILTER =
   `_type == "post" && defined(slug.current) && defined(publishedAt)`;
@@ -107,8 +107,8 @@ function findForbiddenMarkers(body) {
 
 const [pages, home, blogIndex, posts, eligiblePostCount, rawCategories] = await Promise.all([
   client.fetch(PAGES_SLUGS_QUERY),
-  client.fetch(HOME_SECTIONS_QUERY),
-  client.fetch(BLOG_SECTIONS_QUERY),
+  client.fetch(HOME_BLOCKS_QUERY),
+  client.fetch(BLOG_BLOCKS_QUERY),
   client.fetch(POSTS_SLUGS_QUERY),
   client.fetch(ELIGIBLE_BLOG_POSTS_COUNT_QUERY),
   client.fetch(CATEGORY_STATIC_PARAMS_QUERY),
@@ -129,18 +129,18 @@ const postSlugs = new Set(
 const categories = rawCategories.filter(categoryHasValidSlug);
 const knownRoutes = new Map([["/", "home"]]);
 
-// The Page Builder sections each route must draw, by route.
-const routeSections = new Map([
-  ["/", home?.sections ?? []],
-  ["/blog", blogIndex?.sections ?? []],
+// The Page Builder blocks each route must draw, by route.
+const routeBlocks = new Map([
+  ["/", home?.blocks ?? []],
+  ["/blog", blogIndex?.blocks ?? []],
 ]);
-for (const { slug, sections } of pages) {
+for (const { slug, blocks } of pages) {
   const normalized = normalizeSlug(slug?.current);
   if (!normalized) continue;
-  // The home and blog routes keep their own sections even if a page was
+  // The home and blog routes keep their own blocks even if a page was
   // given a slug that collides with them.
   const route = routeFromSlug(normalized);
-  if (!routeSections.has(route)) routeSections.set(route, sections);
+  if (!routeBlocks.has(route)) routeBlocks.set(route, blocks);
 }
 
 for (const slug of pageSlugs) knownRoutes.set(routeFromSlug(slug), "page");
@@ -229,17 +229,17 @@ async function verifyRoute(path, family, expectedStatus) {
   }
 
   if (expectedStatus === 200) {
-    // A redirected route shows another page, with that page's sections.
-    // Only the home, blog and page handlers draw Page Builder sections. A
+    // A redirected route shows another page, with that page's blocks.
+    // Only the home, blog and page handlers draw Page Builder blocks. A
     // page whose slug collides with a post or category route is not served
-    // there, so its sections are not expected.
-    const drawsSections = ["home", "blog", "page"].includes(family);
+    // there, so its blocks are not expected.
+    const drawsBlocks = ["home", "blog", "page"].includes(family);
     const unrendered =
-      response.redirected || !drawsSections
+      response.redirected || !drawsBlocks
         ? []
-        : findUnrenderedSections(body, routeSections.get(path) ?? []);
+        : findUnrenderedBlocks(body, routeBlocks.get(path) ?? []);
     if (unrendered.length) {
-      problems.push(`sections not shown: ${unrendered.join(", ")}`);
+      problems.push(`blocks not shown: ${unrendered.join(", ")}`);
     }
     // The real header and footer mark themselves "ready"; their fallbacks
     // (components/header/index.tsx, components/footer/index.tsx) say
@@ -266,7 +266,7 @@ if (failures.length) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exitCode = 1;
 } else {
-  console.log(`PASS: ${knownRoutes.size} known routes returned 200 with real header/footer HTML, no Scaffold sections, no section that draws nothing, and no route/layout fallback markers.`);
+  console.log(`PASS: ${knownRoutes.size} known routes returned 200 with real header/footer HTML, no Scaffold blocks, no block that draws nothing, and no route/layout fallback markers.`);
   console.log(`PASS: ${unknownRoutes.size} unknown routes returned 404 with no route/layout fallback markers.`);
   console.log(
     `Route inventory: ${[...familyCounts].map(([family, count]) => `${family}=${count}`).join(", ")}.`,

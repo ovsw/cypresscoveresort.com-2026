@@ -31,13 +31,23 @@ async function gotoRoute(page: Page, path: string) {
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 }
 
-async function expectAccessibleRoute(page: Page) {
+/**
+ * The Block library (its index and each block's page) is drawn without the
+ * site's header and footer: a block page shows one block alone.
+ */
+function isBlockLibraryRoute(route: string) {
+  return /^\/block-library(\/|$)/.test(route);
+}
+
+async function expectAccessibleRoute(page: Page, route: string) {
   await expect(page.locator("main")).toHaveCount(1);
   await expect(page.locator("h1")).toHaveCount(1);
-  await expect(
-    page.getByRole("navigation", { name: "Main navigation" }),
-  ).toBeVisible();
-  await expect(page.getByRole("contentinfo")).toBeVisible();
+  if (!isBlockLibraryRoute(route)) {
+    await expect(
+      page.getByRole("navigation", { name: "Main navigation" }),
+    ).toBeVisible();
+    await expect(page.getByRole("contentinfo")).toBeVisible();
+  }
   // The Starter ships no theme toggle. Match a toggle's whole name, so a
   // button such as "Flight" or "Theme packages" does not count as one.
   await expect(
@@ -74,9 +84,15 @@ function runningAnimations(page: Page) {
   });
 }
 
-/** The first sitemap route that is not the home page or part of the blog. */
+/**
+ * The first sitemap route that is not the home page, part of the blog or
+ * part of the Block library.
+ */
 function firstPageRoute(routes: string[]) {
-  return routes.find((route) => route !== "/" && !/^\/blog(\/|$)/.test(route));
+  return routes.find(
+    (route) =>
+      route !== "/" && !/^\/blog(\/|$)/.test(route) && !isBlockLibraryRoute(route),
+  );
 }
 
 test.describe("every sitemap route", () => {
@@ -101,7 +117,7 @@ test.describe("every sitemap route", () => {
       for (const route of routes) {
         await test.step(route, async () => {
           await gotoRoute(page, route);
-          await expectAccessibleRoute(page);
+          await expectAccessibleRoute(page, route);
           expect(
             await runningAnimations(page),
             `${route} animates for reduced-motion visitors`,
@@ -202,7 +218,7 @@ test("keeps the home page and a content page free of horizontal overflow at ever
   }
 });
 
-test("homepage sections join with seams and edges", async ({ page }) => {
+test("homepage blocks join with seams and edges", async ({ page }) => {
   await page.goto("/");
   const homepage = page.getByRole("heading", {
     level: 2,
@@ -215,8 +231,8 @@ test("homepage sections join with seams and edges", async ({ page }) => {
       "Starter homepage sample content is not seeded",
     );
 
-  const sections = await page
-    .locator("main section.section-scene")
+  const blocks = await page
+    .locator("main section.block-scene")
     .evaluateAll((elements) =>
       elements.map((element) => {
         const rect = element.getBoundingClientRect();
@@ -231,10 +247,10 @@ test("homepage sections join with seams and edges", async ({ page }) => {
         };
       }),
     );
-  expect(sections.length).toBeGreaterThanOrEqual(4);
+  expect(blocks.length).toBeGreaterThanOrEqual(4);
 
-  const joins = sections.slice(1).map((lower, index) => {
-    const upper = sections[index];
+  const joins = blocks.slice(1).map((lower, index) => {
+    const upper = blocks[index];
     return { upper, lower, match: upper.background === lower.background };
   });
   const seam = joins.find((join) => join.match && !join.lower.scaffold);
@@ -248,17 +264,17 @@ test("homepage sections join with seams and edges", async ({ page }) => {
   expect(seam!.lower.top).toBeCloseTo(seam!.upper.bottom, 0);
   expect(edge!.lower.top).toBeCloseTo(edge!.upper.bottom, 0);
 
-  // Seam-joined sections share one band; a themeless Scaffold never joins one.
+  // Seam-joined blocks share one band; a themeless Scaffold never joins one.
   const bands = await page.locator("main [data-band]").evaluateAll((elements) =>
     elements.map((element) => ({
       theme: element.getAttribute("data-band"),
-      sections: element.querySelectorAll("section.section-scene").length,
+      blocks: element.querySelectorAll("section.block-scene").length,
       scaffolds: element.querySelectorAll("section[data-scaffold]").length,
     })),
   );
-  expect(bands.some((band) => band.sections > 1)).toBe(true);
+  expect(bands.some((band) => band.blocks > 1)).toBe(true);
   for (const band of bands) {
-    if (band.scaffolds) expect(band.sections).toBe(band.scaffolds);
+    if (band.scaffolds) expect(band.blocks).toBe(band.scaffolds);
   }
 });
 

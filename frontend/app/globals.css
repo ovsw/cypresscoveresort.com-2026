@@ -9,8 +9,8 @@
  *      component code cannot use them. A new Website replaces these values.
  *   2. Job tokens (--color-*) in @theme. Each names what a colour is for
  *      (background, foreground, link, primary...) and points at a brand
- *      colour. Component code uses only these. The section themes
- *      (.section-scene-light, .section-scene-dark) re-point job tokens,
+ *      colour. Component code uses only these. The block themes
+ *      (.block-scene-light, .block-scene-dark) re-point job tokens,
  *      never brand colours, so one piece of markup is right on any theme.
  * See "Colour" in docs/agents/page-builder.md.
  */
@@ -32,10 +32,10 @@
   --brand-red: #b91c1c;
 }
 
-/* Job tokens (layer 2). The defaults are the Light section theme. */
+/* Job tokens (layer 2). The defaults are the Light block theme. */
 @theme {
-  /* ---- Ground tokens: .section-scene-dark re-points these ---- */
-  --color-background: var(--brand-white); /* the section's ground */
+  /* ---- Ground tokens: .block-scene-dark re-points these ---- */
+  --color-background: var(--brand-white); /* the block's ground */
   --color-foreground: var(--brand-neutral-900); /* headings and primary text */
   --color-soft-foreground: var(--brand-neutral-700); /* near-primary supporting text: prices, dates, labels */
   /* neutral-600, not neutral-500: neutral-500 misses 4.5:1 contrast on the
@@ -73,6 +73,126 @@
 
   --radius-control: 0.5rem;
   --radius-card: 0.75rem;
+
+  /* ---- Animations of blocks imported from Relume ----
+     The `animate-*` classes of Relume's Tailwind preset, with its timings.
+     The reduced-motion rule at the end of this file stops all of them. */
+  --animate-loop-horizontally: loop-horizontally 20s linear infinite;
+  --animate-loop-testimonials: loop-testimonials 30s linear infinite;
+  --animate-loop-vertically: loop-vertically 30s linear infinite;
+  --animate-loop-vertically-top: loop-vertically-top 50s linear infinite;
+  --animate-loop-vertically-bottom: loop-vertically-bottom 50s linear infinite;
+  --animate-marquee-horizontally: marquee-top 30s linear infinite;
+  --animate-marquee-top: marquee-top 50s linear infinite;
+  --animate-marquee-right: marquee-right 25s linear infinite;
+  --animate-marquee-bottom: marquee-bottom 50s linear infinite;
+  --animate-marquee-left: marquee-left 25s linear infinite;
+  --animate-tabs: tabs 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  @keyframes loop-horizontally {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes loop-testimonials {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-135rem);
+    }
+  }
+  @keyframes loop-vertically {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50%);
+    }
+  }
+  @keyframes loop-vertically-top {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50%);
+    }
+  }
+  @keyframes loop-vertically-bottom {
+    from {
+      transform: translateY(-50%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes marquee-top {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes marquee-right {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes marquee-bottom {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+  @keyframes marquee-left {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes tabs {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ---- Accordion (components/ui/accordion.tsx) ----
+     The answer panel grows from and shrinks to nothing. Radix sets
+     --radix-accordion-content-height to the panel's measured height. The
+     reduced-motion rule at the end of this file stops both. */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
 :root {
   --control-height: 2.75rem;
@@ -84,11 +204,25 @@
   --space-card: 1.5rem;
   --space-stack: 1.5rem;
   --space-header-gap: 3rem;
-  /* A tucked section overlaps the section above by this depth. The wave
-     crest rises this height above the section box and meets the box top
+  /* A tucked block overlaps the block above by this depth. The wave
+     crest rises this height above the block's box and meets the box top
      at both edges, so the silhouette is one rounded shape. */
-  --section-tuck-depth: 2rem;
-  --section-wave-height: 1.5rem;
+  --block-tuck-depth: 2rem;
+  --block-wave-height: 1.5rem;
+  /* A block's vertical padding at an edge, and at a seam (half). */
+  --block-padding: clamp(4rem, 9vw, 8rem);
+  --block-padding-seam: clamp(2rem, 4.5vw, 4rem);
+  /* The height of the site header, its bottom border included. The header
+     (components/header/site-header.tsx) takes its height from this token and
+     centres its row in it, and --screen-block subtracts it, so a full-screen
+     hero always ends at the fold. To make the header taller (a bigger logo),
+     change this token, here and in the lg rule below; never pad the header. */
+  --site-header-height: 4.3125rem;
+  /* One screen of a block that fills the screen (a full-screen hero): the
+     screen under the site header, so the block ends at the fold when it
+     leads the page. A block's own element takes --screen-block; an element
+     inside its padding takes --screen-block-content (set on .block-scene). */
+  --screen-block: calc(100svh - var(--site-header-height));
   /* Dark band surface: two soft glows, a shadow between them, and a grain
      over everything. Tune here. */
   --band-glow: color-mix(in oklch, var(--brand-neutral-50) 12%, transparent);
@@ -96,6 +230,12 @@
   --grain-size: 180px;
   --grain-opacity: 0.45;
   --grain-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+@media (width >= 64rem) {
+  :root {
+    /* The desktop header row is shorter than the menu button below lg. */
+    --site-header-height: 4.0625rem;
+  }
 }
 @layer base {
   * {
@@ -114,15 +254,6 @@
     outline: 2px solid var(--color-ring);
     outline-offset: 3px;
   }
-}
-@utility section-pad {
-  padding-block: clamp(3rem, 7vw, 6rem);
-}
-@utility section-pad-lg {
-  padding-block: clamp(4rem, 9vw, 8rem);
-}
-@utility section-header-gap {
-  margin-bottom: 2.5rem;
 }
 @utility gap-split {
   gap: clamp(2rem, 5vw, 5rem);
@@ -157,13 +288,13 @@
   font-weight: 600;
   letter-spacing: -0.035em;
 }
-@utility typo-section-heading {
+@utility typo-block-heading {
   font-size: clamp(1.75rem, 3vw, 2.75rem);
   line-height: 1.2;
   font-weight: 600;
   letter-spacing: -0.025em;
 }
-@utility typo-subsection-heading {
+@utility typo-block-subheading {
   font-size: 1.5rem;
   line-height: 1.3;
   font-weight: 600;
@@ -186,7 +317,7 @@
   font-weight: 500;
 }
 
-/* All CMS sections share the same width as the header and hero. */
+/* All CMS blocks share the same width as the header and hero. */
 @utility container {
   width: 100%;
   max-width: 80rem;
@@ -194,16 +325,23 @@
   padding-inline: 1.5rem;
 }
 
-.section-scene {
+.block-scene {
+  --block-padding-top: var(--block-padding);
+  --block-padding-bottom: var(--block-padding);
+  /* One screen less this block's own padding, whatever its joins. */
+  --screen-block-content: calc(
+    var(--screen-block) - var(--block-padding-top) - var(--block-padding-bottom)
+  );
   position: relative;
   color: var(--color-foreground);
   background: var(--color-background);
-  padding-block: clamp(4rem, 9vw, 8rem);
+  padding-top: var(--block-padding-top);
+  padding-bottom: var(--block-padding-bottom);
   transition: background-color 160ms ease, color 160ms ease;
 }
-/* Section themes re-point job tokens to brand colours. They never define a
+/* Block themes re-point job tokens to brand colours. They never define a
    brand colour, and component code never names one. */
-.section-scene-light {
+.block-scene-light {
   --color-background: var(--brand-white);
   --color-foreground: var(--brand-neutral-900);
   --color-soft-foreground: var(--brand-neutral-700);
@@ -233,7 +371,7 @@
   --color-accent-hover: var(--brand-neutral-700);
   --color-mark: var(--brand-neutral-900);
 }
-.section-scene-dark {
+.block-scene-dark {
   --color-background: var(--brand-neutral-900);
   --color-foreground: var(--brand-neutral-50);
   --color-soft-foreground: var(--brand-neutral-200);
@@ -265,7 +403,7 @@
 }
 
 /* Typography plugin colours follow the job tokens, so prose inside a Dark
-   section stays readable. */
+   block stays readable. */
 .prose {
   --tw-prose-body: var(--color-foreground);
   --tw-prose-headings: var(--color-foreground);
@@ -283,40 +421,40 @@
   --tw-prose-th-borders: var(--color-border-strong);
   --tw-prose-td-borders: var(--color-border);
 }
-.section-scene-seam-top { padding-top: clamp(2rem, 4.5vw, 4rem); }
-.section-scene-seam-bottom { padding-bottom: clamp(2rem, 4.5vw, 4rem); }
-.section-scene-wave-top {
+.block-scene-seam-top { --block-padding-top: var(--block-padding-seam); }
+.block-scene-seam-bottom { --block-padding-bottom: var(--block-padding-seam); }
+.block-scene-wave-top {
   z-index: 1;
-  margin-top: calc(-1 * var(--section-tuck-depth));
+  margin-top: calc(-1 * var(--block-tuck-depth));
 }
-/* The section above a tucked section loses the tuck depth and the wave crest
+/* The block above a tucked block loses the tuck depth and the wave crest
    to the overlap. It pads its bottom by that much, so its content sits as far
-   from the crest as the tucked section's content sits from the wave's foot. */
-[data-band]:has(+ [data-band-tuck]) > :last-child > .section-scene {
-  padding-bottom: calc(
-    clamp(4rem, 9vw, 8rem) + var(--section-tuck-depth) + var(--section-wave-height)
+   from the crest as the tucked block's content sits from the wave's foot. */
+[data-band]:has(+ [data-band-tuck]) > :last-child > .block-scene {
+  --block-padding-bottom: calc(
+    var(--block-padding) + var(--block-tuck-depth) + var(--block-wave-height)
   );
 }
-.section-scene-wave-top::before {
+.block-scene-wave-top::before {
   position: absolute;
   z-index: -1;
-  top: calc(-1 * var(--section-wave-height));
+  top: calc(-1 * var(--block-wave-height));
   right: 0;
   left: 0;
-  height: var(--section-wave-height);
+  height: var(--block-wave-height);
   content: "";
   background: inherit;
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
 }
 
-/* Band surface. The Page Builder wraps each run of seam-joined sections in a
-   band (see resolveSectionBands). A dark band carries one tonal sweep and one
+/* Band surface. The Page Builder wraps each run of seam-joined blocks in a
+   band (see resolveBlockBands). A dark band carries one tonal sweep and one
    grain overlay sized to the whole run, so the texture never restarts at a
-   seam. The band paints no background: sections keep their own colour and
-   the overlays blend above them. flow-root keeps a leading wave section's
+   seam. The band paints no background: blocks keep their own colour and
+   the overlays blend above them. flow-root keeps a leading wave block's
    negative margin from collapsing through the band, so the band box starts
    at the join and the wave overflows above it; the overlays reach up to the
-   wave crest and curve with it. z-index 1 matches the wave section, so DOM
+   wave crest and curve with it. z-index 1 matches the wave block, so DOM
    order still decides which neighbour paints on top. */
 [data-band="dark"] {
   display: flow-root;
@@ -333,7 +471,7 @@
 }
 /* Tonal sweep: two large glows, top-left and bottom-right, with a shadow in
    the top-right corner between them. Sized to the band, so a long run gets
-   one slow sweep rather than a glow per section. */
+   one slow sweep rather than a glow per block. */
 [data-band="dark"]::before {
   background-image:
     radial-gradient(170% 95% at 8% 0%, var(--band-glow), transparent 70%),
@@ -348,9 +486,9 @@
 }
 [data-band="dark"][data-band-tuck]::before,
 [data-band="dark"][data-band-tuck]::after {
-  top: calc(-1 * (var(--section-tuck-depth) + var(--section-wave-height)));
-  border-top-left-radius: 50% var(--section-wave-height);
-  border-top-right-radius: 50% var(--section-wave-height);
+  top: calc(-1 * (var(--block-tuck-depth) + var(--block-wave-height)));
+  border-top-left-radius: 50% var(--block-wave-height);
+  border-top-right-radius: 50% var(--block-wave-height);
 }
 
 @media (prefers-reduced-motion: reduce) {

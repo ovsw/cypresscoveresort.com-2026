@@ -4,10 +4,10 @@ import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import type { PortableTextProps } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
 import {
-  resolveSectionTheme,
-  sectionSceneClassName,
-  type SectionBoundary,
-} from "./section-boundaries";
+  resolveBlockTheme,
+  blockSceneClassName,
+  type BlockBoundary,
+} from "./block-boundaries";
 
 type RichTextBlockData = Extract<
   NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number],
@@ -16,8 +16,8 @@ type RichTextBlockData = Extract<
 
 type RichTextBlockProps = RichTextBlockData & {
   dataAttribute?: (path: string) => string | undefined;
-  top?: SectionBoundary;
-  bottom?: SectionBoundary;
+  top?: BlockBoundary;
+  bottom?: BlockBoundary;
 };
 
 export default function RichTextBlock({
@@ -40,7 +40,7 @@ export default function RichTextBlock({
 
   return (
     <section
-      className={sectionSceneClassName(resolveSectionTheme(theme), top, bottom)}
+      className={blockSceneClassName(resolveBlockTheme(theme), top, bottom)}
       data-sanity={dataAttribute?.("theme")}
       aria-labelledby={headingId}
     >

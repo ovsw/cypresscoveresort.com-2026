@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Write a page draft, and the draft documents it depends on, from a seed
-// module. Drafts only: nothing here publishes.
+// module. Drafts only: nothing here publishes. The one exception is `remove`,
+// which deletes documents a seed replaces (see below).
 //
 // Usage:
 //   pnpm --dir studio page:seed <seed.mjs>            # dry run: prints the plan
@@ -12,20 +13,24 @@
 //       _id: "examplePage",   // published id, without "drafts."
 //       slug: "example-page", // only needed when the page is new
 //       title, description, meta,                // optional, set when given
-//       blocks: [ ...sections with _key and _type ],
+//       blocks: [ ...blocks with _key and _type ],
 //     },
 //     documents: [ { _id: "faq-example-1", _type: "faq", ... }, ... ],  // optional
+//     remove: [ "old-example-page" ],  // optional
 //   }
 //
 // Behaviour:
 // - the page draft is created from the published document when no draft
 //   exists, or from scratch for a new page (slug and title required);
 // - fields named in the seed replace the draft's fields; `blocks` replaces the
-//   whole section list; fields not named are kept;
+//   whole block list; fields not named are kept;
 // - a draft that changed since it was read is not overwritten (revision guard);
 // - supporting documents are written as drafts with createOrReplace, so give
 //   them ids scoped to the page (e.g. "faq-example-return-flight");
-// - array items missing a `_key` get a deterministic one.
+// - array items missing a `_key` get a deterministic one;
+// - each id in `remove` (a published id) is deleted with its draft, in the
+//   same transaction as the writes, so a seed that moves a page to a new id
+//   leaves no old copy behind. Deleting an id that does not exist does nothing.
 //
 // Every reference to a supporting document in the same seed must be weak,
 // whether it sits in the page or in another supporting document. The target
@@ -90,10 +95,10 @@ async function loadSeed(file) {
   const seed = module.default;
   if (!seed?.page?._id) usage("The seed must default-export { page: { _id, ... } }.");
   if (/^(drafts|versions)\./.test(seed.page._id)) usage("Use the published page ID, without a drafts. or versions. prefix.");
-  // An existing page keeps its sections when the seed omits blocks.
-  if ("blocks" in seed.page && !Array.isArray(seed.page.blocks)) usage("page.blocks must be an array of sections.");
+  // An existing page keeps its blocks when the seed omits them.
+  if ("blocks" in seed.page && !Array.isArray(seed.page.blocks)) usage("page.blocks must be an array of blocks.");
   for (const block of seed.page.blocks ?? []) {
-    if (!block?._type) usage("Every section needs a _type.");
+    if (!block?._type) usage("Every block needs a _type.");
   }
   const ids = new Set([seed.page._id]);
   for (const document of seed.documents ?? []) {
@@ -101,6 +106,12 @@ async function loadSeed(file) {
     if (/^(drafts|versions)\./.test(document._id)) usage("Use published supporting document IDs, without a drafts. or versions. prefix.");
     if (ids.has(document._id)) usage(`Duplicate document ID: ${document._id}`);
     ids.add(document._id);
+  }
+  if ("remove" in seed && !Array.isArray(seed.remove)) usage("remove must be an array of published document IDs.");
+  for (const id of seed.remove ?? []) {
+    if (typeof id !== "string" || !id) usage("Every id in remove must be a non-empty string.");
+    if (/^(drafts|versions)\./.test(id)) usage("Use published IDs in remove, without a drafts. or versions. prefix; the draft is removed with it.");
+    if (ids.has(id)) usage(`${id} is both written and removed by this seed.`);
   }
   return seed;
 }
@@ -139,6 +150,8 @@ export async function main(args = process.argv.slice(2), clientFactory = getPage
   const documents = (seed.documents ?? []).map((document) =>
     withKeys({ ...document, _id: `drafts.${document._id}` }),
   );
+  // Each removed id goes with its draft.
+  const removeIds = (seed.remove ?? []).flatMap((id) => [id, `drafts.${id}`]);
   const existingDocuments = await Promise.all(
     documents.map((document) =>
       client.fetch(`*[_id == $id][0]{_id, _rev}`, { id: document._id }, { perspective: "raw" }),
@@ -155,12 +168,13 @@ export async function main(args = process.argv.slice(2), clientFactory = getPage
       slug: pageDocument.slug?.current,
       title: pageDocument.title,
       fieldsSet: Object.keys(pageFields),
-      sections: summarizeBlocks(pageDocument.blocks),
+      blocks: summarizeBlocks(pageDocument.blocks),
     },
     documents: documents.map(
       (document, index) =>
         `${document._id} (${document._type}, ${existingDocuments[index] ? "replace existing draft" : "new draft"})`,
     ),
+    remove: removeIds,
   };
   console.log(JSON.stringify(plan, null, 2));
   if (!apply) {
@@ -188,6 +202,7 @@ export async function main(args = process.argv.slice(2), clientFactory = getPage
     );
     transaction.createOrReplace(document);
   });
+  for (const id of removeIds) transaction.delete(id);
 
   try {
     await transaction.commit({ visibility: "async" });
@@ -201,6 +216,7 @@ export async function main(args = process.argv.slice(2), clientFactory = getPage
     throw error;
   }
   console.log(`Wrote ${draftId}${documents.length ? ` and ${documents.length} supporting draft(s)` : ""}.`);
+  if (removeIds.length) console.log(`Deleted (where present): ${removeIds.join(", ")}.`);
   console.log("Nothing was published.");
 }
 

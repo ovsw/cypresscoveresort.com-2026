@@ -7,6 +7,10 @@ import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
 import process from "node:process";
 import { createClient } from "@sanity/client";
+import {
+  BLOCK_LIBRARY_ID_PREFIX,
+  blockLibraryPages,
+} from "./block-library.mjs";
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const rootDirectory = path.resolve(directory, "..", "..");
@@ -48,8 +52,19 @@ export const STARTER_SEED = {
   version: 1,
 };
 
+// Relume's placeholder images, as PNGs. "landscape" is the default; the
+// numbered ones mark the order of images that move (a slider, a marquee, a
+// parallax), so the motion reads at a glance.
 // Asset IDs derive from the bundled bytes, not from any project's dataset.
-export const STARTER_ASSETS = ["landscape", "square", "avatar"].map((name) => {
+export const STARTER_ASSETS = [
+  "landscape",
+  "numbered-1",
+  "numbered-2",
+  "numbered-3",
+  "numbered-4",
+  "avatar",
+  "logo",
+].map((name) => {
   const buffer = readFileSync(
     path.join(directory, "seed-assets", `${name}.png`),
   );
@@ -62,6 +77,15 @@ export const STARTER_ASSETS = ["landscape", "square", "avatar"].map((name) => {
   };
 });
 export const STARTER_IMAGE_ASSET_ID = STARTER_ASSETS[0].id;
+// The placeholders an earlier seed uploaded (landscape, square, avatar).
+// `unseed` removes them too, so a dataset seeded before the switch to Relume's
+// placeholders empties fully and can be seeded again. `seed` never uploads
+// them.
+export const LEGACY_STARTER_ASSET_IDS = [
+  "image-7024d190e286aa9315cdd9ca3f703b12bdcda915-2667x2000-png",
+  "image-f22be1a853ae734ce1b9381ef017d1e150347496-2666x2666-png",
+  "image-87fcecbcf3ba2042d7c1c86245b9d3d19e0fb532-512x512-png",
+];
 const placeholder = (name) => ({
   _type: "image",
   alt: "Neutral placeholder image.",
@@ -101,6 +125,28 @@ const meta = (title, description) => ({
   image: imageRef,
 });
 
+// The Block library page's id before "section" became "block".
+export const LEGACY_BLOCK_LIBRARY_PAGE_ID = "starter-page-section-library";
+
+// The Block library: a Light and a Dark page for every block imported from
+// Relume, to look at and to copy from. The index that lists them is a
+// Website route, not a seeded page.
+const blockLibrary = blockLibraryPages({
+  button: (key, text) => button(key, text, "homePage"),
+  image: placeholder,
+});
+export const BLOCK_LIBRARY_BLOCK_PAGE_IDS = blockLibrary.blockPages.map(
+  (page) => page._id,
+);
+
+// Pages an earlier seed wrote that this one no longer does: the "Section
+// library" page, and the Block library's index and category pages. `unseed`
+// deletes them where they are still present, so such a dataset empties fully.
+export const RETIRED_STARTER_PAGE_IDS = [
+  LEGACY_BLOCK_LIBRARY_PAGE_ID,
+  ...blockLibrary.retiredPageIds,
+];
+
 export const STARTER_DOCUMENT_TYPES = new Map([
   ["settings", "settings"],
   ["navigation", "navigation"],
@@ -109,6 +155,7 @@ export const STARTER_DOCUMENT_TYPES = new Map([
   ["blogIndex", "blogIndex"],
   ["blogPostSettings", "blogPostSettings"],
   ["starter-page-about", "page"],
+  ...BLOCK_LIBRARY_BLOCK_PAGE_IDS.map((id) => [id, "page"]),
   ["starter-category-notes", "category"],
   ["starter-post-field-guide", "post"],
   ["starter-faq-getting-started", "faq"],
@@ -238,10 +285,10 @@ export const starterDocuments = [
         _key: "starter-page-archived-scaffold",
         _type: "scaffold",
         name: "About page intro",
-        proposedSectionShape: "Short intro with an eyebrow and one paragraph.",
+        proposedBlockShape: "Short intro with an eyebrow and one paragraph.",
         richText: simpleText(
           "starter-page-archived-copy",
-          "This Scaffold was replaced by the rich text section above. It must not appear on the page.",
+          "This Scaffold was replaced by the rich text block above. It must not appear on the page.",
         ),
       },
     ],
@@ -300,6 +347,18 @@ export const starterDocuments = [
       },
     ],
   },
+  ...blockLibrary.blockPages.map(
+    ({ slug: current, ...page }) => ({
+      ...page,
+      _type: "page",
+      ...marker,
+      slug: slug(current),
+      meta: meta(
+        `${page.title} | Starter Example`,
+        "Example metadata for a seeded Block library page.",
+      ),
+    }),
+  ),
   {
     _id: "blogIndex",
     _type: "blogIndex",
@@ -337,7 +396,7 @@ export const starterDocuments = [
         title: "Matching themes join at a seam.",
         richText: simpleText(
           "starter-home-seam-copy",
-          "This section shares the Light theme above it, so each side contributes half its padding.",
+          "This block shares the Light theme above it, so each side contributes half its padding.",
         ),
       },
       {
@@ -347,14 +406,14 @@ export const starterDocuments = [
         title: "A different theme forms an edge.",
         richText: simpleText(
           "starter-home-edge-copy",
-          "This Dark section keeps full padding on both sides of the join.",
+          "This Dark block keeps full padding on both sides of the join.",
         ),
       },
       {
         _key: "starter-home-scaffold",
         _type: "scaffold",
         name: "Reader quotes",
-        proposedSectionShape:
+        proposedBlockShape:
           "Two or three short quotes with the reader's name and role.",
         richText: simpleText(
           "starter-home-scaffold-copy",
@@ -498,7 +557,12 @@ export function createSanitySeedClient() {
 }
 
 async function assertDatasetIsEmpty(client) {
-  const count = await client.fetch('count(*[!(_id in path("_.**"))])');
+  // Raw, so drafts count too: the client's default perspective hides them.
+  const count = await client.fetch(
+    'count(*[!(_id in path("_.**"))])',
+    {},
+    { perspective: "raw" },
+  );
   if (count !== 0) {
     throw new Error(
       `Seed refused: destination dataset is not empty (${count} documents found).`,
@@ -506,32 +570,72 @@ async function assertDatasetIsEmpty(client) {
   }
 }
 
-function hasStarterMarker(document) {
+const DRAFT_PREFIX = "drafts.";
+const isDraftId = (id) => id.startsWith(DRAFT_PREFIX);
+
+// The published id of a Starter document or its draft.
+function publishedId(id) {
+  return isDraftId(id) ? id.slice(DRAFT_PREFIX.length) : id;
+}
+
+// A Block library page: a block page the current shelf makes, a retired
+// category page, or a page an earlier seed made for a block or category the
+// shelf no longer has.
+function isBlockLibraryPage(id) {
+  return id.startsWith(BLOCK_LIBRARY_ID_PREFIX);
+}
+
+function expectedStarterType(id) {
+  const published = publishedId(id);
+  return (
+    STARTER_DOCUMENT_TYPES.get(published) ??
+    RETIRED_STARTER_DOCUMENT_TYPES.get(published) ??
+    (RETIRED_STARTER_PAGE_IDS.includes(published) || isBlockLibraryPage(published)
+      ? "page"
+      : undefined)
+  );
+}
+
+function assertOwnedDocument(document) {
+  const expectedType = expectedStarterType(document?._id);
+  if (!expectedType || document._type !== expectedType) return false;
   return (
     document._starterSeed?.name === STARTER_SEED.name &&
     document._starterSeed?.version === STARTER_SEED.version
   );
 }
 
-function assertOwnedDocument(document) {
-  const expectedType =
-    STARTER_DOCUMENT_TYPES.get(document?._id) ??
-    RETIRED_STARTER_DOCUMENT_TYPES.get(document?._id);
-  if (!expectedType || document._type !== expectedType) return false;
-  return hasStarterMarker(document);
-}
-
+// Every Starter document and its draft (`pnpm page:seed` writes drafts),
+// including retired pages and Block library pages the shelf no longer makes.
 async function getStarterDocuments(client) {
-  return client.fetch("*[_id in $ids]{_id,_type,_starterSeed}", {
-    ids: [...STARTER_DOCUMENT_TYPES.keys(), ...RETIRED_STARTER_DOCUMENT_IDS],
-  });
+  const ids = [
+    ...STARTER_DOCUMENT_TYPES.keys(),
+    ...RETIRED_STARTER_PAGE_IDS,
+    ...RETIRED_STARTER_DOCUMENT_IDS,
+  ];
+  return client.fetch(
+    "*[_id in $ids || string::startsWith(_id, $libraryPrefix) || string::startsWith(_id, $draftLibraryPrefix)]{_id,_type,_starterSeed}",
+    {
+      ids: [...ids, ...ids.map((id) => `${DRAFT_PREFIX}${id}`)],
+      libraryPrefix: BLOCK_LIBRARY_ID_PREFIX,
+      draftLibraryPrefix: `${DRAFT_PREFIX}${BLOCK_LIBRARY_ID_PREFIX}`,
+    },
+    { perspective: "raw" },
+  );
 }
 
 async function assertOwnedSeedSet(client) {
   const documents = await getStarterDocuments(client);
-  const foundIds = new Set(documents.map((document) => document._id));
+  // Only published documents count as present; a draft alone does not.
+  const foundIds = new Set(
+    documents
+      .filter((document) => !isDraftId(document._id))
+      .map((document) => document._id),
+  );
+  // Block pages are optional: a dataset seeded before a block joined the
+  // shelf lacks its pages.
   const missing = [...STARTER_DOCUMENT_TYPES.keys()].filter(
-    (id) => !foundIds.has(id),
+    (id) => !foundIds.has(id) && !isBlockLibraryPage(id),
   );
   if (missing.length) {
     throw new Error(
@@ -544,8 +648,7 @@ async function assertOwnedSeedSet(client) {
       `Unseed refused: these IDs are not marked as Starter seed content: ${unsafe.map((document) => document._id).join(", ")}.`,
     );
   }
-  // The retired documents an older seed left behind, each checked above.
-  return RETIRED_STARTER_DOCUMENT_IDS.filter((id) => foundIds.has(id));
+  return documents;
 }
 
 export async function seed(client) {
@@ -570,19 +673,41 @@ export async function seed(client) {
 }
 
 export async function unseed(client) {
-  const retiredIds = await assertOwnedSeedSet(client);
-  // Never delete replacement images uploaded by an editor.
-  const assetIds = STARTER_ASSETS.map((asset) => asset.id);
+  const found = await assertOwnedSeedSet(client);
+  // Never delete replacement images uploaded by an editor. Deleting an ID
+  // that is not in the dataset does nothing, so the legacy IDs are safe to
+  // list for datasets seeded after the switch.
+  const assetIds = [
+    ...STARTER_ASSETS.map((asset) => asset.id),
+    ...LEGACY_STARTER_ASSET_IDS,
+  ];
+  // Pages an earlier seed made that this one does not (retired pages, and
+  // pages for blocks the shelf no longer has), and drafts `pnpm page:seed`
+  // wrote. All passed the ownership check above.
+  const foundIds = found.map((document) => document._id);
+  const stalePageIds = foundIds.filter(
+    (id) => !isDraftId(id) && !STARTER_DOCUMENT_TYPES.has(id),
+  );
+  const draftIds = foundIds.filter(isDraftId);
+  // Retired ids are listed whether found or not: deleting an id that is not
+  // in the dataset does nothing.
+  const documentIds = [
+    ...new Set([
+      ...STARTER_DOCUMENT_TYPES.keys(),
+      ...RETIRED_STARTER_PAGE_IDS,
+      ...stalePageIds,
+      ...draftIds,
+    ]),
+  ];
   let transaction = client.transaction();
-  for (const id of [
-    ...STARTER_DOCUMENT_TYPES.keys(),
-    ...retiredIds,
-    ...assetIds,
-  ]) {
+  for (const id of [...documentIds, ...assetIds]) {
     transaction = transaction.delete(id);
   }
   await transaction.commit();
-  return { documents: STARTER_DOCUMENT_TYPES.size, assets: assetIds.length };
+  return {
+    documents: STARTER_DOCUMENT_TYPES.size + stalePageIds.length,
+    assets: assetIds.length,
+  };
 }
 
 async function main() {

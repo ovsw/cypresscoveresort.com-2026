@@ -15,7 +15,6 @@ export const client = createClient({
       const fieldsToDisableStega = [
         "buttonVariant",
         "colorVariant",
-        "sectionWidth",
         "indicators",
         "size",
         "gridColumns",

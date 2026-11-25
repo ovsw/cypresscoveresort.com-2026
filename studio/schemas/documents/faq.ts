@@ -9,7 +9,7 @@ export default defineType({
   type: "document",
   icon: ListCollapse,
   description:
-    "A reusable question and answer that can be selected in FAQ sections.",
+    "A reusable question and answer that can be selected in FAQ blocks.",
   initialValue: {
     title: "What should visitors know before getting started?",
     body: [
@@ -42,7 +42,7 @@ export default defineType({
       name: "body",
       title: "Answer",
       type: "simpleRichText",
-      description: "The reusable answer shown inside FAQ sections.",
+      description: "The reusable answer shown inside FAQ blocks.",
       validation: (rule) =>
         requiredRichText(rule, "Add the answer. An FAQ without it is not shown."),
     }),

@@ -4,7 +4,8 @@ import { mkdtemp, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { main, withKeys } from "./seed-page-draft.mjs";
-import { matchedPageId, normalizeSlug, selectPage, sectionText } from "./lib/page-text.mjs";
+import { BLOCK_LIBRARY_BLOCK_PAGE_IDS as LIBRARY_PAGE_IDS } from "./seed.mjs";
+import { matchedPageId, normalizeSlug, selectPage, blockText } from "./lib/page-text.mjs";
 
 test("text selection prefers drafts and supports published-only reads", () => {
   const published = { _id: "page", title: "Live" };
@@ -24,17 +25,17 @@ test("a slug match on either copy of a page resolves to its published id", () =>
   assert.equal(matchedPageId([]), undefined);
 });
 
-test("section text keeps rich text and nested labels", () => {
-  assert.equal(sectionText({ title: "Intro", body: [{ _type: "block", children: [{ text: "First" }, { text: " second" }] }], buttons: [{ text: "Read more" }] }), "title: Intro\nFirst second\ntext: Read more");
+test("block text keeps rich text and nested labels", () => {
+  assert.equal(blockText({ title: "Intro", body: [{ _type: "block", children: [{ text: "First" }, { text: " second" }] }], buttons: [{ text: "Read more" }] }), "title: Intro\nFirst second\ntext: Read more");
 });
 
-test("section text preserves mixed rich-text item order and table cells", () => {
-  const block = (text) => ({ _type: "block", children: [{ text }] });
-  const section = {
+test("block text preserves mixed rich-text item order and table cells", () => {
+  const paragraph = (text) => ({ _type: "block", children: [{ text }] });
+  const block = {
     body: [
-      block("Before"),
-      { _type: "callout", title: "Note", body: [block("Inside note")] },
-      block("Between"),
+      paragraph("Before"),
+      { _type: "callout", title: "Note", body: [paragraph("Inside note")] },
+      paragraph("Between"),
       {
         _type: "table",
         rows: [
@@ -42,24 +43,24 @@ test("section text preserves mixed rich-text item order and table cells", () => 
           { _type: "tableRow", cells: ["Camp", "$25"] },
         ],
       },
-      block("After"),
+      paragraph("After"),
     ],
   };
   assert.equal(
-    sectionText(section),
+    blockText(block),
     "Before\ntitle: Note\nInside note\nBetween\nName | Price\nCamp | $25\nAfter",
   );
 });
 
 test("table text keeps empty cell positions without printing non-text metadata", () => {
   assert.equal(
-    sectionText({ rows: [{ cells: ["First", "", "Third"] }], tags: ["internal"], _key: "hidden" }),
+    blockText({ rows: [{ cells: ["First", "", "Third"] }], tags: ["internal"], _key: "hidden" }),
     "First |  | Third",
   );
 });
 
 test("array keys are stable and existing keys remain", () => {
-  const value = [{ _type: "section", children: [{ text: "Example" }] }, { _key: "keep" }];
+  const value = [{ _type: "exampleBlock", children: [{ text: "Example" }] }, { _key: "keep" }];
   assert.deepEqual(withKeys(value), withKeys(value));
   assert.equal(withKeys(value)[1]._key, "keep");
   assert.ok(withKeys(value)[0].children[0]._key);
@@ -110,7 +111,7 @@ test("an existing-page seed may omit blocks, and new supporting drafts are creat
   };
   const client = {
     config: () => ({ projectId: "test", dataset: "test" }),
-    fetch: async (_query, { id }) => id === "drafts.example" ? { _id: id, _rev: "revision-1", title: "Old title", slug: { current: "example" }, blocks: [{ _key: "keep", _type: "section" }] } : null,
+    fetch: async (_query, { id }) => id === "drafts.example" ? { _id: id, _rev: "revision-1", title: "Old title", slug: { current: "example" }, blocks: [{ _key: "keep", _type: "exampleBlock" }] } : null,
     transaction() { return transaction; },
   };
   try {
@@ -120,6 +121,77 @@ test("an existing-page seed may omit blocks, and new supporting drafts are creat
     assert.equal(fields.title, "New title");
     assert.deepEqual(fields.blocks.map((block) => block._key), ["keep"]);
   } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test("a seed's remove list deletes each id and its draft in the same transaction, after the writes", async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), "page-tools-"));
+  const file = path.join(directory, "seed.mjs");
+  await writeFile(file, 'export default { page: { _id: "new-page", slug: "new-page", title: "New" }, remove: ["old-page"] };');
+  const calls = [];
+  const transaction = {
+    create(document) { calls.push(["create", document._id]); },
+    delete(id) { calls.push(["delete", id]); },
+    async commit() { calls.push(["commit"]); },
+  };
+  const client = {
+    config: () => ({ projectId: "test", dataset: "test" }),
+    fetch: async () => null,
+    transaction() { calls.push(["transaction"]); return transaction; },
+  };
+  const log = console.log;
+  const printed = [];
+  console.log = (line) => printed.push(line);
+  try {
+    await main([file], () => client);
+    assert.deepEqual(calls, []);
+    assert.deepEqual(JSON.parse(printed[0]).remove, ["old-page", "drafts.old-page"]);
+    await main([file, "--apply"], () => client);
+    assert.deepEqual(calls, [["transaction"], ["create", "drafts.new-page"], ["delete", "old-page"], ["delete", "drafts.old-page"], ["commit"]]);
+  } finally {
+    console.log = log;
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+// A site without Relume blocks has no Block library pages to seed.
+test("the Block library seed writes the block pages and removes the retired pages", {
+  skip: LIBRARY_PAGE_IDS.length === 0 && "this site has no Relume blocks",
+}, async () => {
+  const { default: librarySeed } = await import("./block-library-page.seed.mjs");
+  const { STARTER_SEED, BLOCK_LIBRARY_BLOCK_PAGE_IDS, RETIRED_STARTER_PAGE_IDS } = await import("./seed.mjs");
+  // The block pages, the same pages `pnpm seed` writes: the first is the
+  // seed's page, the rest its supporting drafts.
+  assert.deepEqual(
+    [librarySeed.page._id, ...librarySeed.documents.map((document) => document._id)],
+    BLOCK_LIBRARY_BLOCK_PAGE_IDS,
+  );
+  assert.match(librarySeed.page.slug, /^block-library(\/[a-z0-9-]+){2,3}$/);
+  // unseed removes only marked Starter documents, so every page carries the marker.
+  assert.deepEqual(librarySeed.page._starterSeed, STARTER_SEED);
+  for (const document of librarySeed.documents) {
+    assert.equal(document._type, "page");
+    assert.match(document.slug.current, /^block-library(\/[a-z0-9-]+){2,3}$/);
+    assert.deepEqual(document._starterSeed, STARTER_SEED);
+  }
+  // The index (now a Website route), the category pages and the Section
+  // library page before them are deleted, and nothing else.
+  assert.deepEqual(librarySeed.remove, RETIRED_STARTER_PAGE_IDS);
+  assert.deepEqual(librarySeed.remove.slice(0, 2), [
+    "starter-page-section-library",
+    "starter-page-block-library",
+  ]);
+  for (const id of librarySeed.remove.slice(2)) {
+    assert.match(id, /^starter-page-block-library-[a-z0-9-]+$/);
+    assert.equal(BLOCK_LIBRARY_BLOCK_PAGE_IDS.includes(id), false, id);
+  }
+  // Block pages link to each other by slug, never by reference.
+  const references = [];
+  (function collect(value) {
+    if (!value || typeof value !== "object") return;
+    if (value._type === "reference" && value._ref.startsWith("starter-page-block-library")) references.push(value);
+    for (const child of Object.values(value)) collect(child);
+  })([librarySeed.page, ...librarySeed.documents]);
+  assert.deepEqual(references, []);
 });
 
 test("page URLs lose their query string and fragment", () => {

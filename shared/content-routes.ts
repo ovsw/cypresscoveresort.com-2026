@@ -64,6 +64,8 @@ export function isApplicationPath(value?: string | null) {
     path === "/" ||
     path === "/blog" ||
     path === "/blog/category" ||
+    // The Block library index; its block pages below it are Sanity pages.
+    path === "/block-library" ||
     path === "/contact/thanks" ||
     path === "/favicon.ico" ||
     path === "/robots.txt" ||
