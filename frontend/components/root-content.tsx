@@ -1,6 +1,8 @@
 import { PageHeading } from "@/components/shadcnblocks/page-heading";
+import { BlockLibraryBar } from "@/components/block-library-bar";
+import { blockLibraryBlockPage } from "@/lib/block-library";
 import { createDataAttribute, stegaClean } from "next-sanity";
-import Blocks from "@/components/blocks";
+import Blocks, { leadsWithHero } from "@/components/blocks";
 import BlogPostingJsonLd from "@/components/blog-posting-json-ld";
 import BreadcrumbJsonLd from "@/components/breadcrumb-json-ld";
 import { siteUrl } from "@/lib/site-url";
@@ -32,7 +34,11 @@ function PageContent({
   stega: boolean;
 }) {
   const blocks = page.blocks ?? [];
-  const needsTitleHeader = stegaClean(page.title)?.trim();
+  const heroLeads = leadsWithHero(blocks);
+  // A Block library block page shows its title in the small bar instead.
+  const libraryBlockPage = blockLibraryBlockPage(page);
+  const needsTitleHeader =
+    !libraryBlockPage && !heroLeads && stegaClean(page.title)?.trim();
   const rootDataAttribute = stega
     ? (path: "description" | "title") =>
         createDataAttribute({
@@ -66,9 +72,17 @@ function PageContent({
           descriptionAttribute={rootDataAttribute?.("description")}
         />
       ) : null}
+      {libraryBlockPage ? (
+        <BlockLibraryBar
+          page={libraryBlockPage}
+          title={page.title}
+          titleIsHeading={!heroLeads}
+        />
+      ) : null}
       <Blocks
         blocks={blocks}
         documentId={page._id}
+        heroLeads={heroLeads}
         perspective={perspective}
         stega={stega}
       />

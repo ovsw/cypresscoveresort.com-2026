@@ -25,7 +25,7 @@ const registrations = [
   "frontend/components/blocks/index.tsx",
 ];
 const script = "scripts/create-page-builder-block.mjs";
-const boundaries = "frontend/components/blocks/section-boundaries.ts";
+const boundaries = "frontend/components/blocks/block-boundaries.ts";
 const exec = promisify(execFile);
 const requireFrontend = createRequire(join(root, "frontend/package.json"));
 
@@ -139,8 +139,8 @@ for (const scope of ["content", "general", "home"])
       "utf8",
     );
     assert.ok(schema.includes(`title: ${JSON.stringify(title)}`));
-    assert.match(schema, /import sectionTheme from "\.\/shared\/section-theme"/);
-    assert.match(schema, /fields: \[\n    sectionTheme,/);
+    assert.match(schema, /import blockTheme from "\.\/shared\/block-theme"/);
+    assert.match(schema, /fields: \[\n    blockTheme,/);
     const query = await readFile(
       join(f.dir, "frontend/sanity/queries/sample-feature.ts"),
       "utf8",
@@ -179,7 +179,7 @@ for (const scope of ["content", "general", "home"])
     );
     const exports = load(component, "sample-feature.tsx", {
       ...stubs,
-      "./section-boundaries": scene,
+      "./block-boundaries": scene,
     });
     assert.equal(exports.default({ _key: "test", title: null }), null);
     assert.equal(exports.hasSampleFeatureContent({ title: "  " }), false);
@@ -198,7 +198,7 @@ for (const scope of ["content", "general", "home"])
     assert.equal(rendered.props["data-sanity"], "edit:theme");
     assert.equal(
       rendered.props.className,
-      scene.sectionSceneClassName("light", "outer", "outer"),
+      scene.blockSceneClassName("light", "outer", "outer"),
     );
     const themed = exports.default({
       _key: "test",
@@ -209,7 +209,7 @@ for (const scope of ["content", "general", "home"])
     });
     assert.equal(
       themed.props.className,
-      scene.sectionSceneClassName("dark", "seam", "edge"),
+      scene.blockSceneClassName("dark", "seam", "edge"),
     );
     const [heading, paragraph] =
       rendered.props.children.props.children.props.children;

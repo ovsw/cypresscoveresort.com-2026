@@ -8,7 +8,7 @@ export default defineType({
   type: "document",
   icon: Quote,
   description:
-    "A reusable customer or stakeholder quote that can be referenced by project-specific sections.",
+    "A reusable customer or stakeholder quote that can be referenced by site-specific blocks.",
   initialValue: {
     rating: 5,
   },

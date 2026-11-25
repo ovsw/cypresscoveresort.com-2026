@@ -5,7 +5,7 @@ import { richTextContentQuery } from "./shared/rich-text-content";
 export const scaffoldQuery = groq`
   _type == "scaffold" => {
     name,
-    proposedSectionShape,
+    proposedBlockShape,
     richText[]{
       ${richTextContentQuery}
     }

@@ -8,12 +8,16 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-const paths = {
-  blockTypes: resolve(repoRoot, "studio/schemas/blocks/page-builder.ts"),
-  schemaTypes: resolve(repoRoot, "studio/schema-types.ts"),
-  queries: resolve(repoRoot, "frontend/sanity/queries/page-builder.ts"),
-  components: resolve(repoRoot, "frontend/components/blocks/index.tsx"),
-};
+// The four files that register a block. `root` is the repository to work in:
+// this one by default; `pnpm relume:add` and its tests pass another.
+function registrationPaths(root = repoRoot) {
+  return {
+    blockTypes: resolve(root, "studio/schemas/blocks/page-builder.ts"),
+    schemaTypes: resolve(root, "studio/schema-types.ts"),
+    queries: resolve(root, "frontend/sanity/queries/page-builder.ts"),
+    components: resolve(root, "frontend/components/blocks/index.tsx"),
+  };
+}
 
 const scopeMarkers = {
   content: "  // page-builder-generator:content-types",
@@ -131,14 +135,14 @@ function insertAtMarker(source, marker, line, file) {
 
 function schemaTemplate({ camel, title }) {
   return `import { defineField, defineType } from "sanity";
-import sectionTheme from "./shared/section-theme";
+import blockTheme from "./shared/block-theme";
 
 export default defineType({
   name: "${camel}",
   title: ${JSON.stringify(title)},
   type: "object",
   fields: [
-    sectionTheme,
+    blockTheme,
     defineField({
       name: "title",
       type: "string",
@@ -179,10 +183,10 @@ function componentTemplate({ camel, kebab, pascal }) {
   return `import type { HOME_PAGE_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity.types";
 import { stegaClean } from "next-sanity";
 import {
-  resolveSectionTheme,
-  sectionSceneClassName,
-  type SectionSceneProps,
-} from "./section-boundaries";
+  resolveBlockTheme,
+  blockSceneClassName,
+  type BlockSceneProps,
+} from "./block-boundaries";
 
 type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
@@ -192,9 +196,9 @@ type ${pascal}Block = Extract<PageBlock, { _type: "${camel}" }>;
 
 type ${pascal}Props = ${pascal}Block & {
   dataAttribute?: (path: string) => string | undefined;
-} & SectionSceneProps;
+} & BlockSceneProps;
 
-// The Page Builder excludes sections without content from visible adjacency.
+// The Page Builder excludes blocks without content from visible adjacency.
 // Keep this rule aligned with the renderer's empty result below.
 export function has${pascal}Content(block: Pick<${pascal}Block, "title">) {
   return Boolean(stegaClean(block.title)?.trim());
@@ -216,7 +220,7 @@ export default function ${pascal}({
   return (
     <section
       aria-labelledby={headingId}
-      className={sectionSceneClassName(resolveSectionTheme(theme), top, bottom)}
+      className={blockSceneClassName(resolveBlockTheme(theme), top, bottom)}
       data-sanity={dataAttribute?.("theme")}
       id={\`${kebab}-\${stegaClean(_key)}\`}
     >
@@ -245,20 +249,95 @@ export default function ${pascal}({
 `;
 }
 
-export async function buildPlan(options) {
-  const names = getNames(options.name, options.title);
-  const targets = {
-    schema: resolve(repoRoot, `studio/schemas/blocks/${names.kebab}.ts`),
-    query: resolve(repoRoot, `frontend/sanity/queries/${names.kebab}.ts`),
-    component: resolve(
-      repoRoot,
-      `frontend/components/blocks/${names.kebab}.tsx`,
-    ),
-    preview: resolve(
-      repoRoot,
-      `studio/static/images/preview/${names.camel}.jpg`,
-    ),
+// `options.dir` and `options.fileName` place the three files in a subfolder
+// under another file name, and `options.templates` supplies their contents.
+// The Relume importer (scripts/relume/convert.mjs) uses them; the command
+// line does not.
+function blockFile(options, names) {
+  if (
+    [options.dir, options.fileName].some(
+      (part) => part !== undefined && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(part),
+    )
+  ) {
+    throw new Error("dir and fileName must be kebab-case");
+  }
+  return `${options.dir ? `${options.dir}/` : ""}${options.fileName ?? names.kebab}`;
+}
+
+function blockTargets(root, file, names) {
+  return {
+    schema: resolve(root, `studio/schemas/blocks/${file}.ts`),
+    query: resolve(root, `frontend/sanity/queries/${file}.ts`),
+    component: resolve(root, `frontend/components/blocks/${file}.tsx`),
+    preview: resolve(root, `studio/static/images/preview/${names.camel}.jpg`),
   };
+}
+
+// Each registration line the generator writes for a block, by file and by
+// the marker it goes above. Registering inserts them; unregistering removes
+// exactly these lines, so the two cannot drift apart.
+function registrationLines(names, file, scope) {
+  return {
+    blockTypes: [
+      [scopeMarkers[scope], `  "${names.camel}",`],
+      ["  // page-builder-generator:preview-types", `  "${names.camel}",`],
+    ],
+    schemaTypes: [
+      [
+        "// page-builder-generator:block-imports",
+        `import ${names.camel} from "./schemas/blocks/${file}";`,
+      ],
+      ["  // page-builder-generator:block-types", `  ${names.camel},`],
+    ],
+    queries: [
+      [
+        "// page-builder-generator:query-imports",
+        `import { ${names.camel}Query } from "./${file}";`,
+      ],
+      [
+        '    ${"" /* page-builder-generator:query-spreads */}',
+        `    \${${names.camel}Query},`,
+      ],
+    ],
+    components: [
+      [
+        "// page-builder-generator:component-imports",
+        `import ${names.pascal}, { has${names.pascal}Content } from "@/components/blocks/${file}";`,
+      ],
+      ["  // page-builder-generator:editing-types", `  "${names.camel}",`],
+      [
+        "  // page-builder-generator:component-map",
+        `  ${names.camel}: ${names.pascal},`,
+      ],
+      [
+        "  // page-builder-generator:visible-blocks",
+        `  if (block._type === "${names.camel}") return has${names.pascal}Content(block);`,
+      ],
+    ],
+  };
+}
+
+function registeredPattern(camel) {
+  return new RegExp(`(?:["']${camel}["']|\\b${camel}\\s*:)`);
+}
+
+async function readRegistrations(paths) {
+  return Object.fromEntries(
+    await Promise.all(
+      Object.entries(paths).map(async ([key, file]) => [
+        key,
+        await readFile(file, "utf8"),
+      ]),
+    ),
+  );
+}
+
+export async function buildPlan(options) {
+  const root = options.root ?? repoRoot;
+  const paths = registrationPaths(root);
+  const names = getNames(options.name, options.title);
+  const file = blockFile(options, names);
+  const targets = blockTargets(root, file, names);
 
   for (const file of [
     targets.schema,
@@ -277,98 +356,87 @@ export async function buildPlan(options) {
     }
   }
 
-  const originals = Object.fromEntries(
-    await Promise.all(
-      Object.entries(paths).map(async ([key, file]) => [
-        key,
-        await readFile(file, "utf8"),
-      ]),
-    ),
-  );
+  const originals = await readRegistrations(paths);
   if (
     Object.values(originals).some((source) =>
-      new RegExp(`(?:["']${names.camel}["']|\\b${names.camel}\\s*:)`).test(
-        source,
-      ),
+      registeredPattern(names.camel).test(source),
     )
   )
     throw new Error(`Block is already registered: ${names.camel}`);
 
-  let blockTypes = insertAtMarker(
-    originals.blockTypes,
-    scopeMarkers[options.scope],
-    `  "${names.camel}",`,
-    paths.blockTypes,
-  );
-  if (options.preview) {
-    blockTypes = insertAtMarker(
-      blockTypes,
-      "  // page-builder-generator:preview-types",
-      `  "${names.camel}",`,
-      paths.blockTypes,
-    );
-  }
-
-  const schemaTypes = insertAtMarker(
-    insertAtMarker(
-      originals.schemaTypes,
-      "// page-builder-generator:block-imports",
-      `import ${names.camel} from "./schemas/blocks/${names.kebab}";`,
-      paths.schemaTypes,
-    ),
-    "  // page-builder-generator:block-types",
-    `  ${names.camel},`,
-    paths.schemaTypes,
-  );
-
-  const queries = insertAtMarker(
-    insertAtMarker(
-      originals.queries,
-      "// page-builder-generator:query-imports",
-      `import { ${names.camel}Query } from "./${names.kebab}";`,
-      paths.queries,
-    ),
-    '    ${"" /* page-builder-generator:query-spreads */}',
-    `    \${${names.camel}Query},`,
-    paths.queries,
-  );
-
-  const components = insertAtMarker(
-    insertAtMarker(
-      insertAtMarker(
-        insertAtMarker(
-          originals.components,
-          "// page-builder-generator:component-imports",
-          `import ${names.pascal}, { has${names.pascal}Content } from "@/components/blocks/${names.kebab}";`,
-          paths.components,
-        ),
-        "  // page-builder-generator:editing-types",
-        `  "${names.camel}",`,
-        paths.components,
+  const lines = registrationLines(names, file, options.scope);
+  if (!options.preview) lines.blockTypes.pop();
+  const registrations = Object.fromEntries(
+    Object.entries(lines).map(([key, inserts]) => [
+      key,
+      inserts.reduce(
+        (source, [marker, line]) =>
+          insertAtMarker(source, marker, line, paths[key]),
+        originals[key],
       ),
-      "  // page-builder-generator:component-map",
-      `  ${names.camel}: ${names.pascal},`,
-      paths.components,
-    ),
-    "  // page-builder-generator:visible-blocks",
-    `  if (block._type === "${names.camel}") return has${names.pascal}Content(block);`,
-    paths.components,
+    ]),
   );
 
   return {
     names,
     originals,
-    registrations: { blockTypes, schemaTypes, queries, components },
+    paths,
+    registrations,
     targets,
     templates: {
       schema: schemaTemplate(names),
       query: queryTemplate(names),
       component: componentTemplate(names),
+      ...options.templates,
     },
   };
 }
 
+/**
+ * The inverse of buildPlan: the registrations without the block's lines, and
+ * the block's files that exist. Throws, before anything is written, when the
+ * block is not registered or a registration names it in a line the generator
+ * did not write.
+ */
+export async function buildRemovalPlan(options) {
+  const root = options.root ?? repoRoot;
+  const paths = registrationPaths(root);
+  const names = getNames(options.name, options.title);
+  const file = blockFile(options, names);
+  const targets = blockTargets(root, file, names);
+  const originals = await readRegistrations(paths);
+  const pattern = registeredPattern(names.camel);
+  if (!Object.values(originals).some((source) => pattern.test(source))) {
+    throw new Error(`Block is not registered: ${names.camel}`);
+  }
+  const lines = registrationLines(names, file, "content");
+  const registrations = {};
+  for (const [key, source] of Object.entries(originals)) {
+    const remove = new Set(lines[key].map(([, line]) => line));
+    const kept = source
+      .split("\n")
+      .filter((line) => !remove.has(line))
+      .join("\n");
+    if (pattern.test(kept)) {
+      throw new Error(
+        `${paths[key]} still names ${names.camel} after removing its generated lines. Remove it there by hand, then run again.`,
+      );
+    }
+    registrations[key] = kept;
+  }
+  return {
+    names,
+    originals,
+    paths,
+    registrations,
+    targets: Object.fromEntries(
+      Object.entries(targets).filter(([, target]) => existsSync(target)),
+    ),
+  };
+}
+
 export async function applyPlan(plan, options, io = { writeFile, copyFile }) {
+  const { paths } = plan;
   const created = [];
   const updated = [];
   try {

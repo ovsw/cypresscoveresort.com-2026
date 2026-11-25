@@ -135,8 +135,14 @@ ticket, or using TDD, read `docs/agents/build-flow.md`.
 
 ### Page Builder work
 
-Before adding or changing a Page Builder section, its fields, or its stored
+Before adding or changing a Page Builder block, its fields, or its stored
 content shape, read `docs/agents/page-builder.md`.
+
+### Relume blocks
+
+Before pulling, converting, or changing a block converted from Relume
+(`relume/`, `scripts/relume/`, any `relume*` block), read
+`docs/agents/relume-import.md`.
 
 ### Development workflow
 

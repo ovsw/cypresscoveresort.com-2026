@@ -1,6 +1,6 @@
 # Fresh-clone proof
 
-Run this once before publishing a new Starter revision. Use a new repository created from the public template and a new, empty Sanity dataset owned by that repository.
+Run this once before publishing a new Starter revision. Use a new repository created from the private template and a new, empty Sanity dataset owned by that repository.
 
 1. Confirm the repository is public, marked as a template, and uses `main` as its default branch.
 2. Use Node.js 24.19.0 and pnpm 11.10.0, then run `pnpm install --frozen-lockfile`.

@@ -16,13 +16,13 @@ function scaffoldProps(overrides: Record<string, unknown> = {}) {
     _key: "draft",
     _type: "scaffold",
     name: "Pricing overview",
-    proposedSectionShape: "Three tier cards with one highlighted plan.",
+    proposedBlockShape: "Three tier cards with one highlighted plan.",
     richText: [paragraph("draft-body", "Plans start at a flat monthly fee.")],
     ...overrides,
   } as unknown as ComponentProps<typeof Scaffold>;
 }
 
-describe("Scaffold section", () => {
+describe("Scaffold block", () => {
   it("renders the rich text with a visible internal marker", () => {
     const { container } = render(<Scaffold {...scaffoldProps()} />);
 
@@ -38,7 +38,7 @@ describe("Scaffold section", () => {
   });
 
   it("keeps the marker when the proposed shape is missing", () => {
-    render(<Scaffold {...scaffoldProps({ proposedSectionShape: null })} />);
+    render(<Scaffold {...scaffoldProps({ proposedBlockShape: null })} />);
 
     expect(screen.getByText("Pricing overview")).toBeInTheDocument();
     expect(screen.queryByText(/Proposed shape/)).not.toBeInTheDocument();

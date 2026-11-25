@@ -41,7 +41,6 @@ import rateRow from "./schemas/objects/rate-row";
 import blockContent from "./schemas/blocks/shared/block-content";
 import link from "./schemas/blocks/shared/link";
 import { colorVariant } from "./schemas/blocks/shared/color-variant";
-import sectionPadding from "./schemas/blocks/shared/section-padding";
 import customUrl from "./schemas/blocks/shared/custom-url";
 import customLink from "./schemas/blocks/shared/custom-link";
 import button from "./schemas/blocks/shared/button";
@@ -55,6 +54,17 @@ import {
 // Schema UI objects
 import richTextBlock from "./schemas/blocks/rich-text-block";
 import scaffold from "./schemas/blocks/scaffold";
+import relumeHeader103 from "./schemas/blocks/relume/header103";
+import relumeLayout488 from "./schemas/blocks/relume/layout488";
+import relumeLayout348 from "./schemas/blocks/relume/layout348";
+import relumeTestimonial18 from "./schemas/blocks/relume/testimonial18";
+import relumeGallery24 from "./schemas/blocks/relume/gallery24";
+import relumeEvent9 from "./schemas/blocks/relume/event9";
+import relumeCta57 from "./schemas/blocks/relume/cta57";
+import relumeLayout422 from "./schemas/blocks/relume/layout422";
+import relumeLayout351 from "./schemas/blocks/relume/layout351";
+import relumeLayout487 from "./schemas/blocks/relume/layout487";
+import relumeFaq6 from "./schemas/blocks/relume/faq6";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
@@ -102,7 +112,6 @@ export const schemaTypes = [
   blockContent,
   link,
   colorVariant,
-  sectionPadding,
   customUrl,
   customLink,
   button,
@@ -114,5 +123,16 @@ export const schemaTypes = [
   // blocks
   richTextBlock,
   scaffold,
+  relumeHeader103,
+  relumeLayout488,
+  relumeLayout348,
+  relumeTestimonial18,
+  relumeGallery24,
+  relumeEvent9,
+  relumeCta57,
+  relumeLayout422,
+  relumeLayout351,
+  relumeLayout487,
+  relumeFaq6,
   // page-builder-generator:block-types
 ];

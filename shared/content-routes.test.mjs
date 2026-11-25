@@ -45,6 +45,7 @@ test("recognizes application-owned routes", () => {
     "/blog/2",
     "/blog/category",
     "/blog/category/news/2",
+    "/block-library",
     "/contact/thanks",
     "/api/draft-mode/enable",
     "/_next/static/file.js",
@@ -56,6 +57,9 @@ test("recognizes application-owned routes", () => {
   assert.equal(isApplicationPath("/about"), false);
   assert.equal(isApplicationPath("/blog/first-post"), false);
   assert.equal(isApplicationPath("/blog/category/news"), false);
+  // Block pages below the Block library index stay Sanity pages.
+  assert.equal(isApplicationPath("/block-library/heroes/header-1"), false);
+  assert.equal(isApplicationPath("/block-library/heroes/header-1/dark"), false);
 });
 
 test("reserves the blog namespace from editor-created pages", () => {

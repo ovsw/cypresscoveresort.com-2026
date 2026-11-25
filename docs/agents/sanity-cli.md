@@ -59,7 +59,7 @@ pnpm page:seed ./example-seed.mjs --apply
 
 `sanity:query` prints JSON from the raw perspective, including drafts and
 published documents. `page:text` prints the draft when present and otherwise
-the published page. It prints the title, description, SEO text, and section
+the published page. It prints the title, description, SEO text, and block
 text in stored order. It does not resolve referenced documents.
 
 `page:check` runs Studio's own validation rules on one document, by id: the
@@ -89,7 +89,14 @@ export default {
 Use published IDs without a `drafts.` or `versions.` prefix. Supporting documents
 need `_id` and `_type`; IDs must be unique within the seed. A new page needs
 a slug and title. Existing pages keep fields omitted from the seed and keep
-their slug. `blocks` replaces the entire section list. Missing array keys get
+their slug. `blocks` replaces the entire block list. Missing array keys get
 stable values. Supporting drafts are replaced in full, so use IDs specific
 to the page. The page update checks the draft revision to prevent overwriting
-concurrent edits. The transaction writes drafts only and never publishes.
+concurrent edits. The transaction writes drafts only and never publishes. A
+seed may also list published page IDs in `remove`: the same transaction then
+deletes each of those pages, published and draft. The Block library seed
+removes the pages it no longer writes this way: the old "Section library"
+page, and the Block library's index and category pages (the index is now a
+Website route). It also shows a seed with several pages: the first block
+page is `page`, and the other block pages are supporting drafts in
+`documents`.

@@ -101,7 +101,13 @@ export function HeaderNavigation({
 export function Header({ model }: { model: HeaderModel }) {
   const [open, setOpen] = useState(false);
   return (
-    <header className="border-b py-4" data-header-state="ready">
+    // The header takes its height from --site-header-height (globals.css),
+    // which full-screen heroes subtract, so a hero always ends at the fold.
+    // Change the header's height there, never with padding here.
+    <header
+      className="flex h-(--site-header-height) items-center border-b"
+      data-header-state="ready"
+    >
       <div className="container">
         <div className="hidden items-center justify-between gap-6 lg:flex">
           <Link

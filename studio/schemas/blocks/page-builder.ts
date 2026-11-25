@@ -3,6 +3,17 @@ import { defineField } from "sanity";
 export const contentPageBuilderBlockTypes = [
   "richTextBlock",
   "scaffold",
+  "relumeHeader103",
+  "relumeLayout488",
+  "relumeLayout348",
+  "relumeTestimonial18",
+  "relumeGallery24",
+  "relumeEvent9",
+  "relumeCta57",
+  "relumeLayout422",
+  "relumeLayout351",
+  "relumeLayout487",
+  "relumeFaq6",
   // page-builder-generator:content-types
 ] as const;
 
@@ -42,7 +53,7 @@ export function getPageBuilderPreviewImageUrl(schemaTypeName: string) {
 function createBlocksField(blockTypes: readonly PageBuilderBlockType[]) {
   return defineField({
     name: "blocks",
-    title: "Page sections",
+    title: "Page blocks",
     type: "array",
     group: "content",
     of: blockTypes.map((type) => ({ type })),
@@ -58,20 +69,20 @@ function createBlocksField(blockTypes: readonly PageBuilderBlockType[]) {
 }
 
 // Replaced Scaffolds move here. The archive accepts the same block types as
-// `blocks`, so a section can move back without losing data. The Website never
+// `blocks`, so a block can move back without losing data. The Website never
 // queries or renders it.
 export const blocksArchiveFieldset = {
   name: "blocksArchive",
-  title: "Archived sections",
+  title: "Archived blocks",
   options: { collapsible: true, collapsed: true },
 } as const;
 
 function createBlocksArchiveField(blockTypes: readonly PageBuilderBlockType[]) {
   return defineField({
     name: "blocksArchive",
-    title: "Archived sections",
+    title: "Archived blocks",
     description:
-      "Scaffolds and other sections that were replaced. Nothing here appears on the Website.",
+      "Scaffolds and other blocks that were replaced. Nothing here appears on the Website.",
     type: "array",
     group: "content",
     fieldset: blocksArchiveFieldset.name,

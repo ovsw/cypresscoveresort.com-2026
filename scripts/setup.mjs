@@ -258,6 +258,27 @@ async function main() {
       : "Local Website, Studio, and production Studio configuration written.",
   );
   console.log("No hosted resources were created or changed.");
+
+  // A Website starts with no Relume blocks; it adds the ones it needs from
+  // the Starter's shelf. See docs/agents/relume-import.md, "Shelf".
+  const { startSiteEmpty } = await import("./relume/lib/shelf.mjs");
+  try {
+    const result = await startSiteEmpty({
+      root: process.cwd(),
+      log: (message) => console.log(message),
+    });
+    if (result.removed.length) {
+      console.log(
+        `Removed the ${result.removed.length} Relume blocks a new site starts without. Add the ones it needs with pnpm relume:add <slug>.`,
+      );
+    }
+    for (const note of result.notes) console.log(note);
+  } catch (error) {
+    console.error(
+      `The environment files were written, but the Relume blocks were not removed: ${error instanceof Error ? error.message : error}`,
+    );
+    process.exitCode = 1;
+  }
 }
 
 if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) {

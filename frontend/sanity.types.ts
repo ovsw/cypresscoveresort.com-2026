@@ -42,11 +42,278 @@ export type Icon = {
   svg?: string;
 };
 
+export type TabImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "tab.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type FeatureImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "feature.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type Avatar = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "avatar.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type EventImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "event.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type FeaturesFeatureImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "features.feature.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type RelumeLayout351FeaturesFeatureImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "relumeLayout351.features.feature.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type RelumeLayout487FeaturesFeatureImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "relumeLayout487.features.feature.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type RelumeFaq6 = {
+  _type: "relumeFaq6";
+  theme?: "light" | "dark";
+  heading?: string;
+  description?: string;
+  buttons?: Array<
+    {
+      _key: string;
+    } & Button
+  >;
+  questions?: Array<{
+    title?: string;
+    answer?: string;
+    _type: "question";
+    _key: string;
+  }>;
+};
+
+export type RelumeLayout487 = {
+  _type: "relumeLayout487";
+  theme?: "light" | "dark";
+  tagline?: string;
+  heading?: string;
+  description?: string;
+  features?: Array<{
+    tagline?: string;
+    heading?: string;
+    description?: string;
+    buttons?: Array<
+      {
+        _key: string;
+      } & Button
+    >;
+    image?: RelumeLayout487FeaturesFeatureImage;
+    _type: "feature";
+    _key: string;
+  }>;
+};
+
+export type RelumeLayout351 = {
+  _type: "relumeLayout351";
+  theme?: "light" | "dark";
+  tagline?: string;
+  heading?: string;
+  description?: string;
+  features?: Array<{
+    label?: string;
+    heading?: string;
+    description?: string;
+    image?: RelumeLayout351FeaturesFeatureImage;
+    _type: "feature";
+    _key: string;
+  }>;
+};
+
+export type RelumeLayout422 = {
+  _type: "relumeLayout422";
+  theme?: "light" | "dark";
+  tagline?: string;
+  heading?: string;
+  description?: string;
+  features?: Array<{
+    image?: FeaturesFeatureImage;
+    tagline?: string;
+    heading?: string;
+    description?: string;
+    buttons?: Array<
+      {
+        _key: string;
+      } & Button
+    >;
+    _type: "feature";
+    _key: string;
+  }>;
+};
+
+export type RelumeCta57 = {
+  _type: "relumeCta57";
+  theme?: "light" | "dark";
+  headingLines?: Array<string>;
+  description?: string;
+  buttons?: Array<
+    {
+      _key: string;
+    } & Button
+  >;
+};
+
+export type RelumeEvent9 = {
+  _type: "relumeEvent9";
+  theme?: "light" | "dark";
+  tagline?: string;
+  heading?: string;
+  description?: string;
+  buttons?: Array<
+    {
+      _key: string;
+    } & Button
+  >;
+  events?: Array<{
+    image?: EventImage;
+    date?: string;
+    category?: string;
+    title?: string;
+    location?: string;
+    description?: string;
+    link?: Button;
+    _type: "event";
+    _key: string;
+  }>;
+};
+
+export type RelumeGallery24 = {
+  _type: "relumeGallery24";
+  theme?: "light" | "dark";
+  heading?: string;
+  description?: string;
+  images?: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }>;
+};
+
+export type RelumeTestimonial18 = {
+  _type: "relumeTestimonial18";
+  theme?: "light" | "dark";
+  heading?: string;
+  description?: string;
+  testimonials?: Array<{
+    rating?: number;
+    quote?: string;
+    avatar?: Avatar;
+    name?: string;
+    jobTitle?: string;
+    companyName?: string;
+    _type: "testimonial";
+    _key: string;
+  }>;
+};
+
+export type RelumeLayout348 = {
+  _type: "relumeLayout348";
+  theme?: "light" | "dark";
+  features?: Array<{
+    tagline?: string;
+    heading?: string;
+    description?: string;
+    buttons?: Array<
+      {
+        _key: string;
+      } & Button
+    >;
+    image?: FeatureImage;
+    _type: "feature";
+    _key: string;
+  }>;
+};
+
+export type RelumeLayout488 = {
+  _type: "relumeLayout488";
+  theme?: "light" | "dark";
+  headingStart?: string;
+  image?: {
+    asset: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  headingEnd?: string;
+  backgroundImage?: {
+    asset: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type RelumeHeader103 = {
+  _type: "relumeHeader103";
+  theme?: "light" | "dark";
+  tabs?: Array<{
+    label?: string;
+    heading?: string;
+    description?: string;
+    buttons?: Array<
+      {
+        _key: string;
+      } & Button
+    >;
+    image?: TabImage;
+    _type: "tab";
+    _key: string;
+  }>;
+};
+
 export type Scaffold = {
   _type: "scaffold";
   name?: string;
   richText?: RichTextContent;
-  proposedSectionShape?: string;
+  proposedBlockShape?: string;
 };
 
 export type RichTextBlock = {
@@ -209,12 +476,6 @@ export type CustomUrl = {
   type?: "internal" | "external";
   openInNewTab?: boolean;
   href?: string;
-};
-
-export type SectionPadding = {
-  _type: "section-padding";
-  top?: boolean;
-  bottom?: boolean;
 };
 
 export type ColorVariant =
@@ -960,6 +1221,39 @@ export type BlogIndex = {
     | ({
         _key: string;
       } & Scaffold)
+    | ({
+        _key: string;
+      } & RelumeHeader103)
+    | ({
+        _key: string;
+      } & RelumeLayout488)
+    | ({
+        _key: string;
+      } & RelumeLayout348)
+    | ({
+        _key: string;
+      } & RelumeTestimonial18)
+    | ({
+        _key: string;
+      } & RelumeGallery24)
+    | ({
+        _key: string;
+      } & RelumeEvent9)
+    | ({
+        _key: string;
+      } & RelumeCta57)
+    | ({
+        _key: string;
+      } & RelumeLayout422)
+    | ({
+        _key: string;
+      } & RelumeLayout351)
+    | ({
+        _key: string;
+      } & RelumeLayout487)
+    | ({
+        _key: string;
+      } & RelumeFaq6)
   >;
   blocksArchive?: Array<
     | ({
@@ -968,6 +1262,39 @@ export type BlogIndex = {
     | ({
         _key: string;
       } & Scaffold)
+    | ({
+        _key: string;
+      } & RelumeHeader103)
+    | ({
+        _key: string;
+      } & RelumeLayout488)
+    | ({
+        _key: string;
+      } & RelumeLayout348)
+    | ({
+        _key: string;
+      } & RelumeTestimonial18)
+    | ({
+        _key: string;
+      } & RelumeGallery24)
+    | ({
+        _key: string;
+      } & RelumeEvent9)
+    | ({
+        _key: string;
+      } & RelumeCta57)
+    | ({
+        _key: string;
+      } & RelumeLayout422)
+    | ({
+        _key: string;
+      } & RelumeLayout351)
+    | ({
+        _key: string;
+      } & RelumeLayout487)
+    | ({
+        _key: string;
+      } & RelumeFaq6)
   >;
   meta?: Meta;
 };
@@ -987,6 +1314,39 @@ export type HomePage = {
     | ({
         _key: string;
       } & Scaffold)
+    | ({
+        _key: string;
+      } & RelumeHeader103)
+    | ({
+        _key: string;
+      } & RelumeLayout488)
+    | ({
+        _key: string;
+      } & RelumeLayout348)
+    | ({
+        _key: string;
+      } & RelumeTestimonial18)
+    | ({
+        _key: string;
+      } & RelumeGallery24)
+    | ({
+        _key: string;
+      } & RelumeEvent9)
+    | ({
+        _key: string;
+      } & RelumeCta57)
+    | ({
+        _key: string;
+      } & RelumeLayout422)
+    | ({
+        _key: string;
+      } & RelumeLayout351)
+    | ({
+        _key: string;
+      } & RelumeLayout487)
+    | ({
+        _key: string;
+      } & RelumeFaq6)
   >;
   blocksArchive?: Array<
     | ({
@@ -995,6 +1355,39 @@ export type HomePage = {
     | ({
         _key: string;
       } & Scaffold)
+    | ({
+        _key: string;
+      } & RelumeHeader103)
+    | ({
+        _key: string;
+      } & RelumeLayout488)
+    | ({
+        _key: string;
+      } & RelumeLayout348)
+    | ({
+        _key: string;
+      } & RelumeTestimonial18)
+    | ({
+        _key: string;
+      } & RelumeGallery24)
+    | ({
+        _key: string;
+      } & RelumeEvent9)
+    | ({
+        _key: string;
+      } & RelumeCta57)
+    | ({
+        _key: string;
+      } & RelumeLayout422)
+    | ({
+        _key: string;
+      } & RelumeLayout351)
+    | ({
+        _key: string;
+      } & RelumeLayout487)
+    | ({
+        _key: string;
+      } & RelumeFaq6)
   >;
   meta?: Meta;
 };
@@ -1116,6 +1509,39 @@ export type Page = {
     | ({
         _key: string;
       } & Scaffold)
+    | ({
+        _key: string;
+      } & RelumeHeader103)
+    | ({
+        _key: string;
+      } & RelumeLayout488)
+    | ({
+        _key: string;
+      } & RelumeLayout348)
+    | ({
+        _key: string;
+      } & RelumeTestimonial18)
+    | ({
+        _key: string;
+      } & RelumeGallery24)
+    | ({
+        _key: string;
+      } & RelumeEvent9)
+    | ({
+        _key: string;
+      } & RelumeCta57)
+    | ({
+        _key: string;
+      } & RelumeLayout422)
+    | ({
+        _key: string;
+      } & RelumeLayout351)
+    | ({
+        _key: string;
+      } & RelumeLayout487)
+    | ({
+        _key: string;
+      } & RelumeFaq6)
   >;
   blocksArchive?: Array<
     | ({
@@ -1124,6 +1550,39 @@ export type Page = {
     | ({
         _key: string;
       } & Scaffold)
+    | ({
+        _key: string;
+      } & RelumeHeader103)
+    | ({
+        _key: string;
+      } & RelumeLayout488)
+    | ({
+        _key: string;
+      } & RelumeLayout348)
+    | ({
+        _key: string;
+      } & RelumeTestimonial18)
+    | ({
+        _key: string;
+      } & RelumeGallery24)
+    | ({
+        _key: string;
+      } & RelumeEvent9)
+    | ({
+        _key: string;
+      } & RelumeCta57)
+    | ({
+        _key: string;
+      } & RelumeLayout422)
+    | ({
+        _key: string;
+      } & RelumeLayout351)
+    | ({
+        _key: string;
+      } & RelumeLayout487)
+    | ({
+        _key: string;
+      } & RelumeFaq6)
   >;
   meta?: Meta;
 };
@@ -1256,6 +1715,24 @@ export type AllSanitySchemaTypes =
   | SanityImageAssetReference
   | MetaImage
   | Icon
+  | TabImage
+  | FeatureImage
+  | Avatar
+  | EventImage
+  | FeaturesFeatureImage
+  | RelumeLayout351FeaturesFeatureImage
+  | RelumeLayout487FeaturesFeatureImage
+  | RelumeFaq6
+  | RelumeLayout487
+  | RelumeLayout351
+  | RelumeLayout422
+  | RelumeCta57
+  | RelumeEvent9
+  | RelumeGallery24
+  | RelumeTestimonial18
+  | RelumeLayout348
+  | RelumeLayout488
+  | RelumeHeader103
   | Scaffold
   | RichTextBlock
   | BlogPostSidebar
@@ -1271,7 +1748,6 @@ export type AllSanitySchemaTypes =
   | CategoryReference
   | BlogIndexReference
   | CustomUrl
-  | SectionPadding
   | ColorVariant
   | Link
   | BlockContent
@@ -1342,9 +1818,14 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
+// Source: ../frontend/sanity/queries/block-library.ts
+// Variable: BLOCK_LIBRARY_PAGE_SLUGS_QUERY
+// Query: *[_type == "page" && string::startsWith(slug.current, "block-library/")].slug.current
+export type BLOCK_LIBRARY_PAGE_SLUGS_QUERY_RESULT = Array<string | null>;
+
 // Source: ../frontend/sanity/queries/blog-index.ts
 // Variable: BLOG_INDEX_QUERY
-// Query: *[_id == "blogIndex"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  }  }
+// Query: *[_id == "blogIndex"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedBlockShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "relumeHeader103" => {    theme,    tabs[]{      _key,      label,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      },      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeLayout488" => {    theme,    headingStart,    image {        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    headingEnd,    backgroundImage {        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "relumeLayout348" => {    theme,    features[]{      _key,      tagline,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      },      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeTestimonial18" => {    theme,    heading,    description,    testimonials[]{      _key,      rating,      quote,      avatar {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      name,      jobTitle,      companyName    }  },      _type == "relumeGallery24" => {    theme,    heading,    description,    images[]{      _key,        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "relumeEvent9" => {    theme,    tagline,    heading,    description,    buttons[]{        _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )    },    events[]{      _key,      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      date,      category,      title,      location,      description,      link {          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      }    }  },      _type == "relumeCta57" => {    theme,    headingLines,    description,    buttons[]{        _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )    }  },      _type == "relumeLayout422" => {    theme,    tagline,    heading,    description,    features[]{      _key,      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      tagline,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      }    }  },      _type == "relumeLayout351" => {    theme,    tagline,    heading,    description,    features[]{      _key,      label,      heading,      description,      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeLayout487" => {    theme,    tagline,    heading,    description,    features[]{      _key,      tagline,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      },      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeFaq6" => {    theme,    heading,    description,    buttons[]{        _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )    },    questions[]{      _key,      title,      answer    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  }  }
 export type BLOG_INDEX_QUERY_RESULT =
   | {
       _id: "blogIndex";
@@ -1361,6 +1842,381 @@ export type BLOG_INDEX_QUERY_RESULT =
       title: string | null;
       description: string | null;
       blocks: Array<
+        | {
+            _key: string;
+            _type: "relumeCta57";
+            theme: "dark" | "light" | null;
+            headingLines: Array<string> | null;
+            description: string | null;
+            buttons: Array<{
+              _key: string;
+              _type: "button";
+              text: string | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/blog";
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeEvent9";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            buttons: Array<{
+              _key: string;
+              _type: "button";
+              text: string | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/blog";
+            }> | null;
+            events: Array<{
+              _key: string;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "event.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+              date: string | null;
+              category: string | null;
+              title: string | null;
+              location: string | null;
+              description: string | null;
+              link: {
+                _key: null;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeFaq6";
+            theme: "dark" | "light" | null;
+            heading: string | null;
+            description: string | null;
+            buttons: Array<{
+              _key: string;
+              _type: "button";
+              text: string | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/blog";
+            }> | null;
+            questions: Array<{
+              _key: string;
+              title: string | null;
+              answer: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeGallery24";
+            theme: "dark" | "light" | null;
+            heading: string | null;
+            description: string | null;
+            images: Array<{
+              _key: string;
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeHeader103";
+            theme: "dark" | "light" | null;
+            tabs: Array<{
+              _key: string;
+              label: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "tab.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout348";
+            theme: "dark" | "light" | null;
+            features: Array<{
+              _key: string;
+              tagline: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout351";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            features: Array<{
+              _key: string;
+              label: string | null;
+              heading: string | null;
+              description: string | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "relumeLayout351.features.feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout422";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            features: Array<{
+              _key: string;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "features.feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+              tagline: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout487";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            features: Array<{
+              _key: string;
+              tagline: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "relumeLayout487.features.feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout488";
+            theme: "dark" | "light" | null;
+            headingStart: string | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            headingEnd: string | null;
+            backgroundImage: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeTestimonial18";
+            theme: "dark" | "light" | null;
+            heading: string | null;
+            description: string | null;
+            testimonials: Array<{
+              _key: string;
+              rating: number | null;
+              quote: string | null;
+              avatar: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "avatar.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+              name: string | null;
+              jobTitle: string | null;
+              companyName: string | null;
+            }> | null;
+          }
         | {
             _key: string;
             _type: "richTextBlock";
@@ -1459,7 +2315,7 @@ export type BLOG_INDEX_QUERY_RESULT =
             _key: string;
             _type: "scaffold";
             name: string | null;
-            proposedSectionShape: string | null;
+            proposedBlockShape: string | null;
             richText: Array<
               | {
                   children: Array<{
@@ -1550,7 +2406,7 @@ export type BLOG_INDEX_QUERY_RESULT =
           }
       > | null;
       sharingPhoto: {
-        asset: SanityImageAssetReference | null;
+        asset: SanityImageAssetReference;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
       } | null;
@@ -1594,7 +2450,7 @@ export type BLOG_INDEX_QUERY_RESULT =
       description: string | null;
       blocks: null;
       sharingPhoto: {
-        asset: SanityImageAssetReference | null;
+        asset: SanityImageAssetReference;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
       } | null;
@@ -1629,7 +2485,7 @@ export type BLOG_INDEX_QUERY_RESULT =
       description: null;
       blocks: null;
       sharingPhoto: {
-        asset: SanityImageAssetReference | null;
+        asset: SanityImageAssetReference;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
       } | null;
@@ -1683,6 +2539,381 @@ export type BLOG_INDEX_QUERY_RESULT =
       blocks: Array<
         | {
             _key: string;
+            _type: "relumeCta57";
+            theme: "dark" | "light" | null;
+            headingLines: Array<string> | null;
+            description: string | null;
+            buttons: Array<{
+              _key: string;
+              _type: "button";
+              text: string | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/blog";
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeEvent9";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            buttons: Array<{
+              _key: string;
+              _type: "button";
+              text: string | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/blog";
+            }> | null;
+            events: Array<{
+              _key: string;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "event.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+              date: string | null;
+              category: string | null;
+              title: string | null;
+              location: string | null;
+              description: string | null;
+              link: {
+                _key: null;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeFaq6";
+            theme: "dark" | "light" | null;
+            heading: string | null;
+            description: string | null;
+            buttons: Array<{
+              _key: string;
+              _type: "button";
+              text: string | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/blog";
+            }> | null;
+            questions: Array<{
+              _key: string;
+              title: string | null;
+              answer: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeGallery24";
+            theme: "dark" | "light" | null;
+            heading: string | null;
+            description: string | null;
+            images: Array<{
+              _key: string;
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeHeader103";
+            theme: "dark" | "light" | null;
+            tabs: Array<{
+              _key: string;
+              label: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "tab.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout348";
+            theme: "dark" | "light" | null;
+            features: Array<{
+              _key: string;
+              tagline: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout351";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            features: Array<{
+              _key: string;
+              label: string | null;
+              heading: string | null;
+              description: string | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "relumeLayout351.features.feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout422";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            features: Array<{
+              _key: string;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "features.feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+              tagline: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout487";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            features: Array<{
+              _key: string;
+              tagline: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "relumeLayout487.features.feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout488";
+            theme: "dark" | "light" | null;
+            headingStart: string | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            headingEnd: string | null;
+            backgroundImage: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeTestimonial18";
+            theme: "dark" | "light" | null;
+            heading: string | null;
+            description: string | null;
+            testimonials: Array<{
+              _key: string;
+              rating: number | null;
+              quote: string | null;
+              avatar: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "avatar.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+              name: string | null;
+              jobTitle: string | null;
+              companyName: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
             _type: "richTextBlock";
             theme: "dark" | "light" | null;
             eyebrow: string | null;
@@ -1779,7 +3010,7 @@ export type BLOG_INDEX_QUERY_RESULT =
             _key: string;
             _type: "scaffold";
             name: string | null;
-            proposedSectionShape: string | null;
+            proposedBlockShape: string | null;
             richText: Array<
               | {
                   children: Array<{
@@ -1870,7 +3101,7 @@ export type BLOG_INDEX_QUERY_RESULT =
           }
       > | null;
       sharingPhoto: {
-        asset: SanityImageAssetReference | null;
+        asset: SanityImageAssetReference;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
       } | null;
@@ -1960,6 +3191,381 @@ export type BLOG_INDEX_QUERY_RESULT =
       blocks: Array<
         | {
             _key: string;
+            _type: "relumeCta57";
+            theme: "dark" | "light" | null;
+            headingLines: Array<string> | null;
+            description: string | null;
+            buttons: Array<{
+              _key: string;
+              _type: "button";
+              text: string | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/blog";
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeEvent9";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            buttons: Array<{
+              _key: string;
+              _type: "button";
+              text: string | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/blog";
+            }> | null;
+            events: Array<{
+              _key: string;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "event.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+              date: string | null;
+              category: string | null;
+              title: string | null;
+              location: string | null;
+              description: string | null;
+              link: {
+                _key: null;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeFaq6";
+            theme: "dark" | "light" | null;
+            heading: string | null;
+            description: string | null;
+            buttons: Array<{
+              _key: string;
+              _type: "button";
+              text: string | null;
+              openInNewTab: boolean | null;
+              href: string | null | "/" | "/blog";
+            }> | null;
+            questions: Array<{
+              _key: string;
+              title: string | null;
+              answer: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeGallery24";
+            theme: "dark" | "light" | null;
+            heading: string | null;
+            description: string | null;
+            images: Array<{
+              _key: string;
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              } | null;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeHeader103";
+            theme: "dark" | "light" | null;
+            tabs: Array<{
+              _key: string;
+              label: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "tab.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout348";
+            theme: "dark" | "light" | null;
+            features: Array<{
+              _key: string;
+              tagline: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout351";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            features: Array<{
+              _key: string;
+              label: string | null;
+              heading: string | null;
+              description: string | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "relumeLayout351.features.feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout422";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            features: Array<{
+              _key: string;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "features.feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+              tagline: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout487";
+            theme: "dark" | "light" | null;
+            tagline: string | null;
+            heading: string | null;
+            description: string | null;
+            features: Array<{
+              _key: string;
+              tagline: string | null;
+              heading: string | null;
+              description: string | null;
+              buttons: Array<{
+                _key: string;
+                _type: "button";
+                text: string | null;
+                openInNewTab: boolean | null;
+                href: string | null | "/" | "/blog";
+              }> | null;
+              image: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "relumeLayout487.features.feature.image.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+            }> | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeLayout488";
+            theme: "dark" | "light" | null;
+            headingStart: string | null;
+            image: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+            headingEnd: string | null;
+            backgroundImage: {
+              asset: {
+                _id: string;
+                url: string | null;
+                mimeType: string | null;
+                metadata: {
+                  lqip: string | null;
+                  dimensions: {
+                    width: number | null;
+                    height: number | null;
+                  } | null;
+                } | null;
+              };
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+            } | null;
+          }
+        | {
+            _key: string;
+            _type: "relumeTestimonial18";
+            theme: "dark" | "light" | null;
+            heading: string | null;
+            description: string | null;
+            testimonials: Array<{
+              _key: string;
+              rating: number | null;
+              quote: string | null;
+              avatar: {
+                asset: {
+                  _id: string;
+                  url: string | null;
+                  mimeType: string | null;
+                  metadata: {
+                    lqip: string | null;
+                    dimensions: {
+                      width: number | null;
+                      height: number | null;
+                    } | null;
+                  } | null;
+                } | null;
+                media?: unknown; // Unable to locate the referenced type "avatar.media" in schema
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                _type: "image";
+              } | null;
+              name: string | null;
+              jobTitle: string | null;
+              companyName: string | null;
+            }> | null;
+          }
+        | {
+            _key: string;
             _type: "richTextBlock";
             theme: "dark" | "light" | null;
             eyebrow: string | null;
@@ -2056,7 +3662,7 @@ export type BLOG_INDEX_QUERY_RESULT =
             _key: string;
             _type: "scaffold";
             name: string | null;
-            proposedSectionShape: string | null;
+            proposedBlockShape: string | null;
             richText: Array<
               | {
                   children: Array<{
@@ -2147,7 +3753,7 @@ export type BLOG_INDEX_QUERY_RESULT =
           }
       > | null;
       sharingPhoto: {
-        asset: SanityImageAssetReference | null;
+        asset: SanityImageAssetReference;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
       } | null;
@@ -2182,7 +3788,7 @@ export type BLOG_INDEX_QUERY_RESULT =
       description: null;
       blocks: null;
       sharingPhoto: {
-        asset: SanityImageAssetReference | null;
+        asset: SanityImageAssetReference;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
       } | null;
@@ -2217,7 +3823,7 @@ export type BLOG_INDEX_QUERY_RESULT =
       description: null;
       blocks: null;
       sharingPhoto: {
-        asset: SanityImageAssetReference | null;
+        asset: SanityImageAssetReference;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
       } | null;
@@ -2261,7 +3867,7 @@ export type BLOG_INDEX_QUERY_RESULT =
       description: null;
       blocks: null;
       sharingPhoto: {
-        asset: SanityImageAssetReference | null;
+        asset: SanityImageAssetReference;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
       } | null;
@@ -2359,7 +3965,7 @@ export type BLOG_INDEX_QUERY_RESULT =
       description: string | null;
       blocks: null;
       sharingPhoto: {
-        asset: SanityImageAssetReference | null;
+        asset: SanityImageAssetReference;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
       } | null;
@@ -2431,8 +4037,12 @@ export type BLOG_INDEX_QUERY_RESULT =
 export type LATEST_POST_QUERY_RESULT = {
   _id: string;
   title: string | null;
-  slug: Slug | null;
-  publishedAt: string | null;
+  slug: {
+    _type: "slug";
+    current: string;
+    source?: string;
+  };
+  publishedAt: string;
   excerpt: string;
   image: {
     asset: {
@@ -2467,8 +4077,12 @@ export type LATEST_POST_QUERY_RESULT = {
 export type REGULAR_POSTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
-  slug: Slug | null;
-  publishedAt: string | null;
+  slug: {
+    _type: "slug";
+    current: string;
+    source?: string;
+  };
+  publishedAt: string;
   excerpt: string;
   image: {
     asset: {
@@ -2511,7 +4125,7 @@ export type ELIGIBLE_BLOG_POSTS_COUNT_QUERY_RESULT = number;
 // Variable: BLOG_CATEGORY_POST_COUNTS_QUERY
 // Query: *[_type == "category" && defined(slug.current)]{    "slug": slug.current,    "postCount": count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == ^._id])  }
 export type BLOG_CATEGORY_POST_COUNTS_QUERY_RESULT = Array<{
-  slug: string | null;
+  slug: string;
   postCount: number;
 }>;
 
@@ -2550,7 +4164,7 @@ export type CATEGORY_QUERY_RESULT = {
   slug: Slug | null;
   description: string | null;
   sharingPhoto: {
-    asset: SanityImageAssetReference | null;
+    asset: SanityImageAssetReference;
     crop: SanityImageCrop | null;
     hotspot: SanityImageHotspot | null;
   } | null;
@@ -2586,8 +4200,12 @@ export type CATEGORY_QUERY_RESULT = {
 export type CATEGORY_POSTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
-  slug: Slug | null;
-  publishedAt: string | null;
+  slug: {
+    _type: "slug";
+    current: string;
+    source?: string;
+  };
+  publishedAt: string;
   excerpt: string;
   image: {
     asset: {
@@ -2625,7 +4243,7 @@ export type CATEGORY_POSTS_COUNT_QUERY_RESULT = number;
 // Variable: CATEGORY_STATIC_PARAMS_QUERY
 // Query: *[    _type == "category"    && defined(slug.current)  ]{    "slug": slug.current,    "publishedPostCount": count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == ^._id])  }
 export type CATEGORY_STATIC_PARAMS_QUERY_RESULT = Array<{
-  slug: string | null;
+  slug: string;
   publishedPostCount: number;
 }>;
 
@@ -2661,13 +4279,388 @@ export type FOOTER_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/home-page.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_id == "homePage" && _type == "homePage"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
+// Query: *[_id == "homePage" && _type == "homePage"][0]{    _id,    _type,    title,    description,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedBlockShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "relumeHeader103" => {    theme,    tabs[]{      _key,      label,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      },      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeLayout488" => {    theme,    headingStart,    image {        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    headingEnd,    backgroundImage {        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "relumeLayout348" => {    theme,    features[]{      _key,      tagline,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      },      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeTestimonial18" => {    theme,    heading,    description,    testimonials[]{      _key,      rating,      quote,      avatar {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      name,      jobTitle,      companyName    }  },      _type == "relumeGallery24" => {    theme,    heading,    description,    images[]{      _key,        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "relumeEvent9" => {    theme,    tagline,    heading,    description,    buttons[]{        _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )    },    events[]{      _key,      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      date,      category,      title,      location,      description,      link {          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      }    }  },      _type == "relumeCta57" => {    theme,    headingLines,    description,    buttons[]{        _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )    }  },      _type == "relumeLayout422" => {    theme,    tagline,    heading,    description,    features[]{      _key,      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      tagline,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      }    }  },      _type == "relumeLayout351" => {    theme,    tagline,    heading,    description,    features[]{      _key,      label,      heading,      description,      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeLayout487" => {    theme,    tagline,    heading,    description,    features[]{      _key,      tagline,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      },      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeFaq6" => {    theme,    heading,    description,    buttons[]{        _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )    },    questions[]{      _key,      title,      answer    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
 export type HOME_PAGE_QUERY_RESULT = {
   _id: "homePage";
   _type: "homePage";
   title: string | null;
   description: string | null;
   blocks: Array<
+    | {
+        _key: string;
+        _type: "relumeCta57";
+        theme: "dark" | "light" | null;
+        headingLines: Array<string> | null;
+        description: string | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          text: string | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/blog";
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeEvent9";
+        theme: "dark" | "light" | null;
+        tagline: string | null;
+        heading: string | null;
+        description: string | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          text: string | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/blog";
+        }> | null;
+        events: Array<{
+          _key: string;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "event.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+          date: string | null;
+          category: string | null;
+          title: string | null;
+          location: string | null;
+          description: string | null;
+          link: {
+            _key: null;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeFaq6";
+        theme: "dark" | "light" | null;
+        heading: string | null;
+        description: string | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          text: string | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/blog";
+        }> | null;
+        questions: Array<{
+          _key: string;
+          title: string | null;
+          answer: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeGallery24";
+        theme: "dark" | "light" | null;
+        heading: string | null;
+        description: string | null;
+        images: Array<{
+          _key: string;
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          } | null;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeHeader103";
+        theme: "dark" | "light" | null;
+        tabs: Array<{
+          _key: string;
+          label: string | null;
+          heading: string | null;
+          description: string | null;
+          buttons: Array<{
+            _key: string;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          }> | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "tab.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout348";
+        theme: "dark" | "light" | null;
+        features: Array<{
+          _key: string;
+          tagline: string | null;
+          heading: string | null;
+          description: string | null;
+          buttons: Array<{
+            _key: string;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          }> | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "feature.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout351";
+        theme: "dark" | "light" | null;
+        tagline: string | null;
+        heading: string | null;
+        description: string | null;
+        features: Array<{
+          _key: string;
+          label: string | null;
+          heading: string | null;
+          description: string | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "relumeLayout351.features.feature.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout422";
+        theme: "dark" | "light" | null;
+        tagline: string | null;
+        heading: string | null;
+        description: string | null;
+        features: Array<{
+          _key: string;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "features.feature.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+          tagline: string | null;
+          heading: string | null;
+          description: string | null;
+          buttons: Array<{
+            _key: string;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          }> | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout487";
+        theme: "dark" | "light" | null;
+        tagline: string | null;
+        heading: string | null;
+        description: string | null;
+        features: Array<{
+          _key: string;
+          tagline: string | null;
+          heading: string | null;
+          description: string | null;
+          buttons: Array<{
+            _key: string;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          }> | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "relumeLayout487.features.feature.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout488";
+        theme: "dark" | "light" | null;
+        headingStart: string | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+        headingEnd: string | null;
+        backgroundImage: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeTestimonial18";
+        theme: "dark" | "light" | null;
+        heading: string | null;
+        description: string | null;
+        testimonials: Array<{
+          _key: string;
+          rating: number | null;
+          quote: string | null;
+          avatar: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "avatar.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+          name: string | null;
+          jobTitle: string | null;
+          companyName: string | null;
+        }> | null;
+      }
     | {
         _key: string;
         _type: "richTextBlock";
@@ -2766,7 +4759,7 @@ export type HOME_PAGE_QUERY_RESULT = {
         _key: string;
         _type: "scaffold";
         name: string | null;
-        proposedSectionShape: string | null;
+        proposedBlockShape: string | null;
         richText: Array<
           | {
               children: Array<{
@@ -2857,7 +4850,7 @@ export type HOME_PAGE_QUERY_RESULT = {
       }
   > | null;
   sharingPhoto: {
-    asset: SanityImageAssetReference | null;
+    asset: SanityImageAssetReference;
     crop: SanityImageCrop | null;
     hotspot: SanityImageHotspot | null;
   } | null;
@@ -2943,7 +4936,7 @@ export type HOME_PAGE_OG_IMAGE_QUERY_RESULT = {
   overrideTitle: string | null;
   title: string | null;
   sharingPhoto: {
-    asset: SanityImageAssetReference | null;
+    asset: SanityImageAssetReference;
     crop: SanityImageCrop | null;
     hotspot: SanityImageHotspot | null;
   } | null;
@@ -2955,7 +4948,7 @@ export type HOME_PAGE_OG_IMAGE_QUERY_RESULT = {
 export type PAGE_OG_IMAGE_QUERY_RESULT = {
   title: string | null;
   sharingPhoto: {
-    asset: SanityImageAssetReference | null;
+    asset: SanityImageAssetReference;
     crop: SanityImageCrop | null;
     hotspot: SanityImageHotspot | null;
   } | null;
@@ -2967,7 +4960,7 @@ export type PAGE_OG_IMAGE_QUERY_RESULT = {
 export type BLOG_INDEX_OG_IMAGE_QUERY_RESULT = {
   title: string | null;
   sharingPhoto: {
-    asset: SanityImageAssetReference | null;
+    asset: SanityImageAssetReference;
     crop: SanityImageCrop | null;
     hotspot: SanityImageHotspot | null;
   } | null;
@@ -2979,7 +4972,7 @@ export type BLOG_INDEX_OG_IMAGE_QUERY_RESULT = {
 export type CATEGORY_OG_IMAGE_QUERY_RESULT = {
   title: string | null;
   sharingPhoto: {
-    asset: SanityImageAssetReference | null;
+    asset: SanityImageAssetReference;
     crop: SanityImageCrop | null;
     hotspot: SanityImageHotspot | null;
   } | null;
@@ -2987,7 +4980,7 @@ export type CATEGORY_OG_IMAGE_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/page.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    _id,    _type,    title,    description,    "slug": slug.current,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedSectionShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
+// Query: *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{    _id,    _type,    title,    description,    "slug": slug.current,      blocks[]{    _key,    _type,      _type == "richTextBlock" => {    theme,    eyebrow,    title,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "scaffold" => {    name,    proposedBlockShape,    richText[]{        ...,  _type == "block" => {    ...,    children[]{...},    markDefs[]{      ...,      _type in ["customLink", "buttonLink"] => {          "href": select(    customLink.type == "internal" => select(  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")),    customLink.type == "external" => customLink.external,    customLink.href  ),  "openInNewTab": customLink.openInNewTab      }    }  },  _type == "image" => {    ...,    "resolvedAsset": asset->{      _id,      url,      mimeType,      metadata {        lqip,        dimensions {          width,          height        }      }    }  },  _type == "table" => {    ...,    rows[]{      ...,      cells[]    }  },  _type == "callout" => {    ...,    title,    body  }    }  },      _type == "relumeHeader103" => {    theme,    tabs[]{      _key,      label,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      },      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeLayout488" => {    theme,    headingStart,    image {        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    },    headingEnd,    backgroundImage {        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "relumeLayout348" => {    theme,    features[]{      _key,      tagline,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      },      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeTestimonial18" => {    theme,    heading,    description,    testimonials[]{      _key,      rating,      quote,      avatar {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      name,      jobTitle,      companyName    }  },      _type == "relumeGallery24" => {    theme,    heading,    description,    images[]{      _key,        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },      _type == "relumeEvent9" => {    theme,    tagline,    heading,    description,    buttons[]{        _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )    },    events[]{      _key,      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      date,      category,      title,      location,      description,      link {          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      }    }  },      _type == "relumeCta57" => {    theme,    headingLines,    description,    buttons[]{        _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )    }  },      _type == "relumeLayout422" => {    theme,    tagline,    heading,    description,    features[]{      _key,      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      tagline,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      }    }  },      _type == "relumeLayout351" => {    theme,    tagline,    heading,    description,    features[]{      _key,      label,      heading,      description,      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeLayout487" => {    theme,    tagline,    heading,    description,    features[]{      _key,      tagline,      heading,      description,      buttons[]{          _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )      },      image {          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    }  },      _type == "relumeFaq6" => {    theme,    heading,    description,    buttons[]{        _key,  _type,  text,  "openInNewTab": url.openInNewTab,  "href": select(    url.type == "internal" => select(  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")),    url.type == "external" => url.external,    url.href  )    },    questions[]{      _key,      title,      answer    }  },      },    "sharingPhoto": select(  defined(meta.image.asset) => meta.image,  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image){ asset, crop, hotspot },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
 export type PAGE_QUERY_RESULT = {
   _id: string;
   _type: "page";
@@ -2995,6 +4988,381 @@ export type PAGE_QUERY_RESULT = {
   description: string | null;
   slug: string | null;
   blocks: Array<
+    | {
+        _key: string;
+        _type: "relumeCta57";
+        theme: "dark" | "light" | null;
+        headingLines: Array<string> | null;
+        description: string | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          text: string | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/blog";
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeEvent9";
+        theme: "dark" | "light" | null;
+        tagline: string | null;
+        heading: string | null;
+        description: string | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          text: string | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/blog";
+        }> | null;
+        events: Array<{
+          _key: string;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "event.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+          date: string | null;
+          category: string | null;
+          title: string | null;
+          location: string | null;
+          description: string | null;
+          link: {
+            _key: null;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeFaq6";
+        theme: "dark" | "light" | null;
+        heading: string | null;
+        description: string | null;
+        buttons: Array<{
+          _key: string;
+          _type: "button";
+          text: string | null;
+          openInNewTab: boolean | null;
+          href: string | null | "/" | "/blog";
+        }> | null;
+        questions: Array<{
+          _key: string;
+          title: string | null;
+          answer: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeGallery24";
+        theme: "dark" | "light" | null;
+        heading: string | null;
+        description: string | null;
+        images: Array<{
+          _key: string;
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          } | null;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeHeader103";
+        theme: "dark" | "light" | null;
+        tabs: Array<{
+          _key: string;
+          label: string | null;
+          heading: string | null;
+          description: string | null;
+          buttons: Array<{
+            _key: string;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          }> | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "tab.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout348";
+        theme: "dark" | "light" | null;
+        features: Array<{
+          _key: string;
+          tagline: string | null;
+          heading: string | null;
+          description: string | null;
+          buttons: Array<{
+            _key: string;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          }> | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "feature.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout351";
+        theme: "dark" | "light" | null;
+        tagline: string | null;
+        heading: string | null;
+        description: string | null;
+        features: Array<{
+          _key: string;
+          label: string | null;
+          heading: string | null;
+          description: string | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "relumeLayout351.features.feature.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout422";
+        theme: "dark" | "light" | null;
+        tagline: string | null;
+        heading: string | null;
+        description: string | null;
+        features: Array<{
+          _key: string;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "features.feature.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+          tagline: string | null;
+          heading: string | null;
+          description: string | null;
+          buttons: Array<{
+            _key: string;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          }> | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout487";
+        theme: "dark" | "light" | null;
+        tagline: string | null;
+        heading: string | null;
+        description: string | null;
+        features: Array<{
+          _key: string;
+          tagline: string | null;
+          heading: string | null;
+          description: string | null;
+          buttons: Array<{
+            _key: string;
+            _type: "button";
+            text: string | null;
+            openInNewTab: boolean | null;
+            href: string | null | "/" | "/blog";
+          }> | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "relumeLayout487.features.feature.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeLayout488";
+        theme: "dark" | "light" | null;
+        headingStart: string | null;
+        image: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+        headingEnd: string | null;
+        backgroundImage: {
+          asset: {
+            _id: string;
+            url: string | null;
+            mimeType: string | null;
+            metadata: {
+              lqip: string | null;
+              dimensions: {
+                width: number | null;
+                height: number | null;
+              } | null;
+            } | null;
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "relumeTestimonial18";
+        theme: "dark" | "light" | null;
+        heading: string | null;
+        description: string | null;
+        testimonials: Array<{
+          _key: string;
+          rating: number | null;
+          quote: string | null;
+          avatar: {
+            asset: {
+              _id: string;
+              url: string | null;
+              mimeType: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                } | null;
+              } | null;
+            } | null;
+            media?: unknown; // Unable to locate the referenced type "avatar.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+          } | null;
+          name: string | null;
+          jobTitle: string | null;
+          companyName: string | null;
+        }> | null;
+      }
     | {
         _key: string;
         _type: "richTextBlock";
@@ -3093,7 +5461,7 @@ export type PAGE_QUERY_RESULT = {
         _key: string;
         _type: "scaffold";
         name: string | null;
-        proposedSectionShape: string | null;
+        proposedBlockShape: string | null;
         richText: Array<
           | {
               children: Array<{
@@ -3184,7 +5552,7 @@ export type PAGE_QUERY_RESULT = {
       }
   > | null;
   sharingPhoto: {
-    asset: SanityImageAssetReference | null;
+    asset: SanityImageAssetReference;
     crop: SanityImageCrop | null;
     hotspot: SanityImageHotspot | null;
   } | null;
@@ -3357,18 +5725,11 @@ export type POST_QUERY_RESULT = {
   } | null;
   _createdAt: string;
   _updatedAt: string;
-  sharingPhoto:
-    | {
-        asset: SanityImageAssetReference;
-        crop: SanityImageCrop | null;
-        hotspot: SanityImageHotspot | null;
-      }
-    | {
-        asset: SanityImageAssetReference | null;
-        crop: SanityImageCrop | null;
-        hotspot: SanityImageHotspot | null;
-      }
-    | null;
+  sharingPhoto: {
+    asset: SanityImageAssetReference;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+  } | null;
   meta: {
     title: string | null;
     description: string | null;
@@ -3401,8 +5762,12 @@ export type PUBLISHED_POST_QUERY_RESULT = {
   _id: string;
   _type: "post";
   title: string | null;
-  slug: Slug | null;
-  publishedAt: string | null;
+  slug: {
+    _type: "slug";
+    current: string;
+    source?: string;
+  };
+  publishedAt: string;
   excerpt: string;
   image: {
     asset: {
@@ -3512,18 +5877,11 @@ export type PUBLISHED_POST_QUERY_RESULT = {
   } | null;
   _createdAt: string;
   _updatedAt: string;
-  sharingPhoto:
-    | {
-        asset: SanityImageAssetReference;
-        crop: SanityImageCrop | null;
-        hotspot: SanityImageHotspot | null;
-      }
-    | {
-        asset: SanityImageAssetReference | null;
-        crop: SanityImageCrop | null;
-        hotspot: SanityImageHotspot | null;
-      }
-    | null;
+  sharingPhoto: {
+    asset: SanityImageAssetReference;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+  } | null;
   meta: {
     title: string | null;
     description: string | null;
@@ -3555,18 +5913,11 @@ export type PUBLISHED_POST_QUERY_RESULT = {
 export type POST_OG_IMAGE_QUERY_RESULT = {
   title: string | null;
   publishedAt: string | null;
-  sharingPhoto:
-    | {
-        asset: SanityImageAssetReference;
-        crop: SanityImageCrop | null;
-        hotspot: SanityImageHotspot | null;
-      }
-    | {
-        asset: SanityImageAssetReference | null;
-        crop: SanityImageCrop | null;
-        hotspot: SanityImageHotspot | null;
-      }
-    | null;
+  sharingPhoto: {
+    asset: SanityImageAssetReference;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+  } | null;
 } | null;
 
 // Source: ../frontend/sanity/queries/post.ts
@@ -3611,8 +5962,12 @@ export type POSTS_SLUGS_QUERY_RESULT = Array<{
 // Query: *[    _type == "redirect" &&    !(_id in path("drafts.**")) &&    status == "active" &&    defined(source.current) &&    (defined(destinationReference._ref) || defined(destination.current))  ] | order(source.current asc) {    _id,    status,    source,    "destination": select(      defined(destinationReference._ref) => select(  destinationReference->_id == "homePage" || destinationReference->_type == "homePage" => "/",  destinationReference->_id == "blogIndex" || destinationReference->_type == "blogIndex" => "/blog",  destinationReference->_type == "post" && defined(destinationReference->slug.current) => "/blog/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),  destinationReference->_type == "category" && defined(destinationReference->slug.current) => "/blog/category/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),  destinationReference->_type == "page" && defined(destinationReference->slug.current) => "/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/")),      destination.current    ),    permanent  }
 export type REDIRECTS_QUERY_RESULT = Array<{
   _id: string;
-  status: "active" | "inactive" | null;
-  source: Slug | null;
+  status: "active";
+  source: {
+    _type: "slug";
+    current: string;
+    source?: string;
+  };
   destination: string | null | "/" | "/blog";
   permanent: "false" | "true" | null;
 }>;
@@ -3677,7 +6032,8 @@ export type SETTINGS_QUERY_RESULT = {
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n  *[_id == "blogIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n\n  }\n': BLOG_INDEX_QUERY_RESULT;
+    '\n  *[_type == "page" && string::startsWith(slug.current, "block-library/")].slug.current\n': BLOCK_LIBRARY_PAGE_SLUGS_QUERY_RESULT;
+    '\n  *[_id == "blogIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedBlockShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "relumeHeader103" => {\n    theme,\n    tabs[]{\n      _key,\n      label,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      },\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeLayout488" => {\n    theme,\n    headingStart,\n    image {\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    headingEnd,\n    backgroundImage {\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "relumeLayout348" => {\n    theme,\n    features[]{\n      _key,\n      tagline,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      },\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeTestimonial18" => {\n    theme,\n    heading,\n    description,\n    testimonials[]{\n      _key,\n      rating,\n      quote,\n      avatar {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      name,\n      jobTitle,\n      companyName\n    }\n  }\n,\n    \n  _type == "relumeGallery24" => {\n    theme,\n    heading,\n    description,\n    images[]{\n      _key,\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "relumeEvent9" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    buttons[]{\n      \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n    },\n    events[]{\n      _key,\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      date,\n      category,\n      title,\n      location,\n      description,\n      link {\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeCta57" => {\n    theme,\n    headingLines,\n    description,\n    buttons[]{\n      \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n    }\n  }\n,\n    \n  _type == "relumeLayout422" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    features[]{\n      _key,\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      tagline,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeLayout351" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    features[]{\n      _key,\n      label,\n      heading,\n      description,\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeLayout487" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    features[]{\n      _key,\n      tagline,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      },\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeFaq6" => {\n    theme,\n    heading,\n    description,\n    buttons[]{\n      \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n    },\n    questions[]{\n      _key,\n      title,\n      answer\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n\n  }\n': BLOG_INDEX_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc, _createdAt desc, _id asc)[0]{\n    \n  _id,\n  title,\n  slug,\n  publishedAt,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  category->{_id, title, slug}\n\n  }\n': LATEST_POST_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId]\n    | order(publishedAt desc, _createdAt desc, _id asc)[$start...$end]{\n      \n  _id,\n  title,\n  slug,\n  publishedAt,\n  "excerpt": pt::text(excerpt),\n  image {\n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n},\n  category->{_id, title, slug}\n\n    }\n': REGULAR_POSTS_QUERY_RESULT;
     '\n  count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && _id != $latestPostId])\n': REGULAR_POSTS_COUNT_QUERY_RESULT;
@@ -3689,13 +6045,13 @@ declare global {
     '\n  count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == $categoryId])\n': CATEGORY_POSTS_COUNT_QUERY_RESULT;
     '\n  *[\n    _type == "category"\n    && defined(slug.current)\n  ]{\n    "slug": slug.current,\n    "publishedPostCount": count(*[_type == "post" && defined(slug.current) && defined(publishedAt) && category._ref == ^._id])\n  }\n': CATEGORY_STATIC_PARAMS_QUERY_RESULT;
     '\n  *[_type == "footer" && _id == "footer"][0]{\n    _id,\n    intro,\n    columns[]{\n      _key,\n      heading,\n      links[]{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/blog",\n      internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n}\n    },\n    "legalLinks": coalesce(legalLinks, compliance.legalLinks)[]{\n  _key,\n  label,\n  destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "homePage" || internal->_type == "homePage" => "/",\n      internal->_id == "blogIndex" => "/blog",\n      internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n      defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n    ),\n    kind == "external" => external\n  )\n}\n},\n    "copyrightStartYear": coalesce(copyrightStartYear, compliance.copyrightStartYear),\n    "copyrightOwner": coalesce(copyrightOwner, compliance.copyrightOwner)\n  }\n': FOOTER_QUERY_RESULT;
-    '\n  *[_id == "homePage" && _type == "homePage"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': HOME_PAGE_QUERY_RESULT;
+    '\n  *[_id == "homePage" && _type == "homePage"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedBlockShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "relumeHeader103" => {\n    theme,\n    tabs[]{\n      _key,\n      label,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      },\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeLayout488" => {\n    theme,\n    headingStart,\n    image {\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    headingEnd,\n    backgroundImage {\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "relumeLayout348" => {\n    theme,\n    features[]{\n      _key,\n      tagline,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      },\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeTestimonial18" => {\n    theme,\n    heading,\n    description,\n    testimonials[]{\n      _key,\n      rating,\n      quote,\n      avatar {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      name,\n      jobTitle,\n      companyName\n    }\n  }\n,\n    \n  _type == "relumeGallery24" => {\n    theme,\n    heading,\n    description,\n    images[]{\n      _key,\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "relumeEvent9" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    buttons[]{\n      \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n    },\n    events[]{\n      _key,\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      date,\n      category,\n      title,\n      location,\n      description,\n      link {\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeCta57" => {\n    theme,\n    headingLines,\n    description,\n    buttons[]{\n      \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n    }\n  }\n,\n    \n  _type == "relumeLayout422" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    features[]{\n      _key,\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      tagline,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeLayout351" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    features[]{\n      _key,\n      label,\n      heading,\n      description,\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeLayout487" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    features[]{\n      _key,\n      tagline,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      },\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeFaq6" => {\n    theme,\n    heading,\n    description,\n    buttons[]{\n      \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n    },\n    questions[]{\n      _key,\n      title,\n      answer\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': HOME_PAGE_QUERY_RESULT;
     '\n  *[_type == "navigation" && _id == "navigation"][0]{\n    _id,\n    items[]{\n      _key,\n      _type == "navigationLink" => {\n        "kind": "link",\n        label,\n        destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/blog",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",\n  internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n      },\n      _type == "navigationGroup" => {\n        "kind": "group",\n        label,\n        links[]{\n          _key,\n          label,\n          description,\n          // Legacy documents store the icon as a bare string name; surface it\n          // as {name, svg: null} so the link survives until the doc is re-saved.\n          "icon": select(\n            defined(icon.name) => icon{ name, svg },\n            defined(icon) => { "name": icon, "svg": null }\n          ),\n          destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/blog",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",\n  internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n        }\n      }\n    },\n    actions[]{\n      _key,\n      label,\n      destination{\n  openInNewTab,\n  "href": select(\n    kind == "internal" => select(\n      internal->_id == "blogIndex" => "/blog",\n      select(\n  internal->_id == "homePage" || internal->_type == "homePage" => "/",\n  internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",\n  internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),\n  defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")\n)\n    ),\n    kind == "external" => external\n  )\n}\n    }\n  }\n': NAVIGATION_QUERY_RESULT;
     '\n  *[_id == "homePage" && _type == "homePage"][0]{\n    "overrideTitle": meta.title,\n    title,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot }\n  }\n': HOME_PAGE_OG_IMAGE_QUERY_RESULT;
     '\n  *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    "title": coalesce(title, meta.title),\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot }\n  }\n': PAGE_OG_IMAGE_QUERY_RESULT;
     '\n  *[_id == "blogIndex" && _type == "blogIndex"][0]{\n    "title": coalesce(title, meta.title),\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot }\n  }\n': BLOG_INDEX_OG_IMAGE_QUERY_RESULT;
     '\n  *[_type == "category" && slug.current == $slug][0]{\n    "title": coalesce(title, meta.title),\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image\n){ asset, crop, hotspot }\n  }\n': CATEGORY_OG_IMAGE_QUERY_RESULT;
-    '\n  *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedSectionShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;
+    '\n  *[_type == "page" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  blocks[]{\n    _key,\n    _type,\n    \n  _type == "richTextBlock" => {\n    theme,\n    eyebrow,\n    title,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "scaffold" => {\n    name,\n    proposedBlockShape,\n    richText[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    }\n  }\n,\n    \n  _type == "relumeHeader103" => {\n    theme,\n    tabs[]{\n      _key,\n      label,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      },\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeLayout488" => {\n    theme,\n    headingStart,\n    image {\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    headingEnd,\n    backgroundImage {\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "relumeLayout348" => {\n    theme,\n    features[]{\n      _key,\n      tagline,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      },\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeTestimonial18" => {\n    theme,\n    heading,\n    description,\n    testimonials[]{\n      _key,\n      rating,\n      quote,\n      avatar {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      name,\n      jobTitle,\n      companyName\n    }\n  }\n,\n    \n  _type == "relumeGallery24" => {\n    theme,\n    heading,\n    description,\n    images[]{\n      _key,\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "relumeEvent9" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    buttons[]{\n      \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n    },\n    events[]{\n      _key,\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      date,\n      category,\n      title,\n      location,\n      description,\n      link {\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeCta57" => {\n    theme,\n    headingLines,\n    description,\n    buttons[]{\n      \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n    }\n  }\n,\n    \n  _type == "relumeLayout422" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    features[]{\n      _key,\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      tagline,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeLayout351" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    features[]{\n      _key,\n      label,\n      heading,\n      description,\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeLayout487" => {\n    theme,\n    tagline,\n    heading,\n    description,\n    features[]{\n      _key,\n      tagline,\n      heading,\n      description,\n      buttons[]{\n        \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n      },\n      image {\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    }\n  }\n,\n    \n  _type == "relumeFaq6" => {\n    theme,\n    heading,\n    description,\n    buttons[]{\n      \n  _key,\n  _type,\n  text,\n  "openInNewTab": url.openInNewTab,\n  "href": select(\n    url.type == "internal" => select(\n  url.internal->_id == "homePage" || url.internal->_type == "homePage" => "/",\n  url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog",\n  url.internal->_type == "post" && defined(url.internal->slug.current) => "/blog/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  url.internal->_type == "category" && defined(url.internal->slug.current) => "/blog/category/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/"),\n  defined(url.internal->slug.current) => "/" + array::join(string::split(url.internal->slug.current, "/")[@ != ""], "/")\n),\n    url.type == "external" => url.external,\n    url.href\n  )\n\n    },\n    questions[]{\n      _key,\n      title,\n      answer\n    }\n  }\n,\n    \n  }\n,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  blocks[_type in ["homeHero", "innerHero"] && defined(image.asset)][0].image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;
     '*[_type == "page" && defined(slug)]{slug}': PAGES_SLUGS_QUERY_RESULT;
     '{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    category->{\n      _id,\n      _type,\n      title,\n      slug\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_PROJECTION_RESULT;
     '*[_type == "post" && slug.current in [$slug, "/" + $slug, $slug + "/", "/" + $slug + "/"]][0]{\n    // richTextContent V2\n    _id,\n    _type,\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n    body[]{\n      \n  ...,\n  _type == "block" => {\n    ...,\n    children[]{...},\n    markDefs[]{\n      ...,\n      _type in ["customLink", "buttonLink"] => {\n        \n  "href": select(\n    customLink.type == "internal" => select(\n  customLink.internal->_id == "homePage" || customLink.internal->_type == "homePage" => "/",\n  customLink.internal->_id == "blogIndex" || customLink.internal->_type == "blogIndex" => "/blog",\n  customLink.internal->_type == "post" && defined(customLink.internal->slug.current) => "/blog/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  customLink.internal->_type == "category" && defined(customLink.internal->slug.current) => "/blog/category/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/"),\n  defined(customLink.internal->slug.current) => "/" + array::join(string::split(customLink.internal->slug.current, "/")[@ != ""], "/")\n),\n    customLink.type == "external" => customLink.external,\n    customLink.href\n  ),\n  "openInNewTab": customLink.openInNewTab\n\n      }\n    }\n  },\n  _type == "image" => {\n    ...,\n    "resolvedAsset": asset->{\n      _id,\n      url,\n      mimeType,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  },\n  _type == "table" => {\n    ...,\n    rows[]{\n      ...,\n      cells[]\n    }\n  },\n  _type == "callout" => {\n    ...,\n    title,\n    body\n  }\n\n    },\n    category->{\n      _id,\n      _type,\n      title,\n      slug\n    },\n    _createdAt,\n    _updatedAt,\n    "sharingPhoto": select(\n  defined(meta.image.asset) => meta.image,\n  defined(image.asset) => image\n){ asset, crop, hotspot },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n}': POST_QUERY_RESULT;

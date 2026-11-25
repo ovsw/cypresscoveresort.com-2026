@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Print a page as a reader would meet it: title, description, then every
-// section's text in order. Reads the draft when one exists, else published.
+// block's text in order. Reads the draft when one exists, else published.
 // Usage: pnpm --dir studio page:text <slug> [--published]
 //
 // Use it to proofread a draft's copy in one pass (jargon, banned words,
@@ -8,7 +8,7 @@
 
 import process from "node:process";
 import { getPageToolsClient } from "./lib/page-tools-client.mjs";
-import { matchedPageId, normalizeSlug, sectionText, selectPage, SLUG_FILTER } from "./lib/page-text.mjs";
+import { matchedPageId, normalizeSlug, blockText, selectPage, SLUG_FILTER } from "./lib/page-text.mjs";
 
 const args = process.argv.slice(2);
 const publishedOnly = args.includes("--published");
@@ -58,8 +58,8 @@ if (page.meta?.title) console.log(`SEO title: ${page.meta.title}`);
 if (page.meta?.description) console.log(`SEO description: ${page.meta.description}`);
 
 const blocks = page.blocks ?? [];
-console.log(`Sections: ${blocks.length ? blocks.map((block) => block._type).join(", ") : "none"}`);
+console.log(`Blocks: ${blocks.length ? blocks.map((block) => block._type).join(", ") : "none"}`);
 
 blocks.forEach((block, index) => {
-  console.log(`\n## ${index + 1}. [${block._type}] ${block._key ?? "(no key)"}\n${sectionText(block)}`);
+  console.log(`\n## ${index + 1}. [${block._type}] ${block._key ?? "(no key)"}\n${blockText(block)}`);
 });

@@ -21,8 +21,11 @@ test("the shared blocks field exactly matches its authoritative inventory", () =
     blocksField.of.filter(({ hidden }) => !hidden).map(({ type }) => type),
     [...pageBuilderBlockTypes],
   );
+  // The Starter's own blocks are pinned here. Blocks imported from
+  // Relume (`relume*`) are listed in "Block library" in
+  // docs/content-model.md, which block-library.test.mjs keeps in step.
   assert.deepEqual(
-    [...pageBuilderBlockTypes],
+    pageBuilderBlockTypes.filter((type) => !/^relume[A-Z]/.test(type)),
     ["richTextBlock", "scaffold"],
   );
   assert.equal(

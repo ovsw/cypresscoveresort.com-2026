@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { PAGE_QUERY_RESULT, POST_QUERY_RESULT } from "@/sanity.types";
 import type { BlogPostSidebar } from "@/components/post-sidebar/model";
+import { isRegisteredBlockType } from "@/components/blocks";
 import { RootContentView } from "./root-content";
 
 const page = {
@@ -83,6 +84,64 @@ describe("RootContentView", () => {
     expect(
       screen.getByRole("heading", { level: 1, name: "Ordinary page" }),
     ).toBeInTheDocument();
+  });
+
+  // These two need a real hero renderer. A site keeps only the Relume blocks
+  // it took from the Starter's shelf, so they run once it has Header 1.
+  const hasHero = isRegisteredBlockType("relumeHeader1");
+
+  const hero = (key: string, text: string) => ({
+    _key: key,
+    _type: "relumeHeader1",
+    buttons: null,
+    description: null,
+    heading: text,
+    image: null,
+    theme: "light",
+  });
+
+  it.skipIf(!hasHero)("lets a leading hero draw the page's one h1 and leaves out the title heading", () => {
+    render(
+      <RootContentView
+        content={
+          {
+            ...page,
+            blocks: [hero("lead", "Hero heading"), hero("later", "Later hero")],
+          } as unknown as NonNullable<PAGE_QUERY_RESULT>
+        }
+        perspective="published"
+        stega={false}
+      />,
+    );
+
+    expect(screen.getAllByRole("heading", { level: 1 }).map((h) => h.textContent)).toEqual([
+      "Hero heading",
+    ]);
+    expect(screen.getByRole("heading", { level: 2, name: "Later hero" })).toBeInTheDocument();
+    expect(screen.queryByText("Ordinary page")).not.toBeInTheDocument();
+  });
+
+  it.skipIf(!hasHero)("keeps the title heading as the h1 when the page does not start with a hero", () => {
+    render(
+      <RootContentView
+        content={
+          {
+            ...page,
+            blocks: [
+              { _key: "intro", _type: "richTextBlock", eyebrow: null, title: "Intro", richText: null },
+              hero("later", "Later hero"),
+            ],
+          } as unknown as NonNullable<PAGE_QUERY_RESULT>
+        }
+        perspective="published"
+        stega={false}
+      />,
+    );
+
+    expect(screen.getAllByRole("heading", { level: 1 }).map((h) => h.textContent)).toEqual([
+      "Ordinary page",
+    ]);
+    expect(screen.getByRole("heading", { level: 2, name: "Later hero" })).toBeInTheDocument();
   });
 
   it("gates the post sidebar to post root content", () => {

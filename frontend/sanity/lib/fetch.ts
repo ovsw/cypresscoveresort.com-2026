@@ -12,7 +12,9 @@ import {
   POSTS_QUERY,
   POSTS_SLUGS_QUERY,
 } from "@/sanity/queries/post";
+import { BLOCK_LIBRARY_PAGE_SLUGS_QUERY } from "@/sanity/queries/block-library";
 import type {
+  BLOCK_LIBRARY_PAGE_SLUGS_QUERY_RESULT,
   BLOG_INDEX_QUERY_RESULT,
   BLOG_POST_SETTINGS_QUERY_RESULT,
   FOOTER_QUERY_RESULT,
@@ -57,6 +59,17 @@ export function fetchSanityPageBySlug({
   stega,
 }: { slug: string } & DynamicFetchOptions): Promise<PAGE_QUERY_RESULT> {
   return fetchCached({ query: PAGE_QUERY, params: { slug }, perspective, stega });
+}
+
+/** The slugs of the Block library's block pages, for the index's links. */
+export function fetchBlockLibraryPageSlugs({
+  perspective,
+}: Pick<DynamicFetchOptions, "perspective">): Promise<BLOCK_LIBRARY_PAGE_SLUGS_QUERY_RESULT> {
+  return fetchCached({
+    query: BLOCK_LIBRARY_PAGE_SLUGS_QUERY,
+    perspective,
+    stega: false,
+  });
 }
 
 export function fetchHomePage({

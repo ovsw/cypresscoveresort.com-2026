@@ -1,6 +1,6 @@
 import { TextIcon } from "lucide-react";
 import { defineField, defineType } from "sanity";
-import sectionTheme from "./shared/section-theme";
+import blockTheme from "./shared/block-theme";
 import { requiredRichText } from "../validation/required-rich-text";
 
 export default defineType({
@@ -30,11 +30,11 @@ export default defineType({
     ],
   },
   fields: [
-    sectionTheme,
+    blockTheme,
     defineField({
       name: "eyebrow",
       type: "string",
-      description: "Optional short label shown above the section heading",
+      description: "Optional short label shown above the block's heading",
     }),
     defineField({
       name: "title",
@@ -48,7 +48,7 @@ export default defineType({
       validation: (rule) =>
         requiredRichText(
           rule,
-          "Add the content. The section is not shown without it.",
+          "Add the content. The block is not shown without it.",
         ),
     }),
   ],
