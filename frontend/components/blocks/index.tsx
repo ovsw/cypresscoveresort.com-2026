@@ -24,6 +24,7 @@ import RelumeLayout422, { hasRelumeLayout422Content } from "@/components/blocks/
 import RelumeLayout351, { hasRelumeLayout351Content } from "@/components/blocks/relume/layout351";
 import RelumeLayout487, { hasRelumeLayout487Content } from "@/components/blocks/relume/layout487";
 import RelumeFaq6, { hasRelumeFaq6Content } from "@/components/blocks/relume/faq6";
+import RelumeHeader83, { hasRelumeHeader83Content } from "@/components/blocks/relume/header83";
 // page-builder-generator:component-imports
 import { isHeroBlockType } from "@/components/blocks/hero";
 import { dataset, projectId } from "@/sanity/lib/env";
@@ -53,6 +54,7 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "relumeLayout351",
   "relumeLayout487",
   "relumeFaq6",
+  "relumeHeader83",
   // page-builder-generator:editing-types
 ]);
 
@@ -74,6 +76,7 @@ const componentMap: Partial<{
   relumeLayout351: RelumeLayout351,
   relumeLayout487: RelumeLayout487,
   relumeFaq6: RelumeFaq6,
+  relumeHeader83: RelumeHeader83,
   // page-builder-generator:component-map
 };
 
@@ -240,6 +243,7 @@ function isRenderableBlock(block: Block) {
   if (block._type === "relumeLayout351") return hasRelumeLayout351Content(block);
   if (block._type === "relumeLayout487") return hasRelumeLayout487Content(block);
   if (block._type === "relumeFaq6") return hasRelumeFaq6Content(block);
+  if (block._type === "relumeHeader83") return hasRelumeHeader83Content(block);
   // page-builder-generator:visible-blocks
   return true;
 }

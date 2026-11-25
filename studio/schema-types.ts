@@ -65,6 +65,7 @@ import relumeLayout422 from "./schemas/blocks/relume/layout422";
 import relumeLayout351 from "./schemas/blocks/relume/layout351";
 import relumeLayout487 from "./schemas/blocks/relume/layout487";
 import relumeFaq6 from "./schemas/blocks/relume/faq6";
+import relumeHeader83 from "./schemas/blocks/relume/header83";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
@@ -134,5 +135,6 @@ export const schemaTypes = [
   relumeLayout351,
   relumeLayout487,
   relumeFaq6,
+  relumeHeader83,
   // page-builder-generator:block-types
 ];
