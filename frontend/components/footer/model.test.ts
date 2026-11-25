@@ -15,7 +15,11 @@ const rawLink = (
 
 const rawFooter: RawFooter = {
   _id: "footer",
-  intro: "Clear thinking for complicated work.",
+  newsletter: {
+    heading: " The weekly bulletin ",
+    text: "One email a week.",
+    buttonLabel: "",
+  },
   columns: [
     {
       _key: "company",
@@ -64,6 +68,22 @@ describe("createFooterModel", () => {
     expect(model?.contact.phone?.href).toBe("tel:+15550100");
     expect(model?.socialLinks[0]?.openInNewTab).toBe(true);
     expect(model?.copyrightYears).toBe("2024-2026");
+    expect(model?.newsletter).toMatchObject({
+      heading: "The weekly bulletin",
+      text: "One email a week.",
+      inputPlaceholder: null,
+      buttonLabel: "Subscribe",
+    });
+  });
+
+  it("drops the newsletter row when it has no heading", () => {
+    expect(
+      createFooterModel(
+        { ...rawFooter, newsletter: { heading: " ", text: "Copy" } },
+        settings,
+        2026,
+      )?.newsletter,
+    ).toBeNull();
   });
 
   it("supports settings documents from before siteName", () => {

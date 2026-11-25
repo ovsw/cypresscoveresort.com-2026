@@ -14,6 +14,15 @@ export type FooterColumnModel = {
   links: FooterLinkModel[];
 };
 
+export type FooterNewsletterModel = {
+  heading: string;
+  text: string | null;
+  inputPlaceholder: string | null;
+  buttonLabel: string;
+  successMessage: string;
+  errorMessage: string;
+};
+
 export type FooterModel = {
   brand: {
     label: string;
@@ -23,7 +32,7 @@ export type FooterModel = {
       height: number;
     } | null;
   };
-  intro: string | null;
+  newsletter: FooterNewsletterModel | null;
   columns: FooterColumnModel[];
   contact: {
     email: FooterLinkModel | null;
@@ -45,7 +54,14 @@ type RawLink = {
 
 export type RawFooter = {
   _id?: string | null;
-  intro?: string | null;
+  newsletter?: {
+    heading?: string | null;
+    text?: string | null;
+    inputPlaceholder?: string | null;
+    buttonLabel?: string | null;
+    successMessage?: string | null;
+    errorMessage?: string | null;
+  } | null;
   columns?: Array<{
     _key?: string | null;
     heading?: string | null;
@@ -114,7 +130,9 @@ type RawImage = {
 };
 
 function logo(settings: RawFooterSettings): FooterModel["brand"]["image"] {
-  const source = settings?.logo?.light ?? settings?.logo?.dark;
+  // The footer sits on the Dark scene, so it prefers the logo made for dark
+  // backgrounds.
+  const source = settings?.logo?.dark ?? settings?.logo?.light;
   if (!source) return null;
   const dimensions = (source as RawImage).asset?.metadata?.dimensions;
   try {
@@ -126,6 +144,22 @@ function logo(settings: RawFooterSettings): FooterModel["brand"]["image"] {
   } catch {
     return null;
   }
+}
+
+function newsletter(
+  raw: NonNullable<RawFooter>["newsletter"],
+): FooterNewsletterModel | null {
+  const heading = text(raw?.heading);
+  if (!heading) return null;
+  return {
+    heading,
+    text: text(raw?.text),
+    inputPlaceholder: text(raw?.inputPlaceholder),
+    buttonLabel: text(raw?.buttonLabel) ?? "Subscribe",
+    successMessage: text(raw?.successMessage) ?? "Thanks for subscribing.",
+    errorMessage:
+      text(raw?.errorMessage) ?? "That did not send. Please try again.",
+  };
 }
 
 function contactLink(
@@ -189,7 +223,7 @@ export function createFooterModel(
 
   return {
     brand: { label, image: logo(settings) },
-    intro: text(raw.intro),
+    newsletter: newsletter(raw.newsletter),
     columns,
     contact: {
       email: contactLink("email", settings.contact?.email),
