@@ -11,6 +11,7 @@ import {
   BLOCK_LIBRARY_ID_PREFIX,
   blockLibraryPages,
 } from "./block-library.mjs";
+import { uploadImageAsset } from "./lib/image-assets.mjs";
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const rootDirectory = path.resolve(directory, "..", "..");
@@ -76,6 +77,18 @@ export const STARTER_ASSETS = [
     id: `image-${createHash("sha1").update(buffer).digest("hex")}-${width}x${height}-png`,
   };
 });
+/**
+ * A placeholder as it is uploaded: the ID it gets, and the filename the seed
+ * gives it. `pnpm seed` and `pnpm page:seed` both upload through this.
+ */
+export function starterAssetUpload(source) {
+  return {
+    id: source.id,
+    filename: `starter-${source.name}.png`,
+    contentType: "image/png",
+    buffer: source.buffer,
+  };
+}
 export const STARTER_IMAGE_ASSET_ID = STARTER_ASSETS[0].id;
 // The placeholders an earlier seed uploaded (landscape, square, avatar).
 // `unseed` removes them too, so a dataset seeded before the switch to Relume's
@@ -663,10 +676,7 @@ export async function seed(client) {
   let serialized = JSON.stringify(starterDocuments);
   const assetIds = [];
   for (const source of STARTER_ASSETS) {
-    const asset = await client.assets.upload("image", source.buffer, {
-      filename: `starter-${source.name}.png`,
-      contentType: "image/png",
-    });
+    const asset = await uploadImageAsset(client, starterAssetUpload(source));
     assetIds.push(asset._id);
     serialized = serialized.replaceAll(source.id, asset._id);
   }

@@ -253,6 +253,13 @@ function mapUtility(utility, problems, { photo, blockRoot, pinned }) {
     return wrap("border-foreground");
   }
 
+  // Relume's foreground ground sets a panel apart from the section ground.
+  // The Starter's `card` is the section's own white on the Light theme, so
+  // that panel would vanish; `muted` differs from the ground on both themes,
+  // as the hand-finished layout348 and layout488 draw it. Other properties
+  // (text, border) keep the card's colours.
+  match = /^bg-scheme-foreground(\/.+)?$/.exec(base);
+  if (match) return wrap(`bg-muted${match[1] ?? ""}`);
   match = new RegExp(
     `^(${colourProperties})-scheme-(text|background|foreground|border)(/.+)?$`,
   ).exec(base);

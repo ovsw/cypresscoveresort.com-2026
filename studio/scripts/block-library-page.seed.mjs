@@ -19,14 +19,18 @@
 // It needs at least one sample block, so it is for the Starter: a Website
 // drops the sample blocks at setup and has no block pages to write.
 //
-// The dataset must hold the Starter's placeholder images and a published
-// homePage, which every sample button links to. Block pages hold no
+// The dataset must hold a published homePage, which every sample button
+// links to. The Starter's placeholder images the pages use are exported as
+// `assets`: page:seed uploads any the dataset lacks (named as `pnpm seed`
+// names them) before it writes, so a dataset seeded before an image joined
+// seed-assets/ still takes every page, and `pnpm unseed` removes them. Block pages hold no
 // references to each other; the Website draws their links from the slug.
 import { blockLibraryPages } from "./block-library.mjs";
 import {
   RETIRED_STARTER_PAGE_IDS,
   STARTER_ASSETS,
   STARTER_SEED,
+  starterAssetUpload,
 } from "./seed.mjs";
 
 const image = (name) => ({
@@ -60,6 +64,12 @@ if (!first) {
   );
 }
 
+// The placeholders the pages reference, for page:seed to upload when missing.
+const serializedPages = JSON.stringify([first, ...rest]);
+const assets = STARTER_ASSETS.filter((asset) =>
+  serializedPages.includes(asset.id),
+).map(starterAssetUpload);
+
 export default {
   // page:seed writes one page and its supporting documents; the first block
   // page is the page, the rest are written beside it.
@@ -70,4 +80,5 @@ export default {
     slug: { _type: "slug", current: slug },
   })),
   remove: RETIRED_STARTER_PAGE_IDS,
+  assets,
 };

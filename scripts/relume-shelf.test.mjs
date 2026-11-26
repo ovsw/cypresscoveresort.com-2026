@@ -176,11 +176,20 @@ test("remove --all leaves no Relume block registered and keeps shared files", st
   assert.doesNotMatch(read(root, "studio/scripts/seed-relume-blocks.mjs"), /_type:/);
   assert.match(read(root, "studio/scripts/seed-relume-blocks.mjs"), /\/\/ relume-seed:blocks/);
   assert.deepEqual(readdirSync(join(root, "studio/schemas/blocks/relume")), []);
+  // No thumbnail outlives its block, and none stays registered.
+  assert.deepEqual(
+    readdirSync(join(root, "studio/static/images/preview")).filter((file) => /^relume/.test(file)),
+    [],
+  );
   assert.deepEqual(readdirSync(join(root, "frontend/components/blocks/relume")).sort(), [
+    "block-accordion.tsx",
     "block-buttons.tsx",
+    "block-date.ts",
     "block-editing.ts",
     "block-image.tsx",
+    "block-link.tsx",
     "block-social-links.tsx",
+    "block-stars.tsx",
     "block-tabs.tsx",
     "block-video-dialog.tsx",
   ]);
@@ -209,6 +218,15 @@ test("add registers exactly the named blocks, one plain and one with a client fi
     assert.equal(read(root, file), read(shelfRoot, file), file);
   }
   assert.match(read(root, "studio/schemas/blocks/page-builder.ts"), /"relumeLayout16",\n {2}"relumeHeader141",/);
+  // Each block's thumbnail comes with it and is registered for the insert menu.
+  for (const type of ["relumeLayout16", "relumeHeader141"]) {
+    const thumbnail = `studio/static/images/preview/${type}.jpg`;
+    assert.ok(readFileSync(join(root, thumbnail)).equals(readFileSync(join(shelfRoot, thumbnail))), thumbnail);
+  }
+  assert.match(
+    read(root, "studio/schemas/blocks/page-builder.ts"),
+    /"relumeLayout16",\n {2}"relumeHeader141",\n {2}\/\/ page-builder-generator:preview-types/,
+  );
   assert.match(read(root, "frontend/components/blocks/index.tsx"), /relumeHeader141: RelumeHeader141,/);
   const library = read(root, "docs/content-model.md");
   assert.match(library, /^- `relumeLayout16` /m);
@@ -365,6 +383,12 @@ test("site setup empties a fresh site once, and never a site that has chosen", s
   const first = await startSiteEmpty({ root, ...options });
   assert.equal(first.removed.length, (await readShelf(repoRoot)).sections.length);
   assert.deepEqual(await registeredSlugs(root), []);
+  // Only the built-in blocks keep a thumbnail, and only theirs are registered.
+  assert.deepEqual(
+    readdirSync(join(root, "studio/static/images/preview")).sort(),
+    ["richTextBlock.jpg", "scaffold.jpg"],
+  );
+  assert.doesNotMatch(read(root, "studio/schemas/blocks/page-builder.ts"), /"relume[A-Z]/);
 
   // The marker of a fresh site goes, so setup never empties the site again,
   // even once it has added every block on the shelf.

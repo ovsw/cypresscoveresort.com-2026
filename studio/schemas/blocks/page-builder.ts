@@ -55,6 +55,7 @@ const previewBlockTypes = new Set<string>([
   "relumeLayout351",
   "relumeLayout487",
   "relumeFaq6",
+  "relumeHeader83",
   // page-builder-generator:preview-types
 ]);
 

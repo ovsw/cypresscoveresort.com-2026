@@ -196,10 +196,14 @@ export function relumeDependencies(root, slugs) {
     slugs.flatMap((slug) => Object.values(existingBlockFiles(root, slug))),
   );
   const reachedByBlocks = closure(graph, own);
+  // The Relume blocks folder holds only blocks and the helpers they share,
+  // so a helper no block uses yet (one the converter writes for blocks
+  // still to come) is not the base, and what it imports stays shared.
   const others = [...graph.keys()].filter(
     (file) =>
       !reachedByBlocks.has(file) &&
       !registrationFiles.includes(file) &&
+      !file.startsWith("frontend/components/blocks/relume/") &&
       !isTest(file),
   );
   // The base stops at the registration files and the blocks: the page

@@ -3,7 +3,7 @@
 // links and click-to-edit targets.
 
 import { hasSectionPadding, mapClasses } from "./classes.mjs";
-import { isLogoImage, ts } from "./model.mjs";
+import { datePartNames, isLogoImage, ts } from "./model.mjs";
 
 // relume-icons -> lucide-react. RelumeIcon is Relume's placeholder mark.
 const lucideIcons = {
@@ -17,11 +17,29 @@ const lucideIcons = {
   Check: "Check",
   Close: "X",
   Plus: "Plus",
+  Add: "Plus",
   Minus: "Minus",
   Play: "Play",
   PlayCircle: "CirclePlay",
   Star: "Star",
+  StarFull: "Star",
+  // As the hand-finished contact13 and contact18 draw them.
+  Mail: "Mail",
+  Call: "Phone",
+  LocationOn: "MapPin",
+  CalendarToday: "Calendar",
+  Schedule: "Clock",
+  Search: "Search",
+  FilterList: "ListFilter",
+  MoreHoriz: "Ellipsis",
+  KeyboardArrowDown: "ChevronDown",
+  ArrowUpward: "ArrowUp",
+  ArrowDownward: "ArrowDown",
 };
+// Relume icons drawn filled: lucide draws an outline, which `fill-current`
+// fills with the icon's own colour (a full star, as the hand-finished
+// testimonial17 draws its rating).
+const filledIcons = new Set(["StarFull"]);
 
 // Relume button variants -> the Starter's Button variants. Relume's
 // "secondary" is an outlined button.
@@ -47,6 +65,11 @@ const cardClasses = {
   Card: "overflow-hidden rounded-card border border-border bg-card text-card-foreground",
   BackgroundCard: "overflow-hidden rounded-card",
 };
+// Relume's Badge (`@/components/ui/badge`): a small label drawn as a text
+// element with a class list in job tokens, as the hand-finished event9
+// draws its category. A class the component sets itself wins.
+const badgeClasses =
+  "inline-flex items-center rounded-control bg-muted px-2.5 py-1 typo-body-sm font-semibold text-foreground";
 // Relume's Tabs primitives (`@/components/ui/tabs`), the Starter's
 // (block-tabs.tsx), and the classes Relume's give each part by default, in
 // the Starter's job tokens. The focus ring and disabled state are in
@@ -62,6 +85,15 @@ const tabClasses = {
   TabsList: "flex",
   TabsTrigger:
     "inline-flex items-center justify-center rounded-control px-6 py-2 border border-border text-foreground data-[state=active]:bg-card data-[state=inactive]:border-transparent",
+};
+// Relume's Accordion primitives (`@/components/ui/accordion`) and the
+// Starter's (block-accordion.tsx), which carry Relume's default classes in
+// job tokens; the component's own classes are passed on.
+const accordionTags = {
+  Accordion: "BlockAccordion",
+  AccordionItem: "BlockAccordionItem",
+  AccordionTrigger: "BlockAccordionTrigger",
+  AccordionContent: "BlockAccordionContent",
 };
 // The property a class sets, with its variants (`md:`, `data-[…]:`), for
 // the default classes a component's own class list replaces. Side-specific
@@ -236,6 +268,11 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     heroHeadingLevels: 0,
     motion: false,
     scrollLinked: false,
+    stars: false,
+    date: false,
+    link: false,
+    linkButton: false,
+    accordion: new Set(),
     tabs: new Set(),
     video: false,
   };
@@ -356,7 +393,7 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
   const buttonFields = [];
   const nameRoles = (list, owner) => {
     for (const field of list) {
-      if (field.kind === "buttons") {
+      if (field.kind === "buttons" || field.kind === "link") {
         field.rolesName = owner
           ? `${owner}${field.name[0].toUpperCase()}${field.name.slice(1)}Roles`
           : `${field.name}Roles`;
@@ -375,6 +412,18 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     ]),
   );
 
+  /** Whether an identifier or property access is read as a value here, not declared or named. */
+  function readsValue(node) {
+    const parent = node.parent;
+    if (!parent) return false;
+    if (ts.isPropertyAccessExpression(parent) && parent.name === node) return false;
+    if (ts.isBindingElement(parent) || ts.isParameter(parent)) return false;
+    if (ts.isVariableDeclaration(parent) && parent.name === node) return false;
+    if (ts.isPropertyAssignment(parent) && parent.name === node) return false;
+    if (ts.isJsxAttribute(parent) && parent.name === node) return false;
+    return true;
+  }
+
   function resolve(expression, scope) {
     if (ts.isIdentifier(expression)) return scope.get(expression.text);
     if (ts.isPropertyAccessExpression(expression)) {
@@ -392,6 +441,15 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
       }
       if (base.field?.kind === "image" && (name === "src" || name === "alt")) {
         return { ...base, imagePart: name };
+      }
+      // An item's place in its list (see `positions` in model.mjs).
+      const owner = base.item ?? base.field?.item;
+      if (owner?.positions?.has(name)) {
+        return { position: owner.positions.get(name), owner };
+      }
+      // One part of a date (`event.date.weekday`), printed by blockDatePart.
+      if (base.field?.kind === "date" && base.field.parts.includes(name)) {
+        return { ...base, datePart: name };
       }
     }
     return undefined;
@@ -422,6 +480,53 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     };
   }
 
+  /**
+   * A star rating: `Array(rating).fill(null).map((_, i) => (<StarFull
+   * key={i} className="…" />))`, where `rating` is a rating field (see
+   * model.mjs). Returns its binding and the mapped classes of one star, or
+   * undefined.
+   */
+  function starsCall(expression, scope) {
+    const callOn = (node, method) =>
+      ts.isCallExpression(node) &&
+      ts.isPropertyAccessExpression(node.expression) &&
+      node.expression.name.text === method
+        ? node.expression.expression
+        : undefined;
+    const filled = callOn(expression, "map");
+    const array = filled ? callOn(filled, "fill") : undefined;
+    if (
+      !array ||
+      !ts.isCallExpression(array) ||
+      array.expression.getText() !== "Array" ||
+      array.arguments.length !== 1
+    ) {
+      return undefined;
+    }
+    const binding = resolve(array.arguments[0], scope);
+    if (binding?.field?.kind !== "rating") return undefined;
+    const callback = expression.arguments[0];
+    let star = callback && ts.isArrowFunction(callback) ? callback.body : undefined;
+    while (star && ts.isParenthesizedExpression(star)) star = star.expression;
+    const tag = star && ts.isJsxSelfClosingElement(star) ? star.tagName.getText() : "";
+    const plain =
+      star &&
+      ts.isJsxSelfClosingElement(star) &&
+      star.attributes.properties.every(
+        (property) =>
+          ts.isJsxAttribute(property) &&
+          ["className", "key"].includes(property.name.getText()),
+      );
+    if (!plain || !iconImports.includes(tag) || lucideIcons[tag] !== "Star") {
+      return { binding, problem: true, ratingNode: array.arguments[0] };
+    }
+    return {
+      binding,
+      ratingNode: array.arguments[0],
+      starClass: classAttribute(star),
+    };
+  }
+
   function classAttribute(element, options) {
     const attribute = element.attributes.properties.find(
       (property) =>
@@ -442,6 +547,69 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
 
   // Which layer of a block drawn over a photo is being written, if any.
   let photoLayer;
+
+  // The text box of a raised foreground layer (see elementClass), by its
+  // opening element, with the motion value its layer fades by, if any.
+  const pointerTextBoxes = new Map();
+  // Those motion values, once their text boxes are written, each with the
+  // name of the value its box takes the pointer by: a box takes the pointer
+  // only while its own layer's text shows.
+  const textPointerBindings = new Map();
+  const importsUseTransform = (model.browserImports?.motion ?? []).some(
+    ({ name }) => name === "useTransform",
+  );
+
+  /**
+   * The box that holds a foreground layer's text: the layer's wrappers are
+   * followed down while each holds one element alone, to the first element
+   * that holds several. Undefined when the layer itself holds several, or
+   * the chain ends without one.
+   */
+  function foregroundTextBox(opening) {
+    let node = opening.parent;
+    for (;;) {
+      const children = meaningfulChildren(node);
+      if (children.length > 1) {
+        return node.openingElement === opening ? undefined : node.openingElement;
+      }
+      if (children.length !== 1 || !ts.isJsxElement(children[0])) {
+        return undefined;
+      }
+      node = children[0];
+    }
+  }
+
+  /**
+   * The motion value a motion element's `style={{ opacity }}` animates by:
+   * an identifier the component declares with a Motion hook. A plain number
+   * is not one, and cannot be given to useTransform.
+   */
+  function styleOpacity(opening) {
+    const style = opening.attributes.properties.find(
+      (property) =>
+        ts.isJsxAttribute(property) && property.name.getText() === "style",
+    );
+    const object = style?.initializer?.expression;
+    if (!object || !ts.isObjectLiteralExpression(object)) return undefined;
+    const opacity = object.properties.find(
+      (property) =>
+        (ts.isPropertyAssignment(property) ||
+          ts.isShorthandPropertyAssignment(property)) &&
+        property.name.getText() === "opacity",
+    );
+    if (!opacity) return undefined;
+    // `{ opacity: value }` or the shorthand `{ opacity }`.
+    const value = ts.isShorthandPropertyAssignment(opacity)
+      ? opacity.name
+      : opacity.initializer;
+    if (!ts.isIdentifier(value)) return undefined;
+    const declared = locals.get(value.text);
+    return declared &&
+      ts.isCallExpression(declared) &&
+      /^use(Transform|MotionValue|Spring)$/.test(declared.expression.getText())
+      ? value.text
+      : undefined;
+  }
 
   /**
    * Writes the children of an element. When one of them is a photo backdrop
@@ -542,8 +710,14 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     !helperNames.has(tag) &&
     (model.cards ?? []).includes(tag) &&
     Object.hasOwn(cardClasses, tag);
+  const isBadge = (tag) =>
+    !helperNames.has(tag) && model.badge && tag === "Badge";
   const isTabPart = (tag) =>
     !helperNames.has(tag) && model.tabs && Object.hasOwn(tabTags, tag);
+  const isAccordionPart = (tag) =>
+    !helperNames.has(tag) &&
+    model.accordion &&
+    Object.hasOwn(accordionTags, tag);
 
   /**
    * The default classes of a Relume primitive (a card, a part of the tabs),
@@ -554,16 +728,18 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     const tag = element.tagName.getText();
     const defaults = isCard(tag)
       ? cardClasses[tag]
-      : isTabPart(tag)
-        ? tabClasses[tag]
-        : undefined;
+      : isBadge(tag)
+        ? badgeClasses
+        : isTabPart(tag)
+          ? tabClasses[tag]
+          : undefined;
     if (!defaults) return "";
-    if (isCard(tag)) {
+    if (isCard(tag) || isBadge(tag)) {
       for (const property of element.attributes.properties) {
         const name = ts.isJsxAttribute(property) ? property.name.getText() : "";
         if (name === "variant" || name === "asChild" || !name) {
           problems.add(
-            `<${tag}> takes ${name ? `"${name}"` : "spread props"}, which the converter does not carry over for a card. Carry it over by hand.`,
+            `<${tag}> takes ${name ? `"${name}"` : "spread props"}, which the converter does not carry over for a ${isBadge(tag) ? "badge" : "card"}. Carry it over by hand.`,
           );
         }
       }
@@ -598,6 +774,10 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     if (isTabPart(tag)) {
       uses.tabs.add(tabTags[tag]);
       return tabTags[tag];
+    }
+    if (isAccordionPart(tag)) {
+      uses.accordion.add(accordionTags[tag]);
+      return accordionTags[tag];
     }
     if (!iconImports.includes(tag)) {
       // Any other component has no import in the generated file, wherever
@@ -665,9 +845,16 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
       const named = expression
         ? fieldsNamed(expression.split(".").at(-1))
         : [];
+      // A part of a date (Event 10's day in an <h4>) is text too.
+      const segments = expression?.split(".") ?? [];
+      const datePart =
+        segments.length > 1 &&
+        datePartNames.has(segments.at(-1)) &&
+        fieldsNamed(segments.at(-2)).some((field) => field.kind === "date");
       return (
-        named.length > 0 &&
-        named.every((field) => field.kind === "string" && isFigure(field.sample))
+        datePart ||
+        (named.length > 0 &&
+          named.every((field) => field.kind === "string" && isFigure(field.sample)))
       );
     }),
   );
@@ -728,7 +915,7 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
       ts.isJsxExpression(children[0]) &&
       children[0].expression;
     const binding = only ? resolve(only, context.scope) : undefined;
-    if (binding?.field.kind !== "string" || isRequired(binding))
+    if (binding?.field?.kind !== "string" || isRequired(binding))
       return undefined;
     uses.stega = true;
     return `stegaClean(${inner(only, context)})?.trim()`;
@@ -753,7 +940,10 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     const binding = spread
       ? resolve(spread.expression, context.scope)
       : undefined;
-    if (binding?.field?.kind !== "buttons" || !binding.field.single) {
+    if (
+      binding?.field?.kind !== "link" &&
+      (binding?.field?.kind !== "buttons" || !binding.field.single)
+    ) {
       return undefined;
     }
     const children = meaningfulChildren(node);
@@ -794,6 +984,13 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
   }
 
   function blockButtons(binding, expressionText, className) {
+    if (binding.field.kind === "link") {
+      // An item's one button, folded with its `url` into its link.
+      uses.linkButton = true;
+      binding.field.drawn = true;
+      const classes = className ? ` className="${className}"` : "";
+      return `<BlockLinkButton${classes} dataSanity={dataAttribute?.(${pathLiteral(binding.pathCode)})} link={${expressionText}} role={${binding.field.rolesName}[0]} />`;
+    }
     uses.buttons = true;
     const path =
       binding.pathCode === "buttons"
@@ -1041,6 +1238,14 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
         !/(^|[\s"'`:])-?z-/.test(ownClassText(element))
       ) {
         classes.push("relative z-10");
+        // Raised, the layer covers the photos, so it lets the pointer
+        // through to them (Studio's click-to-edit), and only its text box
+        // takes it, while the text shows (foregroundTextBox).
+        const box = foregroundTextBox(element);
+        if (box) {
+          classes.push("pointer-events-none");
+          pointerTextBoxes.set(box, styleOpacity(element));
+        }
       }
     }
     // The scrim lets a click through to the photo, for click-to-edit.
@@ -1238,7 +1443,7 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
       parts.length !== 2 ||
       frames.length !== 1 ||
       extras.length > 0 ||
-      binding?.field.kind !== "video" ||
+      binding?.field?.kind !== "video" ||
       (asChild &&
         (inside.length !== 1 ||
           !ts.isJsxElement(button) ||
@@ -1444,6 +1649,109 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     return output;
   }
 
+  /**
+   * A list of plain texts drawn one element per line:
+   * `{features.map((feature, index) => (<p key={index}>{feature}</p>))}`.
+   * A line has no key of its own, so it keeps its position as its key and
+   * its click-to-edit path (`features[2]`), as the hand-finished pricing18
+   * draws its features. Each line is required, so it has no optional test.
+   */
+  function stringLines({ call, target, targetNode }, context, node) {
+    const callback = call.arguments[0];
+    if (
+      !callback ||
+      !ts.isArrowFunction(callback) ||
+      // An expression body only: a block body (`line => { return … }`)
+      // would be written inside `=> ( … )`, which is not valid JSX.
+      ts.isBlock(callback.body) ||
+      !callback.parameters.length ||
+      !ts.isIdentifier(callback.parameters[0].name) ||
+      (callback.parameters[1] && !ts.isIdentifier(callback.parameters[1].name))
+    ) {
+      problems.add(
+        `The list "${targetNode.getText()}" is drawn in a way the converter does not know. Carry it over by hand.`,
+      );
+      return node.getText();
+    }
+    target.field.drawn = true;
+    const lineName = callback.parameters[0].name.text;
+    const indexName = callback.parameters[1]?.name.text ?? "index";
+    const scope = new Map(context.scope);
+    scope.set(lineName, {
+      field: { kind: "string", name: target.field.name, sample: target.field.samples[0] ?? "" },
+      lead: true,
+      pathCode: `${target.pathCode}[\${${indexName}}]`,
+    });
+    let body = callback.body;
+    while (ts.isParenthesizedExpression(body)) body = body.expression;
+    const output = inner(body, {
+      ...context,
+      // No `_key` to stand for the index: a line keeps `key={index}`.
+      item: undefined,
+      jsxChild: false,
+      nested: true,
+      scope,
+    });
+    return `{(${inner(targetNode, context)} ?? []).map((${lineName}, ${indexName}) => (${output}))}`;
+  }
+
+  /**
+   * `<a href={item.url}>` where the item's `url` is folded into its `link`
+   * (see model.mjs): the item's link, drawn by BlockLink. An anchor that
+   * holds nothing but an image repeats the link the item draws as its
+   * button, so it is left out of the tab order, as event9's photo is.
+   */
+  function itemLink(node, context) {
+    const opening = node.openingElement;
+    if (opening.tagName.getText() !== "a") return undefined;
+    const properties = opening.attributes.properties;
+    const href = properties.find(
+      (property) =>
+        ts.isJsxAttribute(property) && property.name.getText() === "href",
+    );
+    const expression = href?.initializer?.expression;
+    if (!expression || !ts.isPropertyAccessExpression(expression)) {
+      return undefined;
+    }
+    const base = resolve(expression.expression, context.scope);
+    const owner = base?.item ?? base?.field?.item;
+    const link = owner?.fields.find(
+      (field) =>
+        field.kind === "link" && field.urlSourceName === expression.name.text,
+    );
+    if (!link) return undefined;
+    if (
+      properties.some(
+        (property) =>
+          !ts.isJsxAttribute(property) ||
+          !["href", "className", "key"].includes(property.name.getText()),
+      )
+    ) {
+      problems.add(
+        `The link "${expression.getText()}" takes attributes the converter does not carry over. Carry it over by hand.`,
+      );
+      return undefined;
+    }
+    let image = false;
+    let other = false;
+    for (const child of node.children) {
+      (function walk(part) {
+        if (ts.isJsxSelfClosingElement(part) && part.tagName.getText() === "img") {
+          image = true;
+          return;
+        }
+        if (ts.isJsxText(part) && part.text.trim()) other = true;
+        if (ts.isJsxExpression(part) && !ts.isJsxAttribute(part.parent)) other = true;
+        ts.forEachChild(part, walk);
+      })(child);
+    }
+    uses.link = true;
+    const access = base.field?.kind === "object" ? "?." : ".";
+    const code = `${inner(expression.expression, context)}${access}${link.name}`;
+    const childContext = { ...context, jsxChild: true };
+    return `<BlockLink${image && !other ? " decorative" : ""} link={${code}}${attributes(opening, context, ["href"], elementClass(opening, context))}>${[...node.children].map((child) => full(child, childContext)).join("")}</BlockLink>`;
+  }
+
   function full(node, context) {
     if (ts.isJsxText(node)) return text.slice(node.pos, node.end);
     return text.slice(node.pos, node.getStart()) + inner(node, context);
@@ -1461,6 +1769,8 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     }
 
     if (ts.isJsxElement(node)) {
+      const linked = itemLink(node, context);
+      if (linked) return linked;
       // A single button on its own, before its tag is looked up.
       const single = singleButton(node, context);
       if (single) return blockButtons(single.binding, single.code, "contents");
@@ -1472,9 +1782,25 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
         keptHelpers.add(opening.tagName.getText());
       }
       const card = isCard(opening.tagName.getText());
+      // A badge is a <p>, or a <span> inside text, where a <p> may not go.
+      let insideText = false;
+      for (let parent = node.parent; parent; parent = parent.parent) {
+        if (
+          ts.isJsxElement(parent) &&
+          /^(p|span|a|button|h[1-6]|label)$/.test(
+            parent.openingElement.tagName.getText(),
+          )
+        ) {
+          insideText = true;
+        }
+      }
       const tag = card
         ? "div"
-        : figureHeadings.has(node)
+        : isBadge(opening.tagName.getText())
+          ? insideText
+            ? "span"
+            : "p"
+          : figureHeadings.has(node)
           ? "p"
           : tagName(opening.tagName.getText(), node);
       const children = meaningfulChildren(node);
@@ -1524,10 +1850,27 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
         );
       }
 
+      // A wrapper that holds nothing but a star rating becomes the
+      // Starter's BlockStars: that many filled stars with a label ("5 out
+      // of 5 stars"), as the hand-finished testimonial17 draws them.
+      const stars = only ? starsCall(only, context.scope) : undefined;
+      if (stars && !stars.problem && tag === "div" && plainWrapper) {
+        uses.stars = true;
+        stars.binding.field.drawn = true;
+        const wrapperClass = classAttribute(opening);
+        return `<BlockStars${wrapperClass ? ` className="${wrapperClass}"` : ""} dataSanity={dataAttribute?.(${pathLiteral(stars.binding.pathCode)})} rating={${inner(stars.ratingNode, context)}}${stars.starClass ? ` starClassName="${stars.starClass}"` : ""} />`;
+      }
+
       const extra = [];
       let condition;
       const binding = only ? resolve(only, context.scope) : undefined;
-      if (binding?.field.kind === "string") {
+      // A part of a required date: its target is the date field.
+      if (binding?.datePart) {
+        extra.push(
+          ` data-sanity={dataAttribute?.(${pathLiteral(binding.pathCode)})}`,
+        );
+      }
+      if (binding?.field?.kind === "string") {
         extra.push(
           ` data-sanity={dataAttribute?.(${pathLiteral(binding.pathCode)})}`,
         );
@@ -1541,9 +1884,39 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
         }
       }
 
+      // The text box of a raised foreground layer takes the pointer, only
+      // while its text shows when the layer fades (Header 83): a click on the
+      // faded text reaches the photo under it.
+      let pointerClass = "";
+      let elementTag = tag;
+      if (pointerTextBoxes.has(opening)) {
+        const opacity = pointerTextBoxes.get(opening);
+        const styled = opening.attributes.properties.some(
+          (property) =>
+            ts.isJsxAttribute(property) && property.name.getText() === "style",
+        );
+        if (opacity && importsUseTransform && !styled) {
+          // One value per layer: two layers that fade by different values
+          // must not share one.
+          if (!textPointerBindings.has(opacity)) {
+            textPointerBindings.set(
+              opacity,
+              `textPointerEvents${textPointerBindings.size ? textPointerBindings.size + 1 : ""}`,
+            );
+          }
+          if (!elementTag.startsWith("motion.")) elementTag = `motion.${tag}`;
+          extra.push(
+            ` style={{ pointerEvents: ${textPointerBindings.get(opacity)} }}`,
+          );
+          pointerClass = "motion-reduce:pointer-events-auto!";
+        } else {
+          pointerClass = "pointer-events-auto";
+        }
+      }
+
       const childContext = { ...context, jsxChild: true };
       if (card) droppedClasses = ["bg-white"];
-      const openingTag = `<${tag}${attributes(opening, context, [], [elementClass(opening, context), defaultClassesFor(opening)].filter(Boolean).join(" "))}${extra.join("")}>`;
+      const openingTag = `<${elementTag}${attributes(opening, context, [], [elementClass(opening, context), defaultClassesFor(opening), pointerClass].filter(Boolean).join(" "))}${extra.join("")}>`;
       droppedClasses = [];
       const output =
         openingTag +
@@ -1569,7 +1942,7 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
             }
             return full(child, childContext);
           }) +
-        `</${tag}>`;
+        `</${elementTag}>`;
       if (!condition) return output;
       return context.jsxChild
         ? `{${condition} ? (${output}) : null}`
@@ -1592,7 +1965,7 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
         const binding = expression
           ? resolve(expression, context.scope)
           : undefined;
-        if (binding?.field.kind !== "image" || binding.imagePart !== "src") {
+        if (binding?.field?.kind !== "image" || binding.imagePart !== "src") {
           problems.add(
             `An <img> does not take its source from an image field (${source?.getText() ?? "no src"}). Place it by hand.`,
           );
@@ -1642,13 +2015,15 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
       }
       const renamedTag = tagName(tag);
       const decorative = renamedTag !== tag ? ' aria-hidden="true"' : "";
+      const fill =
+        iconImports.includes(tag) && filledIcons.has(tag) ? "fill-current" : "";
       // The play icon of a video pop-up is where an editor clicks to change
       // the video (see videoDialog).
       const videoTarget =
         context.videoTarget && tag === "PlayCircle"
           ? ` data-sanity={dataAttribute?.(${pathLiteral(context.videoTarget)})}`
           : "";
-      return `<${renamedTag}${decorative}${attributes(node, context, [], elementClass(node, context))}${videoTarget} />`;
+      return `<${renamedTag}${decorative}${attributes(node, context, [], [elementClass(node, context), fill].filter(Boolean).join(" "))}${videoTarget} />`;
     }
 
     if (ts.isJsxAttribute(node)) {
@@ -1663,6 +2038,20 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
           return classes ? `className="${classes}"` : "";
         }
         return `className=${inner(node.initializer, { ...context, className: true })}`;
+      }
+      // An accordion item's id is its list item's key, as a tab's is.
+      // An open state that names items (`defaultValue={["item-0"]}`) names
+      // ids the block no longer has.
+      const owner = node.parent.parent.tagName?.getText() ?? "";
+      if (isAccordionPart(owner)) {
+        if (name === "value" && owner === "AccordionItem" && context.item) {
+          return `value={${context.item.name}._key}`;
+        }
+        if (name === "value" || name === "defaultValue") {
+          problems.add(
+            `<${owner}> sets "${name}" in a way the converter does not know. Carry it over by hand.`,
+          );
+        }
       }
       // The tab that opens first is the first tab.
       if (
@@ -1780,6 +2169,26 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
       context = { ...context, nested: true };
     }
 
+    // A date is read in its parts (`date.weekday`), never whole: once
+    // converted it is an ISO string, so `Object.values(event.date)` or
+    // `{event.date}` would no longer hold Relume's parts. Each read is
+    // checked where it is made, whatever expression holds it.
+    if (
+      (ts.isIdentifier(node) || ts.isPropertyAccessExpression(node)) &&
+      readsValue(node)
+    ) {
+      const binding = resolve(node, context.scope);
+      const parent = node.parent;
+      const readsPart =
+        ts.isPropertyAccessExpression(parent) &&
+        parent.expression === node &&
+        resolve(parent, context.scope)?.datePart;
+      if (binding?.field?.kind === "date" && !binding.datePart && !readsPart) {
+        problems.add(
+          `The component reads the date "${node.getText()}" whole, not in its parts. Carry it over by hand.`,
+        );
+      }
+    }
     if (ts.isJsxExpression(node) && node.expression) {
       const map = mapCall(node.expression, context.scope);
       if (map) {
@@ -1788,6 +2197,9 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
           return blockButtons(target, inner(targetNode, context), "contents");
         }
         const callback = call.arguments[0];
+        if (target.field.kind === "stringList") {
+          return stringLines(map, context, node);
+        }
         if (
           (target.field.kind !== "list" && target.field.kind !== "imageList") ||
           !callback ||
@@ -1801,7 +2213,10 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
           return node.getText();
         }
         const itemName = callback.parameters[0].name.text;
-        const indexName = callback.parameters[1]?.name.getText();
+        // An item numbered by its place needs the index.
+        const indexName =
+          callback.parameters[1]?.name.getText() ??
+          (target.field.item?.positions?.size ? "index" : undefined);
         const itemPath = `${target.pathCode}[_key=="\${${itemName}._key}"]`;
         const scope = new Map(context.scope);
         scope.set(
@@ -1855,7 +2270,39 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
       }
     }
     if (ts.isPropertyAccessExpression(node)) {
+      const numbered = resolve(node, context.scope);
+      if (numbered?.position) {
+        // The index of the list that owns the label, not of a list mapped
+        // inside one of its items (`feature.children.map(…)`), which would
+        // restart the numbering for each item.
+        if (!context.item?.index || context.item.field?.item !== numbered.owner) {
+          problems.add(
+            `"${node.getText()}" numbers an item by its place outside the list's own map. Carry it over by hand.`,
+          );
+        } else {
+          return `String(${context.item.index} + 1).padStart(${numbered.position}, "0")`;
+        }
+      }
       const base = resolve(node.expression, context.scope);
+      if (base?.field?.kind === "date") {
+        if (base.field.parts.includes(node.name.text)) {
+          uses.date = true;
+          return `blockDatePart(${inner(node.expression, context)}, ${JSON.stringify(node.name.text)})`;
+        }
+        problems.add(
+          `The component reads "${node.getText()}", which is not a part of the date. Carry it over by hand.`,
+        );
+      }
+      const owner = base?.item ?? base?.field?.item;
+      if (
+        owner?.fields.some(
+          (field) => field.kind === "link" && field.urlSourceName === node.name.text,
+        )
+      ) {
+        problems.add(
+          `The component reads "${node.getText()}" other than as the destination of an <a> around the item's content. Carry it over by hand.`,
+        );
+      }
       if (base?.field?.kind === "string") {
         problems.add(
           `The component computes with the text of "${node.expression.getText()}" (${node.getText()}). Carry it over by hand.`,
@@ -1976,6 +2423,14 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
   const statements = bodyStatements
     .filter((statement) => !isUnreadState(statement))
     .map((statement) => inner(statement, { ...context, statement: true }));
+  for (const [opacity, name] of textPointerBindings) {
+    statements.push(
+      "// The text layer covers the whole screen, above the photos. Only the text\n" +
+        "// takes the pointer, and only while it shows, so a click elsewhere (or on\n" +
+        "// the faded text) reaches a photo for click-to-edit.\n" +
+        `const ${name} = useTransform(${opacity}, (opacity) => opacity > 0.05 ? "auto" : "none");`,
+    );
+  }
   // A video field is an editor's link, which only the pop-up can play.
   const allFields = (list) =>
     list.flatMap((field) => [
@@ -1986,6 +2441,24 @@ export function renderBlock(model, { isHero, isLogoSection = false }) {
     if (field.kind === "video" && !field.drawn) {
       problems.add(
         `"${field.sourceName}" holds a video that the component does not play in a pop-up (a <Dialog> with one <iframe>). Model it by hand.`,
+      );
+    }
+    // An item's link is drawn as its button (blockButtons).
+    if (field.kind === "link" && !field.drawn) {
+      problems.add(
+        `"${field.sourceName}" is folded with "${field.urlSourceName}" into the item's link, but the component does not draw it as one button. Carry it over by hand.`,
+      );
+    }
+    // A list of texts is drawn only one element per line (stringLines).
+    if (field.kind === "stringList" && !field.drawn) {
+      problems.add(
+        `"${field.sourceName}" is a list of strings the component does not draw one element per line. Carry it over by hand.`,
+      );
+    }
+    // A star rating is drawn only as a row of stars (starsCall).
+    if (field.kind === "rating" && !field.drawn) {
+      problems.add(
+        `"${field.sourceName}" is a star rating the component draws in a way the converter does not know (a <div> that holds only \`Array(rating).fill(null).map(...)\` of one star icon). Carry it over by hand.`,
       );
     }
   }
