@@ -1,7 +1,7 @@
 // Writes the three files of a block converted from Relume: the Studio
 // schema, the GROQ projection and the React renderer.
 
-import { isLogoImage } from "./model.mjs";
+import { isLogoImage, sampleDate as sampleDateOf } from "./model.mjs";
 
 const json = (value) => JSON.stringify(value);
 
@@ -38,6 +38,55 @@ function fieldSchema(field, { required, owner, logo = false }, indent) {
         `${pad}    ),`,
       );
     }
+  } else if (field.kind === "date") {
+    // Relume's date in text parts, as the hand-finished event9 models it.
+    const shown = field.parts
+      .map((part) => (part === "monthYear" ? "month and year" : part))
+      .join(", ")
+      .replace(/, ([^,]*)$/, " and $1");
+    lines.push(
+      `${pad}  type: "date",`,
+      `${pad}  description: ${json(`Shown as its ${shown}.`)},`,
+      `${pad}  validation: (rule) =>`,
+      `${pad}    rule.required().error(${json(`Add the ${label}. The ${owner} needs it.`)}),`,
+    );
+  } else if (field.kind === "link") {
+    // Relume's `url` and the item's one button, as the hand-finished event9
+    // models an event's page.
+    lines.push(
+      `${pad}  type: "button",`,
+      `${pad}  description: ${json(`Where the ${owner} links, and the label of its button. Its image and title link there too.`)},`,
+      `${pad}  validation: (rule) =>`,
+      `${pad}    rule.required().error(${json(`Add the link. The ${owner}'s button needs it.`)}),`,
+    );
+  } else if (field.kind === "stringList") {
+    // One required line per item, as the hand-finished pricing18 models a
+    // plan's features.
+    lines.push(
+      `${pad}  type: "array",`,
+      `${pad}  of: [`,
+      `${pad}    defineArrayMember({`,
+      `${pad}      type: "string",`,
+      `${pad}      validation: (rule) =>`,
+      `${pad}        requiredText(rule, "Write the line, or remove it."),`,
+      `${pad}    }),`,
+      `${pad}  ],`,
+      `${pad}  validation: (rule) =>`,
+      `${pad}    rule.required().min(1).error(${json(`Add at least one line to ${label}.`)}),`,
+    );
+  } else if (field.kind === "rating") {
+    // As the hand-finished testimonial17 models its star rating.
+    lines.push(
+      `${pad}  type: "number",`,
+      `${pad}  description: ${json(`How many stars, from 1 to 5. The ${owner} shows that many filled stars.`)},`,
+      `${pad}  validation: (rule) =>`,
+      `${pad}    rule`,
+      `${pad}      .required()`,
+      `${pad}      .integer()`,
+      `${pad}      .min(1)`,
+      `${pad}      .max(5)`,
+      `${pad}      .error("Give a whole number of stars from 1 to 5."),`,
+    );
   } else if (field.kind === "video") {
     lines.push(
       `${pad}  type: "url",`,
@@ -148,6 +197,10 @@ function imageSchemaLines(pad) {
   ];
 }
 
+// A sample star rating Studio accepts: a whole number from 1 to 5.
+const isStarCount = (value) =>
+  Number.isInteger(value) && value >= 1 && value <= 5;
+
 // Sample content, so a newly inserted block shows its shape. Images and
 // buttons have no sample: an editor must choose them.
 function initialValue(fields) {
@@ -155,19 +208,34 @@ function initialValue(fields) {
   for (const field of fields) {
     if (field.kind === "string" && field.sample)
       value[field.name] = field.sample;
+    if (field.kind === "rating" && isStarCount(field.sample))
+      value[field.name] = field.sample;
+    if (field.kind === "stringList" && field.samples.length)
+      value[field.name] = field.samples;
+    if (field.kind === "date" && field.sample) value[field.name] = field.sample;
     if (field.kind === "list") {
       value[field.name] = field.samples.map((sample, index) => ({
         _key: `${field.itemName}-${index + 1}`,
         _type: field.itemName,
-        ...Object.fromEntries(
-          field.item.fields
+        ...Object.fromEntries([
+          ...field.item.fields
             .filter(
               (member) =>
-                member.kind === "string" &&
-                typeof sample[member.sourceName] === "string",
+                (member.kind === "string" &&
+                  typeof sample[member.sourceName] === "string") ||
+                (member.kind === "rating" &&
+                  isStarCount(sample[member.sourceName])) ||
+                (member.kind === "stringList" &&
+                  Array.isArray(sample[member.sourceName])),
             )
             .map((member) => [member.name, sample[member.sourceName]]),
-        ),
+          ...field.item.fields
+            .filter((member) => member.kind === "date")
+            .flatMap((member) => {
+              const date = sampleDateOf(sample[member.sourceName]);
+              return date ? [[member.name, date]] : [];
+            }),
+        ]),
       }));
     }
     if (field.kind === "object") {
@@ -185,10 +253,10 @@ export function schemaTemplate({ names, model, entry, isLogoSection = false }) {
       ...(field.item ? flat(field.item.fields) : []),
     ]);
   const usesArray = flat(model.fields).some((field) =>
-    ["buttons", "imageList", "list"].includes(field.kind),
+    ["buttons", "imageList", "list", "stringList"].includes(field.kind),
   );
-  const usesRequiredText = flat(model.fields).some(
-    (field) => field.kind === "string",
+  const usesRequiredText = flat(model.fields).some((field) =>
+    ["string", "stringList"].includes(field.kind),
   );
   const usesVideo = flat(model.fields).some((field) => field.kind === "video");
   const imports = [
@@ -242,7 +310,7 @@ ${fields.join("\n")}
 
 function fieldProjection(field, indent) {
   const pad = " ".repeat(indent);
-  if (field.kind === "string" || field.kind === "video") {
+  if (["string", "video", "rating", "stringList", "date"].includes(field.kind)) {
     return [`${pad}${field.name}`];
   }
   if (field.kind === "image") {
@@ -258,6 +326,9 @@ function fieldProjection(field, indent) {
   }
   if (field.kind === "buttons") {
     return [`${pad}${field.name}[]{`, `${pad}  \${buttonQuery}`, `${pad}}`];
+  }
+  if (field.kind === "link") {
+    return [`${pad}${field.name} {`, `${pad}  \${buttonQuery}`, `${pad}}`];
   }
   const members = field.item.fields.map((member) =>
     fieldProjection(member, indent + 2),
@@ -284,7 +355,7 @@ export function queryTemplate({ names, model, entry }) {
     ]);
   const all = flat(model.fields);
   const imports = ['import { groq } from "next-sanity";'];
-  if (all.some((field) => field.kind === "buttons")) {
+  if (all.some((field) => ["buttons", "link"].includes(field.kind))) {
     imports.push('import { buttonQuery } from "../shared/button";');
   }
   if (
@@ -392,9 +463,38 @@ function blockParts({ names, model, rendered }) {
       `import { ${imageNames.join(", ")} } from "@/components/blocks/relume/block-image";`,
     );
   }
+  if (uses.accordion?.size) {
+    imports.push(
+      `import { ${[...uses.accordion].sort().join(", ")} } from "@/components/blocks/relume/block-accordion";`,
+    );
+  }
   if (uses.tabs?.size) {
     imports.push(
       `import { ${[...uses.tabs].sort().join(", ")} } from "@/components/blocks/relume/block-tabs";`,
+    );
+  }
+  if (uses.link || uses.linkButton) {
+    const names = [
+      ...(uses.link ? ["BlockLink"] : []),
+      ...(uses.linkButton ? ["BlockLinkButton"] : []),
+    ];
+    imports.push(
+      `import { ${names.join(", ")} } from "@/components/blocks/relume/block-link";`,
+    );
+    if (!uses.buttons && uses.linkButton) {
+      imports.push(
+        'import { type BlockButtonRole } from "@/components/blocks/relume/block-buttons";',
+      );
+    }
+  }
+  if (uses.date) {
+    imports.push(
+      'import { blockDatePart } from "@/components/blocks/relume/block-date";',
+    );
+  }
+  if (uses.stars) {
+    imports.push(
+      'import { BlockStars } from "@/components/blocks/relume/block-stars";',
     );
   }
   if (uses.video) {
@@ -611,6 +711,18 @@ const fieldPhrase = (field) => {
   if (field.kind === "imageList") {
     return `${titleCase(field.name).toLowerCase()} (${field.indexed ? `exactly ${field.indexed} images` : "images"})`;
   }
+  if (field.kind === "rating") {
+    return `${titleCase(field.name).toLowerCase()} (1 to 5 stars)`;
+  }
+  if (field.kind === "stringList") {
+    return `${titleCase(field.name).toLowerCase()} (lines of text)`;
+  }
+  if (field.kind === "link") {
+    return "link (a button; the image and title link there too)";
+  }
+  if (field.kind === "date") {
+    return `${titleCase(field.name).toLowerCase()} (a date)`;
+  }
   if (field.kind === "video") {
     return `${titleCase(field.name).toLowerCase()} (a YouTube or Vimeo link, played in a pop-up)`;
   }
@@ -674,6 +786,19 @@ function seedValue(fields, sample, key, numbering) {
       lines.push(`${field.name}: ${json(value)},`);
     } else if (field.kind === "video" && typeof value === "string") {
       lines.push(`${field.name}: ${json(value)},`);
+    } else if (field.kind === "date") {
+      // Studio requires the date; Relume's sample when it makes one.
+      lines.push(`${field.name}: ${json(sampleDateOf(value) ?? "2026-01-01")},`);
+    } else if (field.kind === "link") {
+      // The shared button object, without the key a list item has.
+      lines.push(
+        `${field.name}: { ...button(${json(`${key}-${field.name}`)}, ${json(value?.title || "Button")}), _key: undefined },`,
+      );
+    } else if (field.kind === "stringList" && Array.isArray(value)) {
+      lines.push(`${field.name}: ${json(value.filter((line) => typeof line === "string"))},`);
+    } else if (field.kind === "rating") {
+      // Studio requires a rating; Relume's sample when it is one Studio takes.
+      lines.push(`${field.name}: ${isStarCount(value) ? value : 5},`);
     } else if (field.kind === "image") {
       lines.push(`${field.name}: image(${json(seedImage(field, numbering))}),`);
     } else if (field.kind === "imageList") {

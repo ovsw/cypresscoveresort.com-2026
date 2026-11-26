@@ -42,6 +42,29 @@ The block's Sanity `_type` is the shared identifier across every step. Use
 camelCase for the type and kebab-case for filenames, as in `richTextBlock`
 and `rich-text-block.ts`.
 
+## The insert menu
+
+The Page blocks **Add item…** menu opens in grid view: a thumbnail per
+block, grouped by kind. `studio/schemas/blocks/page-builder.ts` sets both.
+
+- **Groups** come from the block types, with nothing to edit. A Relume
+  block's group is the word in its type name before the number
+  (`relumeLayout488` is in Layout, `relumeCta57` in CTA, `relumeFaq6` in
+  FAQ); every other block is in Basic. A block added later with
+  `pnpm relume:add` lands in its group by itself.
+- **Grid first.** Sanity opens the menu in whichever view `insertMenu.views`
+  lists first and does not remember the last one used, so `grid` comes
+  before `list`.
+- **Thumbnails** are `studio/static/images/preview/<type>.jpg`, 1200×800,
+  each registered in the `previewBlockTypes` set in the same file. A Relume
+  block's thumbnail comes with it from the shelf: `pnpm relume:add` copies
+  and registers it, and `pnpm relume:remove` removes both (see
+  `docs/agents/relume-import.md`, "Shelf"). A block of the site's own needs
+  one too (`--preview` below).
+
+`studio/schemas/blocks/insert-menu.test.mjs` fails when a block has no
+group, its thumbnail is not registered, or the registered file is missing.
+
 ## A block never hides silently
 
 A block, or an item inside one, never skips rendering because content is
@@ -133,8 +156,10 @@ pnpm page-builder:new serviceHighlights --title "Service highlights"
 
 Use `--scope content` (the default) for shared content blocks, `--scope
 general` for regular pages only, or `--scope home` for the homepage only.
-`--preview /path/to/image.jpg` adds a Studio grid preview. Without a preview,
-Studio uses the schema's default representation. The generator refuses existing
+`--preview /path/to/image.jpg` copies and registers the block's insert-menu
+thumbnail (a 1200×800 JPG). Every block needs one: the insert menu test
+fails without it. A Relume block needs no `--preview`: its thumbnail comes
+from the shelf with `pnpm relume:add`. The generator refuses existing
 files and serializes generator runs with `.page-builder-generator.lock`.
 Remove that empty lock directory only after confirming its process has stopped.
 
@@ -155,7 +180,7 @@ For a manual addition, preserve the mirrored folder structure:
 1. Define the Studio schema in `studio/schemas/blocks/`.
 2. Register the schema and any supporting object schemas in `studio/schema-types.ts`.
 3. Add the type to the correct scope in `studio/schemas/blocks/page-builder.ts`. The `blocks` and `blocksArchive` fields derive from those lists.
-4. If a preview is available, add `studio/static/images/preview/<type>.jpg` and register its type in the preview set in that file.
+4. Add its thumbnail, `studio/static/images/preview/<type>.jpg` (1200×800), and register its type in the `previewBlockTypes` set in that file. Its insert-menu group comes from its type name (see "The insert menu").
 5. Create its GROQ projection in `frontend/sanity/queries/`.
 6. Register the projection in `frontend/sanity/queries/page-builder.ts`.
 7. Create its React renderer in `frontend/components/blocks/` and register it in the `componentMap` in `frontend/components/blocks/index.tsx`.

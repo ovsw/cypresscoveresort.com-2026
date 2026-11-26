@@ -121,7 +121,7 @@ The sample content creates global settings, navigation, footer, the homepage, a 
 pnpm unseed
 ```
 
-Unseed removes only marked Starter sample documents and the bundled Starter sample assets. Replacement images uploaded by editors are preserved. It refuses partial or unmarked targets instead of emptying a dataset generally. To refresh the Block library in a dataset that is already seeded, run `pnpm page:seed studio/scripts/block-library-page.seed.mjs --apply`: it writes every block page as a draft, and deletes the index and category pages an earlier seed wrote (the index is now a Website route). Then publish the block pages.
+Unseed removes only marked Starter sample documents and the bundled Starter sample assets. Replacement images uploaded by editors are preserved. It refuses partial or unmarked targets instead of emptying a dataset generally. To refresh the Block library in a dataset that is already seeded, run `pnpm page:seed studio/scripts/block-library-page.seed.mjs --apply`: it uploads any Starter placeholder image the pages use that the dataset lacks (so `pnpm unseed` still removes it), writes every block page as a draft, and deletes the index and category pages an earlier seed wrote (the index is now a Website route). Then publish the block pages.
 
 The Starter's own blocks are Rich Text and a Scaffold placeholder. Its
 Relume blocks are the shelf: this site takes only the ones it needs (see
@@ -197,6 +197,7 @@ A block converted inside a site stays in that site. See
 | `pnpm relume:catalogue-fields` | Starter | Saves Relume's Uncommon and Off-grid flags into `relume/catalogue.json` | An agent, rarely |
 | `pnpm relume:convert` | Starter | Turns pulled code into a Page Builder block, registers it and updates `relume/shelf.json` | An agent, for each new block |
 | `pnpm relume:inventory` | Starter | Records, for every Relume component, whether it is pulled, convertible, blocked or converted, in `relume/inventory.json`; the `/dev/relume` pages read it | Anyone, to refresh those pages |
+| `pnpm relume:thumbnails [<slug>...]` | Starter | Captures each block's Studio insert-menu thumbnail from its Block library page on the local Website (servers running), registers it and updates `relume/shelf.json`; no slugs means every block on the shelf | An agent, for each new or changed block |
 | `pnpm relume:shelf` | Starter | Rebuilds `relume/shelf.json` from the registered blocks, for example after a merge conflict in it | Rarely: the shelf test says when |
 | `pnpm relume:add <slug>...` | Site | Copies blocks from the shelf into the site | You or an agent |
 | `pnpm relume:remove <slug>...` | Site | Removes blocks, unless a page uses one | You or an agent |

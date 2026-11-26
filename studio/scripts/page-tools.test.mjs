@@ -153,6 +153,92 @@ test("a seed's remove list deletes each id and its draft in the same transaction
   }
 });
 
+async function assetSeed(run) {
+  const directory = await mkdtemp(path.join(tmpdir(), "page-tools-"));
+  const file = path.join(directory, "seed.mjs");
+  await writeFile(file, `export default {
+    page: { _id: "new-page", slug: "new-page", title: "New" },
+    assets: [
+      { id: "image-present-1x1-png", filename: "starter-present.png", buffer: Buffer.from("present") },
+      { id: "image-missing-1x1-png", filename: "starter-missing.png", buffer: Buffer.from("missing") },
+    ],
+  };`);
+  const calls = [];
+  const client = {
+    uploadedId: (id) => id,
+    config: () => ({ projectId: "test", dataset: "test" }),
+    fetch: async (query, params) => {
+      if (params.ids) { calls.push(["lookup", params.ids]); return params.ids.filter((id) => id.includes("present")); }
+      return null;
+    },
+    assets: {
+      async upload(type, buffer, options) {
+        calls.push(["upload", type, buffer.toString(), options]);
+        return { _id: client.uploadedId(`image-${buffer.toString()}-1x1-png`) };
+      },
+    },
+    transaction() {
+      calls.push(["transaction"]);
+      return { create(document) { calls.push(["create", document._id]); }, async commit() { calls.push(["commit"]); } };
+    },
+  };
+  const log = console.log;
+  const printed = [];
+  console.log = (line) => printed.push(line);
+  try {
+    await run({ file, calls, client, printed });
+  } finally {
+    console.log = log;
+    await rm(directory, { recursive: true, force: true });
+  }
+}
+
+test("a seed's missing assets are uploaded with their filename before the transaction; present ones are not", async () => {
+  await assetSeed(async ({ file, calls, client }) => {
+    await main([file, "--apply"], () => client);
+    assert.deepEqual(calls, [
+      ["lookup", ["image-present-1x1-png", "image-missing-1x1-png"]],
+      ["upload", "image", "missing", { filename: "starter-missing.png", contentType: "image/png" }],
+      ["transaction"],
+      ["create", "drafts.new-page"],
+      ["commit"],
+    ]);
+  });
+});
+
+test("a seed dry run lists the assets it would upload and uploads nothing", async () => {
+  await assetSeed(async ({ file, calls, client, printed }) => {
+    await main([file], () => client);
+    assert.deepEqual(calls.filter(([type]) => type !== "lookup"), []);
+    assert.deepEqual(JSON.parse(printed[0]).assetsToUpload, ["image-missing-1x1-png (starter-missing.png)"]);
+  });
+});
+
+test("an uploaded asset with an unexpected id stops the seed before it writes", async () => {
+  await assetSeed(async ({ file, calls, client }) => {
+    client.uploadedId = () => "image-other-1x1-png";
+    await assert.rejects(main([file, "--apply"], () => client), /starter-missing\.png as image-other-1x1-png, but the seed references image-missing-1x1-png/);
+    assert.equal(calls.some(([type]) => type === "transaction"), false);
+  });
+});
+
+test("the Block library seed exports the placeholders its pages reference, named as the Starter seed names them", {
+  skip: LIBRARY_PAGE_IDS.length === 0 && "this site has no Relume blocks",
+}, async () => {
+  const { default: librarySeed } = await import("./block-library-page.seed.mjs");
+  const { STARTER_ASSETS } = await import("./seed.mjs");
+  const serialized = JSON.stringify([librarySeed.page, ...librarySeed.documents]);
+  const referenced = STARTER_ASSETS.filter((asset) => serialized.includes(asset.id));
+  assert.ok(referenced.length > 0);
+  assert.deepEqual(
+    librarySeed.assets.map(({ id, filename, contentType }) => ({ id, filename, contentType })),
+    referenced.map((asset) => ({ id: asset.id, filename: `starter-${asset.name}.png`, contentType: "image/png" })),
+  );
+  for (const asset of librarySeed.assets) {
+    assert.equal(asset.buffer, STARTER_ASSETS.find((source) => source.id === asset.id).buffer);
+  }
+});
+
 // A site without Relume blocks has no Block library pages to seed.
 test("the Block library seed writes the block pages and removes the retired pages", {
   skip: LIBRARY_PAGE_IDS.length === 0 && "this site has no Relume blocks",

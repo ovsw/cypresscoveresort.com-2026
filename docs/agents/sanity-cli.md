@@ -100,3 +100,13 @@ page, and the Block library's index and category pages (the index is now a
 Website route). It also shows a seed with several pages: the first block
 page is `page`, and the other block pages are supporting drafts in
 `documents`.
+
+A seed may also list image assets in `assets`, each as `{ id, filename,
+buffer }`, where `id` is the image asset ID the bytes give
+(`image-<sha1>-<width>x<height>-png`). Before the transaction, `--apply`
+uploads each one the dataset lacks; the dry run lists them under
+`assetsToUpload`. If an upload comes back with a different ID, the run stops
+before writing any page or supporting draft; the images uploaded so far stay
+in the dataset. The Block library seed lists the Starter
+placeholders its pages use, named as `pnpm seed` names them, so a dataset
+seeded before a placeholder was added still takes every page.

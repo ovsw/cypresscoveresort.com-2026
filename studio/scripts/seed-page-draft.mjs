@@ -17,6 +17,7 @@
 //     },
 //     documents: [ { _id: "faq-example-1", _type: "faq", ... }, ... ],  // optional
 //     remove: [ "old-example-page" ],  // optional
+//     assets: [ { id: "image-<sha1>-<w>x<h>-png", filename, buffer } ],  // optional
 //   }
 //
 // Behaviour:
@@ -30,7 +31,13 @@
 // - array items missing a `_key` get a deterministic one;
 // - each id in `remove` (a published id) is deleted with its draft, in the
 //   same transaction as the writes, so a seed that moves a page to a new id
-//   leaves no old copy behind. Deleting an id that does not exist does nothing.
+//   leaves no old copy behind. Deleting an id that does not exist does nothing;
+// - each image in `assets` that the dataset lacks is uploaded before the
+//   transaction (the dry run only lists them). Sanity derives an image
+//   asset's id from its bytes, so the upload gets the id the documents
+//   already reference; a different id stops the run before any page or
+//   supporting draft is written (the images uploaded so far stay in the
+//   dataset). Images already in the dataset are not uploaded again.
 //
 // Every reference to a supporting document in the same seed must be weak,
 // whether it sits in the page or in another supporting document. The target
@@ -48,6 +55,7 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { uploadImageAsset } from "./lib/image-assets.mjs";
 import { getPageToolsClient } from "./lib/page-tools-client.mjs";
 
 
@@ -107,6 +115,12 @@ async function loadSeed(file) {
     if (ids.has(document._id)) usage(`Duplicate document ID: ${document._id}`);
     ids.add(document._id);
   }
+  if ("assets" in seed && !Array.isArray(seed.assets)) usage("assets must be an array of { id, filename, buffer }.");
+  for (const asset of seed.assets ?? []) {
+    if (typeof asset?.id !== "string" || !asset.id.startsWith("image-")) usage("Every asset needs the image asset id its bytes give (image-...).");
+    if (typeof asset.filename !== "string" || !asset.filename) usage(`Asset ${asset.id} needs a filename.`);
+    if (!Buffer.isBuffer(asset.buffer)) usage(`Asset ${asset.id} needs its bytes as a buffer.`);
+  }
   if ("remove" in seed && !Array.isArray(seed.remove)) usage("remove must be an array of published document IDs.");
   for (const id of seed.remove ?? []) {
     if (typeof id !== "string" || !id) usage("Every id in remove must be a non-empty string.");
@@ -157,6 +171,14 @@ export async function main(args = process.argv.slice(2), clientFactory = getPage
       client.fetch(`*[_id == $id][0]{_id, _rev}`, { id: document._id }, { perspective: "raw" }),
     ),
   );
+  // Image assets the seed's documents reference that the dataset lacks.
+  const assets = seed.assets ?? [];
+  const presentAssetIds = assets.length
+    ? new Set(
+        await client.fetch(`*[_id in $ids]._id`, { ids: assets.map((asset) => asset.id) }, { perspective: "raw" }),
+      )
+    : new Set();
+  const missingAssets = assets.filter((asset) => !presentAssetIds.has(asset.id));
 
   const plan = {
     mode: apply ? "apply" : "dry-run",
@@ -175,12 +197,25 @@ export async function main(args = process.argv.slice(2), clientFactory = getPage
         `${document._id} (${document._type}, ${existingDocuments[index] ? "replace existing draft" : "new draft"})`,
     ),
     remove: removeIds,
+    assetsToUpload: missingAssets.map((asset) => `${asset.id} (${asset.filename})`),
   };
   console.log(JSON.stringify(plan, null, 2));
   if (!apply) {
-    console.log("Dry run. Add --apply to write these drafts.");
+    console.log("Dry run. Add --apply to upload these assets and write these drafts.");
     return;
   }
+
+  // Upload before the transaction, which would otherwise fail on a reference
+  // to an asset the dataset does not have.
+  for (const expected of missingAssets) {
+    const asset = await uploadImageAsset(client, expected);
+    if (asset._id !== expected.id) {
+      throw new Error(
+        `Uploaded ${expected.filename} as ${asset._id}, but the seed references ${expected.id}. Its bytes or its id are out of date. No page or supporting draft was written; the image assets uploaded so far stay in the dataset.`,
+      );
+    }
+  }
+  if (missingAssets.length) console.log(`Uploaded ${missingAssets.length} image asset(s).`);
 
   const transaction = client.transaction();
   if (draft) {

@@ -18,6 +18,7 @@
     "relume:shelf": "node scripts/relume/shelf.mjs write",
     "relume:add": "node scripts/relume/shelf.mjs add",
     "relume:remove": "node scripts/relume/shelf.mjs remove",
+    "relume:thumbnails": "node scripts/relume/thumbnails.mjs",
     "seed": "pnpm --dir studio seed",
     "unseed": "pnpm --dir studio unseed",
     "dev": "pnpm --parallel -r run dev",

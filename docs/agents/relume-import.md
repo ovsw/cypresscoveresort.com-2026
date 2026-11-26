@@ -21,7 +21,7 @@ anywhere but a Website built from this Starter.
 | `frontend/sanity/queries/relume/<slug>.ts` | Its GROQ projection. Generated. |
 | `frontend/components/blocks/relume/<slug>.tsx` | Its renderer. Generated. |
 | `frontend/components/blocks/relume/<slug>.client.tsx` | The browser half of an animated block's renderer. Generated. See "Animated blocks". |
-| `frontend/components/blocks/relume/block-*` | Helpers every imported block shares: images, buttons, video pop-ups, tabs, click-to-edit targets. Written by hand. |
+| `frontend/components/blocks/relume/block-*` | Helpers every imported block shares: images, buttons, item links, star ratings, dates, video pop-ups, tabs, accordions, click-to-edit targets. Written by hand. A helper no block uses yet is still a shelf file, never part of the base (`relumeDependencies` in `scripts/relume/lib/shelf-manifest.mjs`). |
 | `studio/scripts/seed-relume-blocks.mjs` | One sample block per imported block, for the Block library's seeded block pages: a page of its own for every block, on Light and on Dark (`/block-library/heroes/header-1` and `/block-library/heroes/header-1/dark`). `studio/scripts/block-library.mjs` builds them from each block's category and name in `relume/shelf.json`. The index that lists them, `/block-library` with a Category filter (`/block-library?category=heroes`), is a Website route. |
 | `relume/shelf.json` | The shelf manifest: every registered block with its files, shared files, packages, Block library entry and seed block. Generated; see "Shelf". |
 
@@ -82,7 +82,11 @@ What the converter does to a Relume original:
 - **Class map.** `scripts/relume/lib/classes.mjs` maps Relume's type scale,
   colour schemes, radii, and its Tailwind 3 preset values to the Starter's
   tokens and Tailwind 4. Relume has six heading steps and the Starter four,
-  so neighbouring steps share one.
+  so neighbouring steps share one. Relume's foreground ground
+  (`bg-scheme-foreground`, a panel set apart from the section) is
+  `bg-muted`: the Starter's `bg-card` is the Light section's own white, so
+  the panel would vanish (Layout 419's pinned panels). Text and borders in
+  that scheme colour keep `card`.
 - **Images and buttons.** `<img>` becomes `BlockImage`; a button list
   becomes `BlockButtons`, which takes each button's style from its
   position, as the Relume original set it. Relume's buttons for a dark
@@ -114,6 +118,17 @@ What the converter does to a Relume original:
   object marked optional in an item (`image?:` beside `video?:` in Layout
   499's tabs, where a tab shows one or the other) stops: decide by hand
   what a tab may hold.
+- **Accordions.** Relume's `Accordion`, `AccordionItem`,
+  `AccordionTrigger` and `AccordionContent` (`@/components/ui/accordion`)
+  become the Starter's `BlockAccordion…` parts (`block-accordion.tsx`, Radix
+  Accordion with a focus ring), which carry Relume's default classes in job
+  tokens; the component's own classes replace a default of the same
+  property. The site's own accordion, which the header and post sidebar
+  use, keeps its look. A trigger's `icon` (FAQ 4's plus) is passed on, and
+  Relume's chevron is the default. An item's `value` is its list item's
+  `_key`, as a tab's is; an open state that names items
+  (`defaultValue="item-0"`) stops. The block stays on the server, since
+  only `block-accordion.tsx` runs in the browser.
 - **Objects.** An object that holds a required member (its lead text, an
   image, a video) is required itself: Studio checks an object's members
   only when the object is set.
@@ -128,6 +143,36 @@ What the converter does to a Relume original:
   button itself (`w-full`) goes to its role. A button that submits a form
   stops, and so does one drawn any other way or named like a field the
   component already has.
+- **Item links.** An object or list item with a `url: string` and exactly
+  one button (`button: ButtonProps`) links to one place: the two are one
+  required `link` field, the Starter's shared `button` object (label and
+  destination), as the hand-finished `event9` models an event's page. The
+  button is drawn by `BlockLinkButton` and each `<a href={item.url}>` by
+  `BlockLink` (`block-link.tsx`), which links there through the safe-link
+  check; an anchor that holds nothing but an image repeats that link, so
+  it is left out of the tab order and of what a screen reader lists.
+  The `url` read any other way, an anchor with other attributes
+  (`target`), or a button the item does not draw stops. A `url` beside no
+  button or a list of buttons still stops, and so does the block's own
+  `url` beside its button: only an item's `item.url` reads are rewritten.
+- **Dates.** A date Relume writes as text in parts (an object whose
+  members are all strings named `weekday`, `day`, `month`, `year` or
+  `monthYear`, with its `day`) is one required Sanity date, as the
+  hand-finished `event9` models an event's date. Each part the component
+  draws (`{event.date.weekday}`) is printed by `blockDatePart`
+  (`block-date.ts`) in English as Relume prints it ("Sat", "09",
+  "Feb 2024"), in UTC so no time zone moves it a day; its click-to-edit
+  target is the date. A part in a heading tag (Event 10's day in an `<h4>`)
+  is text, drawn as a `<p>`. A date read whole anywhere
+  (`{event.date}`, `Object.values(event.date)`), or read for anything but
+  its parts, stops. A sample day that is not a whole number
+  makes no sample date.
+- **Numbered items.** A text in a list item whose samples only count the
+  items ("01", "02", "03" in order: Layout 351's `columnText`) is the
+  item's place in the list, not a field, as the hand-finished `layout351`
+  draws it: `String(index + 1).padStart(2, "0")`. Its name is not checked
+  as a design switch, since it is not a field. Read outside the list's own
+  `map`, or inside a list mapped within the item, it stops.
 - **Helper components.** A component in the same file that the block hands
   content to (a list item or an object: `<FeatureSection {...featureSection}
   index={index} />`, `<FeatureCard tab={tab} />`), or that draws a heading,
@@ -148,6 +193,12 @@ What the converter does to a Relume original:
   `variant` or spread props stops, a `bg-white` on a `<Card>` goes (the card's
   ground is `bg-card`), and so does a card wrapped in Motion
   outside the component (`const MotionCard = motion.create(Card)`).
+- **Badges.** Relume's `<Badge>` (`@/components/ui/badge`) is a small
+  label, drawn as a `<p>` (a `<span>` inside text) with `inline-flex
+  items-center rounded-control bg-muted px-2.5 py-1 typo-body-sm
+  font-semibold text-foreground`, as the hand-finished `event9` draws its
+  category. A class the component sets itself replaces the badge's of the
+  same property, and a badge that takes `variant` or spread props stops.
 - **Video pop-ups.** Relume plays a video in a pop-up: a `<Dialog>` whose
   trigger is a play button (a poster image, a dark layer, a play icon) and
   whose content is one `<iframe>` of a `video` prop (Header 154, Layout 26).
@@ -185,7 +236,13 @@ What the converter does to a Relume original:
   326's chevron) loses its colour and takes the button's. A foreground
   layer that Motion animates is raised above the photo layer
   (`relative z-10`): Motion gives it a stacking context of its own, which
-  would otherwise trap its text under the photo.
+  would otherwise trap its text under the photo. Raised, it covers the
+  photos, so it lets the pointer through (`pointer-events-none`) and only
+  its text box takes it (the first element under the layer that holds more
+  than one thing): when the layer fades by a `useTransform` value in
+  `style={{ opacity }}` (Header 83), the box becomes a `motion.div` that
+  takes the pointer only while the text shows, so a click on the faded text
+  reaches the photo under it for click-to-edit.
 - **Logos.** Every image in a logo section (category `logo-sections`,
   `logoCategories` in `scripts/relume/convert.mjs`) is a logo, and so is an
   image anywhere else whose field name or Relume sample file name holds
@@ -213,7 +270,30 @@ What the converter does to a Relume original:
 - **Columns that push their parts apart.** A `flex-col justify-between`
   column with no gap and no margin between its parts gets `gap-8`, so they
   never touch when the column has no spare height (equal-height cards).
-- **Icons.** `relume-icons` become `lucide-react` icons.
+- **Icons.** `relume-icons` become `lucide-react` icons (`lucideIcons` in
+  `scripts/relume/lib/render.mjs`): `Add` is `Plus`, `StarFull` a filled
+  `Star` (`fill-current`), `Call` `Phone`, `LocationOn` `MapPin`,
+  `CalendarToday` `Calendar` and `Schedule` `Clock`, among others. Brand
+  logos (`XLogo`, `LinkedinLogo`) have no match: social links are finished
+  by hand, as `team1`'s are.
+- **Star ratings.** A number of stars (`numberOfStars`, `starsNumber`:
+  `number`) drawn as a `<div>` that holds only
+  `Array(numberOfStars).fill(null).map(…)` of one star icon is a `rating`
+  field, a required whole number from 1 to 5, as the hand-finished
+  `testimonial17` models it. It is drawn by `BlockStars`
+  (`block-stars.tsx`): that many filled stars, read as one image with a
+  label ("5 out of 5 stars"), with the wrapper's classes on the row and the
+  icon's on each star. A rating drawn any other way (each star in its own
+  element, as Testimonial 17 does, or as text) stops, and so does any other
+  `number`.
+- **Lists of texts.** A `string[]` (a plan's `features`) is an array of
+  strings, each line required and the list needing one, as the
+  hand-finished `pricing18` models its features. Drawn
+  `features.map((feature, index) => …)`, a line keeps its position as its
+  key and click-to-edit path (`features[2]`), since a string has no `_key`.
+  A list that is not drawn one element per line (`lines.join(", ")`, a line
+  computed with, a callback with a block body), or whose sample holds
+  addresses, stops.
 - **Headings.** Relume picks a heading tag for its size, so the levels a
   component uses become consecutive ones in the same order (`h2` then `h6`
   becomes `h2` then `h3`), with the block's own heading (its required
@@ -302,18 +382,21 @@ rule at the end of `globals.css` stops them.
 
 The converter never guesses. When a Relume component needs a decision, it writes
 nothing, prints "Needs judgment" with each reason, and exits with status 2.
-Common reasons: an import the Starter does not have (sliders, tabs, dialogs,
-`use-media-query`), an animation the converter cannot hold still for reduced
+Common reasons: an import the Starter does not have (sliders, dropdowns,
+selects), an accordion whose open state names its items, an animation the converter cannot hold still for reduced
 motion (an animated width or colour), a hook
 called in a loop, a renamed import or a value declared outside the
 component, text used as data (`heading.split(" ")`), more heading levels than `<h6>` allows, a helper component that
 keeps state or calls a hook (see "Helper components"), a palette colour with no job
 token, a button that submits a form,
-a string that holds a link, a video file or a photo's address (by its name,
+a string that holds a link (other than an item's `url` beside its one
+button, see "Item links"), a video file or a photo's address (by its name,
 or by a sample that starts with `http`; a video played in a pop-up
 converts, see "Video pop-ups"), more than four images numbered one by one
 (`image1` to `image12`: a strip that is one list to an editor), an icon with
-no match yet.
+no match yet, a list of strings not drawn one element per line, a `number`
+that is not a star rating, or a star rating drawn
+any way but a row of one star icon (see "Star ratings").
 
 Then choose one:
 
@@ -371,6 +454,9 @@ block pages are published, the plain link works. For screenshots, run `pnpm page
 block-library/heroes/header-1` (and `.../header-1/dark`): the page holds only
 that block.
 
+Once the block's page renders, capture its insert-menu thumbnail with
+`pnpm relume:thumbnails <slug>` (see "Shelf") and look at it.
+
 ## Inventory
 
 ```bash
@@ -417,6 +503,26 @@ its seed block. `pnpm relume:convert` rewrites it after registering a
 block; `pnpm relume:shelf` rewrites it by hand. A test fails when it and
 the registered blocks differ.
 
+Every block on the shelf carries its Studio insert-menu thumbnail,
+`studio/static/images/preview/<type>.jpg` (1200×800), registered in
+`previewBlockTypes` in `studio/schemas/blocks/page-builder.ts`. It is taken
+from the block's Light Block library page on the local Website, without the
+Block library bar, with reduced motion on (a scroll-driven block shows its
+still layout), and shows the top of a block taller than the frame. In the
+Starter, with the local servers running (`pnpm dev:worktree`), capture it
+for a newly converted block, or again after the block changes:
+
+```bash
+pnpm relume:thumbnails layout16 header141   # these blocks
+pnpm relume:thumbnails                      # every block on the shelf
+```
+
+It writes each thumbnail, registers it and rewrites `relume/shelf.json`.
+Look at the images before committing. A block page that is only a draft is
+captured in draft mode, as `pnpm page:shots` does. The insert menu test
+(`studio/schemas/blocks/insert-menu.test.mjs`) fails while a registered
+block has no thumbnail.
+
 Run these in the Website:
 
 ```bash
@@ -429,8 +535,10 @@ pnpm relume:remove --all
 
 - `pnpm relume:add` gets the shelf by a shallow clone of the Starter's
   default branch into `~/.cache/relume-shelf`, with your own git access. It
-  copies the block's files, registers it everywhere `pnpm relume:convert`
-  does (with the same code), adds its seed block, regenerates the Sanity
+  copies the block's files and its thumbnail, registers it everywhere
+  `pnpm relume:convert` does (with the same code, the thumbnail included,
+  so the block shows in its insert-menu group with its picture), adds its
+  seed block, regenerates the Sanity
   types, then runs the type check and the block tests. Any failure puts
   every file back. The cache is locked while it is fetched and read, so an
   add or shelf page in another site at the same time refuses and asks you
@@ -444,8 +552,9 @@ pnpm relume:remove --all
   fix reaches a site. Nothing updates a site by itself.
 - `pnpm relume:remove` first asks the site's dataset (from
   `studio/.env.local`) for documents, drafts included, that use the block.
-  If any do, it stops and lists them. Otherwise it removes the files, every
-  registration, the Block library line and the seed block. Shared files and
+  If any do, it stops and lists them. Otherwise it removes the files (the
+  thumbnail included), every registration, the Block library line and the
+  seed block. Shared files and
   packages stay.
 
 To browse the shelf, open `/block-library` on the local dev server. It
