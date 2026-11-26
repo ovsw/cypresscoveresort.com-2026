@@ -124,7 +124,12 @@ export default function RelumeLayout351Client({
                     inert={!open}
                     role="region"
                   >
-                    <div className="min-h-0 overflow-hidden lg:overflow-y-auto">
+                    {/* Scrolls on large screens, so keyboard users must be
+                        able to focus it to scroll. A closed panel is inert. */}
+                    <div
+                      className="min-h-0 overflow-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset lg:overflow-y-auto"
+                      tabIndex={0}
+                    >
                       <div className="flex flex-col px-6 pt-4 pb-8 md:px-10 md:pt-12 md:pb-12 lg:w-[40rem] lg:px-12 lg:pt-16 lg:pb-16">
                         <h3
                           className="mb-5 typo-block-heading md:mb-6"
