@@ -70,7 +70,7 @@
     "react-email": "^6.11.16",
     "shadcn": "^4.23.0",
     "tailwindcss": "^4.3.5",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.12"
   }
 }
