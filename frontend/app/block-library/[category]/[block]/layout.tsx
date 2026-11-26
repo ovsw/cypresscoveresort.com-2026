@@ -3,6 +3,7 @@
 // show one block alone, so the only thing above the block is the small
 // Block library bar.
 import { DisableDraftMode } from "@/components/disable-draft-mode";
+import { OverlayTitleLink } from "@/components/overlay-title-link";
 import { SanityLive } from "@/sanity/lib/live";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { draftMode } from "next/headers";
@@ -26,6 +27,7 @@ export default async function BlockPageLayout({
       {isDraftMode && (
         <>
           <DisableDraftMode />
+          <OverlayTitleLink />
           <VisualEditing />
         </>
       )}
