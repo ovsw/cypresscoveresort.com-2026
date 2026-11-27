@@ -54,12 +54,15 @@ function useAerialPhotoUrl(): PhotoState {
   return state;
 }
 
-const formatPercent = (value: number | undefined) =>
+const PIN_SIZE = 36;
+
+const formatPercent =(value: number | undefined) =>
   typeof value === "number" ? `${value}%` : "not set";
 
 export function MapPositionInput(props: ObjectInputProps) {
   const { onChange, readOnly, value } = props;
   const photo = useAerialPhotoUrl();
+  const [imageFailed, setImageFailed] = useState(false);
   const position = value as Partial<MapPosition> | undefined;
   const hasPin =
     typeof position?.x === "number" && typeof position?.y === "number";
@@ -82,14 +85,14 @@ export function MapPositionInput(props: ObjectInputProps) {
     );
   }
 
-  if (photo.status === "missing") {
+  if (photo.status === "missing" || imageFailed) {
     return (
       <Stack space={3}>
         <Card padding={3} border radius={2} tone="caution">
           <Text size={1}>
-            The Resort map has no aerial photo yet. Upload it in Resort map to
-            place the pin by clicking the photo. Until then, type the position
-            below.
+            {imageFailed
+              ? "The aerial photo could not be loaded. Reload the page to try again, or type the position below."
+              : "The Resort map has no aerial photo yet. Upload it in Resort map to place the pin by clicking the photo. Until then, type the position below."}
           </Text>
         </Card>
         {props.renderDefault(props)}
@@ -123,7 +126,9 @@ export function MapPositionInput(props: ObjectInputProps) {
 
   return (
     <Stack space={3}>
-      <Card border radius={2} overflow="hidden">
+      {/* No clipping, and room above the photo, so a pin at the top or side
+          edge (its tip on the edge, its body outside) stays visible. */}
+      <Card border radius={2} style={{ marginTop: PIN_SIZE }}>
         <div
           aria-label={`Aerial photo. Click to place the pin, or use the arrow keys to move it (hold Shift for bigger steps). Pin from the left: ${formatPercent(position?.x)}, from the top: ${formatPercent(position?.y)}.`}
           aria-readonly={readOnly || undefined}
@@ -142,8 +147,14 @@ export function MapPositionInput(props: ObjectInputProps) {
           <img
             alt=""
             draggable={false}
+            onError={() => setImageFailed(true)}
             src={photo.url}
-            style={{ display: "block", height: "auto", width: "100%" }}
+            style={{
+              borderRadius: "inherit",
+              display: "block",
+              height: "auto",
+              width: "100%",
+            }}
           />
           {hasPin && (
             <span
@@ -158,11 +169,11 @@ export function MapPositionInput(props: ObjectInputProps) {
             >
               <svg
                 fill="#e11d48"
-                height="36"
+                height={PIN_SIZE}
                 stroke="#fff"
                 strokeWidth="1.5"
                 viewBox="0 0 24 24"
-                width="36"
+                width={PIN_SIZE}
                 style={{ display: "block", filter: "drop-shadow(0 1px 2px rgb(0 0 0 / 0.5))" }}
               >
                 <path d="M12 23s-8-7.6-8-13.5a8 8 0 0 1 16 0C20 15.4 12 23 12 23Z" />
