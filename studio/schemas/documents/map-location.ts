@@ -1,5 +1,6 @@
 import { MapPin } from "lucide-react";
 import { defineField, defineType } from "sanity";
+import { MapPositionInput } from "../inputs/map-position-input";
 import { photosField } from "../objects/shared-fields";
 import { requiredText } from "../validation/required-text";
 
@@ -48,8 +49,9 @@ export default defineType({
       title: "Pin position",
       type: "object",
       description:
-        "Where the pin sits on the aerial photo, as percentages of the photo's width and height.",
+        "Click the aerial photo where the pin sits. Click again to move it, or use the arrow keys.",
       options: { columns: 2 },
+      components: { input: MapPositionInput },
       fields: [
         axis("x", "From the left (%)", "0 is the left edge, 100 the right edge."),
         axis("y", "From the top (%)", "0 is the top edge, 100 the bottom edge."),
